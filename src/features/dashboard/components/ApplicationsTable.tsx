@@ -2,14 +2,22 @@ import { useTheme } from "@/context/ThemeContext";
 import { STATUS_CFG } from "../data/statusConfig";
 import { BRAND } from "@/constants/brand";
 import Badge from "@/components/ui/Badge";
-
+import type { Job } from "../types";
+// inside ApplicationsTable.tsx
+type Props = {
+  filtered: Job[];
+  filter: string;
+  setFilter: (f: string) => void;
+  search: string;
+  setSearch: (s: string) => void;
+};
 const ApplicationsTable = ({
   filtered,
   filter,
   setFilter,
   search,
   setSearch,
-}) => {
+}: Props) => {
   const { isMidnight } = useTheme();
   return (
     <div
@@ -66,7 +74,7 @@ const ApplicationsTable = ({
                     : "var(--pill-inactive-txt)",
                 }}
               >
-                {s === "All" ? "✨ All" : `${cfg.emoji} ${s}`}
+                {s === "All" ? "👔 All" : `${cfg.emoji} ${s}`}
               </button>
             );
           })}

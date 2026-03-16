@@ -1,8 +1,12 @@
 import Confetti from "@/components/ui/Confetti";
 import { STATUS_CFG } from "../data/statusConfig";
 import { useTheme } from "@/context/ThemeContext";
-
-const JobPipeline = ({ counts, filter, setFilter }) => {
+type Props = {
+  counts: Record<string, number>;
+  filter: string;
+  setFilter: (f: string) => void;
+};
+const JobPipeline = ({ counts, filter, setFilter }: Props) => {
   const { isMidnight } = useTheme();
   //   const [filter, setFilter] = useState("All");
 

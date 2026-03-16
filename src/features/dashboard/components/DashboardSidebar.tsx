@@ -11,7 +11,10 @@ const NAV = [
   { icon: "📈", label: "Analytics" },
   { icon: "⚙️", label: "Settings" },
 ];
-const DasboardSidebar = ({ counts }) => {
+type Props = {
+  counts: Record<string, number>;
+};
+const DasboardSidebar = ({ counts }: Props) => {
   const { isMidnight } = useTheme();
   const [affIdx, setAffIdx] = useState(0);
   const [activeNav, setActiveNav] = useState(0);

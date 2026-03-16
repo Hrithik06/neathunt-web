@@ -1,6 +1,9 @@
 import { BRAND } from "@/constants/brand";
-
-const TrophyCard = ({ counts, responseRate }) => {
+type Props = {
+  counts: Record<string, number>;
+  responseRate: number;
+};
+const TrophyCard = ({ counts, responseRate }: Props) => {
   return (
     <div
       className="w-48 shrink-0 rounded-2xl p-5 flex flex-col justify-between relative overflow-hidden offer-glow"

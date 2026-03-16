@@ -1,7 +1,10 @@
 import StatCard from "@/components/ui/StatCard";
 import { JOBS } from "../data/jobs";
-
-const StatCards = ({ counts, responseRate }) => {
+type Props = {
+  counts: Record<string, number>;
+  responseRate: number;
+};
+const StatCards = ({ counts, responseRate }: Props) => {
   return (
     <div className="flex gap-3 mb-6 flex-wrap fade-up-1">
       <StatCard emoji="📨" label="Total Applied" value={JOBS.length} isHero />
