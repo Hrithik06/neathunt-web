@@ -3,6 +3,7 @@ import Logo from "../components/ui/Logo";
 import ThemeToggle from "../components/ui/ThemeToggle";
 import { useEffect, useState } from "react";
 import { useTheme } from "@/context/ThemeContext";
+import axios from "axios";
 
 const NavBar = () => {
   const { toggle, meta } = useTheme();
@@ -15,7 +16,18 @@ const NavBar = () => {
     // setStatsInView(false);
     // setTimeout(() => setStatsInView(true), 120);
   };
-
+  const handleSignup = () => {
+    window.location.href = "http://localhost:4000/api/auth/google";
+  };
+  const getMe = async () => {
+    const data = await axios
+      .get("http://localhost:4000/api/auth/me", {
+        withCredentials: true,
+      })
+      .catch((err) => console.log(err));
+    console.log(data);
+    alert(data);
+  };
   useEffect(() => {
     const onScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", onScroll);
@@ -80,6 +92,7 @@ const NavBar = () => {
           <button
             className="cta-ghost text-sm font-bold px-4 py-2 rounded-xl border-0 bg-transparent cursor-pointer transition-opacity duration-200"
             style={{ color: "var(--heading)", fontFamily: "inherit" }}
+            onClick={getMe}
           >
             Sign in
           </button>
@@ -90,6 +103,7 @@ const NavBar = () => {
               boxShadow: "0 4px 14px rgba(255,107,107,0.3)",
               fontFamily: "inherit",
             }}
+            onClick={handleSignup}
           >
             Get started free →
           </button>
