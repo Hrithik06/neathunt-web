@@ -87,7 +87,7 @@ const ApplicationsTable = ({
           <tr style={{ background: "var(--table-head-bg)" }}>
             {[
               "Company",
-              "Role",
+              "Title",
               "Platform",
               "Salary",
               "Date",
@@ -149,7 +149,7 @@ const ApplicationsTable = ({
                   className="px-5 py-4 text-xs font-semibold"
                   style={{ color: "var(--muted)" }}
                 >
-                  {job.role}
+                  {job.title}
                 </td>
                 <td className="px-5 py-4">
                   <span
