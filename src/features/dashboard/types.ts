@@ -1,4 +1,6 @@
-type Job = {
+import { z } from "zod";
+
+export type Job = {
   id: number;
   company: string;
   title: string;
@@ -9,32 +11,46 @@ type Job = {
   logo: string;
 };
 
-export type { Job };
+// export enum JobStatus {
+//   APPLIED = "APPLIED",
+//   INTERVIEW_SCHEDULED = "INTERVIEW_SCHEDULED",
+//   INTERVIEW_COMPLETED = "INTERVIEW_COMPLETED",
+//   OFFER = "OFFER",
+//   REJECTED = "REJECTED",
+//   ACCEPTED = "ACCEPTED",
+//   WITHDRAWN = "WITHDRAWN",
+// }
 
-import { z } from "zod";
-export enum JobStatus {
-  APPLIED = "APPLIED",
-  INTERVIEW_SCHEDULED = "INTERVIEW_SCHEDULED",
-  INTERVIEW_COMPLETED = "INTERVIEW_COMPLETED",
-  OFFER = "OFFER",
-  REJECTED = "REJECTED",
-  ACCEPTED = "ACCEPTED",
-  WITHDRAWN = "WITHDRAWN",
-}
+export const JobStatus = {
+  APPLIED: "APPLIED",
+  INTERVIEW_SCHEDULED: "INTERVIEW_SCHEDULED",
+  INTERVIEW_COMPLETED: "INTERVIEW_COMPLETED",
+  OFFER: "OFFER",
+  REJECTED: "REJECTED",
+  ACCEPTED: "ACCEPTED",
+  WITHDRAWN: "WITHDRAWN",
+} as const;
+
 export const createJobSchema = z.object({
   company: z.string().min(1),
   title: z.string().min(1),
-  status: z.enum(JobStatus).default(JobStatus.APPLIED),
-  notes: z.string().optional(),
-  url: z.url().optional(),
+  status: z.enum(JobStatus),
   appliedDate: z.iso.date(),
+  notes: z.string().optional(),
+  url: z
+    .union([z.literal(""), z.url()])
+    .transform((v) => (v === "" ? undefined : v))
+    .optional(), //cuz RHF sends empty string for optional values
 });
 
 export const updateJobSchema = z.object({
   company: z.string().min(1).optional(),
   title: z.string().min(1).optional(),
   status: z.enum(JobStatus).optional(),
-  notes: z.string().optional(),
-  url: z.url().optional(),
   appliedDate: z.iso.date().optional(),
+  notes: z.string().optional(),
+  url: z
+    .union([z.literal(""), z.url()])
+    .transform((v) => (v === "" ? undefined : v))
+    .optional(), //cuz RHF sends empty string for optional values
 });
