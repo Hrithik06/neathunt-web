@@ -36,7 +36,10 @@ export const createJobSchema = z.object({
   title: z.string().min(1),
   status: z.enum(JobStatus),
   appliedDate: z.iso.date(),
-  notes: z.string().optional(),
+  notes: z
+    .union([z.literal(""), z.url()])
+    .transform((v) => (v === "" ? undefined : v))
+    .optional(), //cuz RHF sends empty string for optional values
   url: z
     .union([z.literal(""), z.url()])
     .transform((v) => (v === "" ? undefined : v))
@@ -48,7 +51,10 @@ export const updateJobSchema = z.object({
   title: z.string().min(1).optional(),
   status: z.enum(JobStatus).optional(),
   appliedDate: z.iso.date().optional(),
-  notes: z.string().optional(),
+  notes: z
+    .union([z.literal(""), z.url()])
+    .transform((v) => (v === "" ? undefined : v))
+    .optional(), //cuz RHF sends empty string for optional values
   url: z
     .union([z.literal(""), z.url()])
     .transform((v) => (v === "" ? undefined : v))

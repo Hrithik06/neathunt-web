@@ -2,7 +2,11 @@ import ThemeToggle from "@/components/ui/ThemeToggle";
 import { BRAND } from "@/constants/brand";
 import { useTheme } from "@/context/ThemeContext";
 
-const DashboardHeader = () => {
+interface DashboardHeaderProps {
+  onOpenModal: () => void;
+}
+
+const DashboardHeader = ({ onOpenModal }: DashboardHeaderProps) => {
   const { isMidnight, toggle, meta } = useTheme();
 
   return (
@@ -23,6 +27,7 @@ const DashboardHeader = () => {
             : "Your job search is going great — here's your progress."}
         </p>
       </div>
+
       <div className="flex items-center gap-3">
         <ThemeToggle onToggle={toggle} icon={meta.icon} label={meta.label} />
         <button
@@ -31,9 +36,11 @@ const DashboardHeader = () => {
             background: `linear-gradient(135deg,${BRAND.coral},#FF8E53)`,
             boxShadow: `0 4px 14px rgba(255,107,107,0.3)`,
           }}
+          onClick={onOpenModal}
         >
           + Log Application
         </button>
+        {/* Modal lives in DashboardPage, not here */}
       </div>
     </div>
   );

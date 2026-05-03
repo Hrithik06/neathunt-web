@@ -1,118 +1,116 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap");
 @import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
 
 /* ── Brand accents — theme-invariant ─────────────────────────────── */
 :root {
-    --brand-gold: #FFC947;
-    --brand-coral: #FF6B6B;
-    --brand-mint: #06D6A0;
-    --brand-lavender: #A78BFA;
-    --brand-dark: #1E2D5F;
+    --brand-gold: #ffc947;
+    --brand-coral: #ff6b6b;
+    --brand-mint: #06d6a0;
+    --brand-lavender: #a78bfa;
+    --brand-dark: #1e2d5f;
 }
 
 /* ── Sunrise (default / light) ───────────────────────────────────── */
 :root,
 [data-theme="sunrise"] {
     /* Page */
-    --page-bg: #FFFBF2;
+    --page-bg: #fffbf2;
     --nav-scroll-bg: rgba(255, 251, 242, 0.92);
-    --nav-border: #FFE4B5;
+    --nav-border: #ffe4b5;
 
     /* Cards */
-    --card-bg: #FFFFFF;
-    --card-border: #FFE4B5;
+    --card-bg: #ffffff;
+    --card-border: #ffe4b5;
     --card-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
 
     /* Typography */
-    --heading: #1E2D5F;
-    --body: #64748B;
-    --muted: #94A3B8;
+    --heading: #1e2d5f;
+    --body: #64748b;
+    --muted: #94a3b8;
 
     /* Eyebrow pill */
-    --eyebrow-bg: #FFF8E1;
-    --eyebrow-border: #FFE082;
-    --eyebrow-text: #1E2D5F;
+    --eyebrow-bg: #fff8e1;
+    --eyebrow-border: #ffe082;
+    --eyebrow-text: #1e2d5f;
 
     /* FAQ */
-    --faq-bg: #FFFFFF;
-    --faq-hover: #FFFBF2;
-    --faq-border: #FFE4B5;
-    --faq-answer: #64748B;
+    --faq-bg: #ffffff;
+    --faq-hover: #fffbf2;
+    --faq-border: #ffe4b5;
+    --faq-answer: #64748b;
 
     /* Steps */
-    --step-bg: #FFFFFF;
-    --step-border: #FFE4B5;
+    --step-bg: #ffffff;
+    --step-border: #ffe4b5;
 
     /* Misc */
-    --footer-border: #FFE4B5;
+    --footer-border: #ffe4b5;
     --testimonial-q: #475569;
-    --highlight-bg: #FFF8E1;
-    --badge-bg: #FFFFFF;
+    --highlight-bg: #fff8e1;
+    --badge-bg: #ffffff;
 
     /* Theme toggle button */
-    --toggle-bg: #1E2D5F;
-    --toggle-text: #FFC947;
+    --toggle-bg: #1e2d5f;
+    --toggle-text: #ffc947;
 
     /* ── Dashboard-specific ───────────────────────────────────────── */
-    --sidebar-bg: #0F172A;
-    --input-bg: #FFFBF2;
-    --table-head-bg: #FFFBF2;
-    --hero-card-bg: #0F172A;
-    --hero-text: #FFFFFF;
-    --hero-sub: #FFC947;
-    --sidebar-text: #64748B;
-    --sidebar-active: #FFC947;
-    --pill-inactive-bg: #F5F0E8;
-    --pill-inactive-txt: #A8A29E;
-    --logo-emoji-bg: #F5F0E8;
+    --sidebar-bg: #0f172a;
+    --input-bg: #fffbf2;
+    --table-head-bg: #fffbf2;
+    --hero-card-bg: #0f172a;
+    --hero-text: #ffffff;
+    --hero-sub: #ffc947;
+    --sidebar-text: #64748b;
+    --sidebar-active: #ffc947;
+    --pill-inactive-bg: #f5f0e8;
+    --pill-inactive-txt: #a8a29e;
+    --logo-emoji-bg: #f5f0e8;
 }
 
 /* ── Midnight (dark) ─────────────────────────────────────────────── */
 [data-theme="midnight"] {
-    --page-bg: #0A0F1E;
+    --page-bg: #0a0f1e;
     --nav-scroll-bg: rgba(10, 15, 30, 0.92);
-    --nav-border: #1E2D5F;
+    --nav-border: #1e2d5f;
 
     --card-bg: #111827;
-    --card-border: #1E2D5F;
+    --card-border: #1e2d5f;
     --card-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
 
-    --heading: #F1F5F9;
-    --body: #94A3B8;
-    --muted: #64748B;
+    --heading: #f1f5f9;
+    --body: #94a3b8;
+    --muted: #64748b;
 
-    --eyebrow-bg: rgba(255, 201, 71, 0.10);
+    --eyebrow-bg: rgba(255, 201, 71, 0.1);
     --eyebrow-border: rgba(255, 201, 71, 0.25);
-    --eyebrow-text: #FFC947;
+    --eyebrow-text: #ffc947;
 
     --faq-bg: #111827;
-    --faq-hover: #141D2E;
-    --faq-border: #1E2D5F;
-    --faq-answer: #94A3B8;
+    --faq-hover: #141d2e;
+    --faq-border: #1e2d5f;
+    --faq-answer: #94a3b8;
 
     --step-bg: #111827;
-    --step-border: #1E2D5F;
+    --step-border: #1e2d5f;
 
-    --footer-border: #1E2D5F;
-    --testimonial-q: #94A3B8;
-    --highlight-bg: rgba(255, 201, 71, 0.10);
+    --footer-border: #1e2d5f;
+    --testimonial-q: #94a3b8;
+    --highlight-bg: rgba(255, 201, 71, 0.1);
     --badge-bg: #111827;
 
-    --toggle-bg: #E8850A;
-    --toggle-text: #1E2D5F;
+    --toggle-bg: #e8850a;
+    --toggle-text: #1e2d5f;
 
     /* ── Dashboard-specific ───────────────────────────────────────── */
     --sidebar-bg: #020617;
-    --input-bg: #1E293B;
+    --input-bg: #1e293b;
     --table-head-bg: #020617;
     --hero-card-bg: #1e1b4b;
-    --hero-text: #FFFFFF;
-    --hero-sub: #FFC947;
-    --sidebar-text: #64748B;
-    --sidebar-active: #FFC947;
+    --hero-text: #ffffff;
+    --hero-sub: #ffc947;
+    --sidebar-text: #64748b;
+    --sidebar-active: #ffc947;
     --pill-inactive-bg: rgba(255, 255, 255, 0.05);
-    --pill-inactive-txt: #64748B;
+    --pill-inactive-txt: #64748b;
     --logo-emoji-bg: rgba(255, 255, 255, 0.05);
 }
