@@ -41,7 +41,7 @@ export default function DashboardPage() {
 
     // run logic
     const init = async () => {
-      const res = await fetch("/me", {
+      const res = await fetch("/user/me", {
         credentials: "include",
       });
 
