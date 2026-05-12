@@ -16,8 +16,8 @@ const NavBar = () => {
     // setStatsInView(false);
     // setTimeout(() => setStatsInView(true), 120);
   };
-  const handleSignup = () => {
-    window.location.href = "http://localhost:4000/api/auth/google";
+  const handleGoogleLogin = () => {
+    window.location.href = `${import.meta.env.VITE_API_URL}/api/auth/google`;
   };
   const getMe = async () => {
     const data = await axios
@@ -103,7 +103,7 @@ const NavBar = () => {
               boxShadow: "0 4px 14px rgba(255,107,107,0.3)",
               fontFamily: "inherit",
             }}
-            onClick={handleSignup}
+            onClick={handleGoogleLogin}
           >
             Get started free →
           </button>
