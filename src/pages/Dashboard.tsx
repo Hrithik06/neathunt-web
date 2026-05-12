@@ -35,7 +35,6 @@ export default function DashboardPage() {
 
   //send user timezone
   useEffect(() => {
-    console.log("hi");
     if (hasRun.current) return;
     hasRun.current = true;
 

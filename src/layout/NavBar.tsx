@@ -17,7 +17,9 @@ const NavBar = () => {
     // setTimeout(() => setStatsInView(true), 120);
   };
   const handleGoogleLogin = () => {
-    window.location.href = `${import.meta.env.VITE_API_URL}/api/auth/google`;
+    const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:4000";
+
+    window.location.href = `${apiUrl}/api/auth/google`;
   };
   const getMe = async () => {
     const data = await axios
