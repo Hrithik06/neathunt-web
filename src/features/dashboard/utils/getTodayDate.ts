@@ -1,6 +1,4 @@
-import { useState } from "react";
-
-function getTodayDate(): string {
+export function getTodayDate(): string {
   const today = new Date();
 
   const year = today.getFullYear();
@@ -9,8 +7,4 @@ function getTodayDate(): string {
 
   const formatted = `${year}-${month}-${day}`;
   return formatted;
-}
-export default function useTodayDate() {
-  const [todayDate, setTodayDate] = useState(getTodayDate());
-  return todayDate;
 }

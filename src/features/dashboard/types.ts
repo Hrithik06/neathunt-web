@@ -11,15 +11,6 @@ export type Job = {
   logo: string;
 };
 
-// export enum JobStatus {
-//   APPLIED = "APPLIED",
-//   INTERVIEW_SCHEDULED = "INTERVIEW_SCHEDULED",
-//   INTERVIEW_COMPLETED = "INTERVIEW_COMPLETED",
-//   OFFER = "OFFER",
-//   REJECTED = "REJECTED",
-//   ACCEPTED = "ACCEPTED",
-//   WITHDRAWN = "WITHDRAWN",
-// }
 
 export const JobStatus = {
   APPLIED: "APPLIED",

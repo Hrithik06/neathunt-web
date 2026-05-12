@@ -2,9 +2,12 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import type z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createJobSchema, JobStatus } from "../../types";
-import useTodayDate from "../../hooks/useTodayDate";
+{
+  getTodayDate;
+}
 import "./JobForm.css";
 import { http } from "@/services/http";
+import { getTodayDate } from "../../utils/getTodayDate";
 
 type FormFields = z.infer<typeof createJobSchema>;
 type JobStatusType = (typeof JobStatus)[keyof typeof JobStatus];
@@ -26,7 +29,7 @@ interface JobFormProps {
 }
 
 const JobForm = ({ onClose }: JobFormProps) => {
-  const todayDate = useTodayDate();
+  const todayDate = getTodayDate();
 
   const {
     register,
