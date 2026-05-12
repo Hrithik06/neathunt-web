@@ -2,9 +2,6 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import type z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createJobSchema, JobStatus } from "../../types";
-{
-  getTodayDate;
-}
 import "./JobForm.css";
 import { http } from "@/services/http";
 import { getTodayDate } from "../../utils/getTodayDate";
@@ -44,15 +41,12 @@ const JobForm = ({ onClose }: JobFormProps) => {
   });
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    // console.log(data);
-    const response = await http.request({
+    await http.request({
       method: "POST",
       url: "/jobs",
-      // data: { ...data, appliedDate: new Date(data.appliedDate) },
       data,
       withCredentials: true,
     });
-    console.log(response.data);
   };
 
   return (
