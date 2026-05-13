@@ -139,6 +139,7 @@
     letter-spacing: 1px;
     color: white;
     opacity: 0.9;
+    animation: fade 1.5s infinite ease-in-out;
 }
 
 /* Animated line */
@@ -172,9 +173,6 @@
     100% {
         transform: translateX(150%);
     }
-}
-.logo {
-    animation: fade 1.5s infinite ease-in-out;
 }
 
 @keyframes fade {
