@@ -1,16 +1,36 @@
 <!doctype html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>NeatHunt</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NeatHunt</title>
-</head>
+        <script>
+            (function () {
+                const saved = localStorage.getItem("theme");
+                const prefersDark = window.matchMedia(
+                    "(prefers-color-scheme: dark)",
+                ).matches;
+                const theme = saved || (prefersDark ? "midnight" : "sunrise");
 
-<body>
-  <div id="root"></div>
-  <script type="module" src="/src/main.tsx"></script>
-</body>
+                document.documentElement.setAttribute("data-theme", theme);
 
+                // 👇 set background early
+                document.documentElement.style.background =
+                    theme === "midnight" ? "#0f172a" : "#ffffff";
+            })();
+        </script>
+    </head>
+
+    <body>
+        <div id="app-loader">
+            <div class="progress-container">
+                <div class="progress-bar"></div>
+            </div>
+        </div>
+        <div id="root"></div>
+
+        <script type="module" src="/src/main.tsx"></script>
+    </body>
 </html>

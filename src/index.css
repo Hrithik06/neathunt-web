@@ -114,3 +114,40 @@
     --pill-inactive-txt: #64748b;
     --logo-emoji-bg: rgba(255, 255, 255, 0.05);
 }
+
+#app-loader {
+    position: fixed;
+    inset: 0;
+    background: var(--bg, #0f172a);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 4px;
+    z-index: 9999;
+}
+
+.progress-container {
+    width: 100%;
+    height: 3px;
+    background: transparent;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 30%;
+    background: linear-gradient(90deg, #ff6b6b, #ff8e53);
+    animation: progressMove 1.2s ease-in-out infinite;
+}
+
+@keyframes progressMove {
+    0% {
+        transform: translateX(-100%);
+    }
+    50% {
+        transform: translateX(50%);
+    }
+    100% {
+        transform: translateX(150%);
+    }
+}
