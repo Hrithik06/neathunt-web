@@ -41,14 +41,18 @@ const JobForm = ({ onClose }: JobFormProps) => {
   });
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    await http
-      .request({
-        method: "POST",
-        url: "/jobs",
-        data,
-        withCredentials: true,
-      })
-      .then(() => onClose && onClose());
+    try {
+      await http
+        .request({
+          method: "POST",
+          url: "/jobs",
+          data,
+          withCredentials: true,
+        })
+        .then(() => onClose && onClose());
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
