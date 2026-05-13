@@ -1,14 +1,13 @@
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import { BRAND } from "@/constants/brand";
-import { useTheme } from "@/context/ThemeContext";
+import { useGreeting } from "@/hooks/useGreeting";
 
 interface DashboardHeaderProps {
   onOpenModal: () => void;
 }
 
 const DashboardHeader = ({ onOpenModal }: DashboardHeaderProps) => {
-  const { isMidnight } = useTheme();
-
+  const { firstName, greeting, emoji, subText } = useGreeting();
   return (
     <div className="flex justify-between items-start mb-7 fade-up">
       <div>
@@ -16,15 +15,13 @@ const DashboardHeader = ({ onOpenModal }: DashboardHeaderProps) => {
           className="text-2xl font-black tracking-tight"
           style={{ color: "var(--heading)" }}
         >
-          {isMidnight ? "Burning the midnight oil 🌙" : "Good morning! 👋"}
+          {greeting} {emoji}, {firstName}
         </h1>
         <p
           className="text-sm font-semibold mt-1"
           style={{ color: "var(--muted)" }}
         >
-          {isMidnight
-            ? "Late nights build great careers. Here's your progress."
-            : "Your job search is going great — here's your progress."}
+          {subText}
         </p>
       </div>
 
