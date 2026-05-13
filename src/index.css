@@ -114,33 +114,55 @@
     --pill-inactive-txt: #64748b;
     --logo-emoji-bg: rgba(255, 255, 255, 0.05);
 }
-
 #app-loader {
     position: fixed;
     inset: 0;
     background: var(--bg, #0f172a);
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
-    padding-top: 4px;
     z-index: 9999;
 }
 
-.progress-container {
-    width: 100%;
-    height: 3px;
-    background: transparent;
+/* Center container */
+.loader-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+}
+
+/* Logo */
+.logo {
+    font-weight: 900;
+    font-size: 18px;
+    letter-spacing: 1px;
+    color: white;
+    opacity: 0.9;
+}
+
+/* Animated line */
+.line {
+    width: 120px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    position: relative;
     overflow: hidden;
+    border-radius: 2px;
 }
 
-.progress-bar {
-    height: 100%;
-    width: 30%;
-    background: linear-gradient(90deg, #ff6b6b, #ff8e53);
-    animation: progressMove 1.2s ease-in-out infinite;
+/* Moving glow */
+.line::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 40%;
+    background: linear-gradient(90deg, transparent, #60a5fa, transparent);
+    animation: slide 1.2s ease-in-out infinite;
+    box-shadow: 0 0 8px #60a5fa;
 }
 
-@keyframes progressMove {
+@keyframes slide {
     0% {
         transform: translateX(-100%);
     }
@@ -149,5 +171,18 @@
     }
     100% {
         transform: translateX(150%);
+    }
+}
+.logo {
+    animation: fade 1.5s infinite ease-in-out;
+}
+
+@keyframes fade {
+    0%,
+    100% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 1;
     }
 }
