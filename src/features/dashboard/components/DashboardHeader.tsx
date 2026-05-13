@@ -7,7 +7,7 @@ interface DashboardHeaderProps {
 }
 
 const DashboardHeader = ({ onOpenModal }: DashboardHeaderProps) => {
-  const { isMidnight, toggle, meta } = useTheme();
+  const { isMidnight } = useTheme();
 
   return (
     <div className="flex justify-between items-start mb-7 fade-up">
@@ -29,7 +29,7 @@ const DashboardHeader = ({ onOpenModal }: DashboardHeaderProps) => {
       </div>
 
       <div className="flex items-center gap-3">
-        <ThemeToggle onToggle={toggle} icon={meta.icon} label={meta.label} />
+        <ThemeToggle />
         <button
           className="cta-btn flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-black text-white border-0 cursor-pointer transition-all duration-200"
           style={{

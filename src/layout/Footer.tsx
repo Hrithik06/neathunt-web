@@ -1,13 +1,13 @@
 import { BRAND } from "@/constants/brand";
 import Logo from "../components/ui/Logo";
 import ThemeToggle from "../components/ui/ThemeToggle";
-import { useTheme } from "@/context/ThemeContext";
+// import { useTheme } from "@/context/ThemeContext";
 
 const Footer = () => {
-  const { toggle, meta } = useTheme();
-  const handleToggle = () => {
-    toggle();
-  };
+  // const { toggle, meta } = useTheme();
+  // const handleToggle = () => {
+  //   toggle();
+  // };
   return (
     <footer
       className="border-t py-8 px-6 transition-colors duration-500"
@@ -40,11 +40,7 @@ const Footer = () => {
               {l}
             </a>
           ))}
-          <ThemeToggle
-            onToggle={handleToggle}
-            icon={meta.icon}
-            label={meta.label}
-          />
+          <ThemeToggle />
         </div>
       </div>
     </footer>

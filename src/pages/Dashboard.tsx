@@ -8,12 +8,14 @@ import { JOBS } from "@/features/dashboard/data/jobs";
 import DasboardSidebar from "@/features/dashboard/components/DashboardSidebar";
 import LogApplicationModal from "@/features/dashboard/components/JobForm/LogApplicationModal";
 import { http } from "@/services/http";
+import { useNavigate } from "react-router";
 
 // ── Main ─────────────────────────────────────────────────────────
 export default function DashboardPage() {
   const [filter, setFilter] = useState("All");
   const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false); // ← lifted here
+  const navigate = useNavigate();
 
   const counts = JOBS.reduce<Record<string, number>>(
     (a, j) => ({ ...a, [j.status]: (a[j.status] || 0) + 1 }),
@@ -60,6 +62,12 @@ export default function DashboardPage() {
     };
 
     init();
+  }, []);
+
+  // Replace history entry on mount to prevent back button from going to
+  // Google OAuth pages after login redirect
+  useEffect(() => {
+    navigate("/dashboard", { replace: true });
   }, []);
   return (
     <div
