@@ -8,6 +8,7 @@ interface DashboardHeaderProps {
 
 const DashboardHeader = ({ onOpenModal }: DashboardHeaderProps) => {
   const { firstName, greeting, emoji, subText } = useGreeting();
+
   return (
     <div className="flex justify-between items-start mb-7 fade-up">
       <div>

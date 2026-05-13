@@ -5,27 +5,26 @@ import { AuthProvider } from "./context/AuthContext";
 import AuthLayout from "./features/auth/AuthLayout";
 import { lazy, Suspense } from "react";
 import Loader from "./components/ui/Loader";
-import ToastMessage from "./components/ui/ToastMessage";
 const Dashboard = lazy(() => import("./pages/Dashboard"));
+import { Toaster } from "react-hot-toast";
 function App() {
   return (
-    <AuthProvider>
-      <Suspense fallback={<Loader />}>
-        <Routes>
-          <Route index element={<LandingPage />} />
+    <>
+      <AuthProvider>
+        <Suspense fallback={<Loader />}>
+          <Toaster position="bottom-right" reverseOrder={false} />
+          <Routes>
+            <Route index element={<LandingPage />} />
 
-          <Route element={<AuthLayout />}>
-            <Route path="/dashboard" element={<Dashboard />} />
-          </Route>
+            <Route element={<AuthLayout />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+            </Route>
 
-          <Route
-            path="toast"
-            element={<ToastMessage text="Yo mama" variant="error" />}
-          />
-          <Route path="auth-error" element={<AuthError />} />
-        </Routes>
-      </Suspense>
-    </AuthProvider>
+            <Route path="auth-error" element={<AuthError />} />
+          </Routes>
+        </Suspense>
+      </AuthProvider>
+    </>
   );
 }
 

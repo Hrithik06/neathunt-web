@@ -5,7 +5,8 @@ import { createJobSchema, JobStatus } from "../../types";
 import "./JobForm.css";
 import { http } from "@/services/http";
 import { getTodayDate } from "../../utils/getTodayDate";
-
+import { useState } from "react";
+import { showToast } from "@/components/ui/showToast";
 type FormFields = z.infer<typeof createJobSchema>;
 type JobStatusType = (typeof JobStatus)[keyof typeof JobStatus];
 const STATUS_OPTIONS: {
@@ -26,8 +27,7 @@ interface JobFormProps {
 }
 
 const JobForm = ({ onClose }: JobFormProps) => {
-  const todayDate = getTodayDate();
-
+  const [apiError, setApiError] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
@@ -36,22 +36,24 @@ const JobForm = ({ onClose }: JobFormProps) => {
     resolver: zodResolver(createJobSchema),
     defaultValues: {
       status: JobStatus.APPLIED,
-      appliedDate: todayDate,
+      appliedDate: getTodayDate(),
     },
   });
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
-      await http
-        .request({
-          method: "POST",
-          url: "/jobs",
-          data,
-          withCredentials: true,
-        })
-        .then(() => onClose && onClose());
-    } catch (err) {
-      console.log(err);
+      setApiError(null);
+      await http.request({
+        method: "POST",
+        url: "/jobs",
+        data,
+        withCredentials: true,
+      });
+
+      onClose?.();
+      setTimeout(() => showToast("Applicaion added", "success"), 300);
+    } catch (err: any) {
+      setApiError(err.message);
     }
   };
 
@@ -199,6 +201,8 @@ const JobForm = ({ onClose }: JobFormProps) => {
           </button>
         </div>
       </div>
+
+      {apiError && <p className="nh-field__error">{apiError}</p>}
     </form>
   );
 };
