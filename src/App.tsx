@@ -1,22 +1,26 @@
 import { Routes, Route } from "react-router";
-
-import Dashboard from "./pages/Dashboard";
 import LandingPage from "./pages/LandingPage";
 import { AuthError } from "./pages/AuthError";
-
+import { AuthProvider } from "./context/AuthContext";
+import AuthLayout from "./features/auth/AuthLayout";
+import { lazy, Suspense } from "react";
+import Loader from "./components/ui/Loader";
+const Dashboard = lazy(() => import("./pages/Dashboard"));
 function App() {
   return (
-    <>
-      {/*<OldNavBar />*/}
-      <Routes>
-        <Route index element={<LandingPage />} />
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="auth-error" element={<AuthError />} />
-        {/*<Route index element={<Home />} />
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="login" element={<LoginPage />} />*/}
-      </Routes>
-    </>
+    <AuthProvider>
+      <Suspense fallback={<Loader />}>
+        <Routes>
+          <Route index element={<LandingPage />} />
+
+          <Route element={<AuthLayout />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+          </Route>
+
+          <Route path="auth-error" element={<AuthError />} />
+        </Routes>
+      </Suspense>
+    </AuthProvider>
   );
 }
 

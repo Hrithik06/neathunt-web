@@ -3,6 +3,7 @@ import { BRAND } from "@/constants/brand";
 import { useTheme } from "@/context/ThemeContext";
 import { useEffect, useState } from "react";
 import { AFFIRMATIONS } from "../data/affirmations";
+import { useAuth } from "@/context/AuthContext";
 
 const NAV = [
   { icon: "🏠", label: "Dashboard" },
@@ -18,6 +19,8 @@ const DasboardSidebar = ({ counts }: Props) => {
   const { isMidnight } = useTheme();
   const [affIdx, setAffIdx] = useState(0);
   const [activeNav, setActiveNav] = useState(0);
+
+  const { logout } = useAuth();
   useEffect(() => {
     const timer = setInterval(
       () => setAffIdx((i) => (i + 1) % AFFIRMATIONS.length),
@@ -43,7 +46,6 @@ const DasboardSidebar = ({ counts }: Props) => {
           </div>
         </div>
       </div>
-
       {/* Affirmation ticker */}
       <div
         className="mx-3 mb-5 rounded-xl px-3 py-3 border-l-4 min-h-12 overflow-hidden"
@@ -60,7 +62,6 @@ const DasboardSidebar = ({ counts }: Props) => {
           {AFFIRMATIONS[affIdx]}
         </p>
       </div>
-
       {/* Nav */}
       <nav className="flex-1">
         {NAV.map((item, i) => (
@@ -87,7 +88,6 @@ const DasboardSidebar = ({ counts }: Props) => {
           </button>
         ))}
       </nav>
-
       {/* Growth card */}
       <div
         className="mx-3 rounded-xl p-4 border"
@@ -109,6 +109,13 @@ const DasboardSidebar = ({ counts }: Props) => {
           <span className="font-medium opacity-75">Keep planting seeds.</span>
         </div>
       </div>
+      <button
+        className="text-white/60 hover:text-white text-lg flex gap-1 items-center justify-center mt-3"
+        onClick={logout}
+      >
+        <img src="/power.svg" alt="Logout" className="w-6 h-6" />
+        <span>Logout</span>
+      </button>
     </aside>
   );
 };

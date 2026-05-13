@@ -22,11 +22,11 @@ const NavBar = () => {
     window.location.href = `${apiUrl}/api/auth/google`;
   };
   // const getMe = async () => {
-  //   const data = await axios
-  //     .get(`${apiUrl}/api/auth/me`, {
-  //       withCredentials: true,
-  //     })
-  //     .catch((err) => console.log(err));
+  // const data = await axios
+  //   .get(`${apiUrl}/api/auth/me`, {
+  //     withCredentials: true,
+  //   })
+  //   .catch((err) => console.log(err));
   //   console.log(data);
   //   alert(data);
   // };
