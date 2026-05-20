@@ -33,36 +33,36 @@ export default function DashboardPage() {
         j.title.toLowerCase().includes(search.toLowerCase())),
   );
 
-  const hasRun = useRef(false);
+  // const hasRun = useRef(false);
 
   //send user timezone
-  useEffect(() => {
-    if (hasRun.current) return;
-    hasRun.current = true;
+  // useEffect(() => {
+  //   if (hasRun.current) return;
+  //   hasRun.current = true;
 
-    // run logic
-    const init = async () => {
-      const res = await fetch("/user/me", {
-        credentials: "include",
-      });
+  //   // run logic
+  //   const init = async () => {
+  //     const res = await fetch("/user/me", {
+  //       credentials: "include",
+  //     });
 
-      const user = await res.json();
+  //     const user = await res.json();
 
-      const clientTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  //     const clientTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-      if (!user.timezoneInitialized) {
-        await http.request({
-          method: "PATCH",
-          url: "/user/timezone",
-          withCredentials: true,
-          headers: { "Content-Type": "application/json" },
-          data: JSON.stringify({ timezone: clientTimezone }),
-        });
-      }
-    };
+  //     if (!user.timezoneInitialized) {
+  //       await http.request({
+  //         method: "PATCH",
+  //         url: "/user/timezone",
+  //         withCredentials: true,
+  //         headers: { "Content-Type": "application/json" },
+  //         data: JSON.stringify({ timezone: clientTimezone }),
+  //       });
+  //     }
+  //   };
 
-    init();
-  }, []);
+  //   init();
+  // }, []);
 
   // Replace history entry on mount to prevent back button from going to
   // Google OAuth pages after login redirect
