@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import DashboardHeader from "@/features/dashboard/components/DashboardHeader";
 import JobPipeline from "@/features/dashboard/components/JobPipeline";
 import StatCards from "@/features/dashboard/components/StatCards";
@@ -7,7 +7,6 @@ import ApplicationsTable from "@/features/dashboard/components/ApplicationsTable
 import { JOBS } from "@/features/dashboard/data/jobs";
 import DasboardSidebar from "@/features/dashboard/components/DashboardSidebar";
 import LogApplicationModal from "@/features/dashboard/components/JobForm/LogApplicationModal";
-import { http } from "@/services/http";
 import { useNavigate } from "react-router";
 
 // ── Main ─────────────────────────────────────────────────────────
@@ -32,37 +31,6 @@ export default function DashboardPage() {
       (j.company.toLowerCase().includes(search.toLowerCase()) ||
         j.title.toLowerCase().includes(search.toLowerCase())),
   );
-
-  // const hasRun = useRef(false);
-
-  //send user timezone
-  // useEffect(() => {
-  //   if (hasRun.current) return;
-  //   hasRun.current = true;
-
-  //   // run logic
-  //   const init = async () => {
-  //     const res = await fetch("/user/me", {
-  //       credentials: "include",
-  //     });
-
-  //     const user = await res.json();
-
-  //     const clientTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-  //     if (!user.timezoneInitialized) {
-  //       await http.request({
-  //         method: "PATCH",
-  //         url: "/user/timezone",
-  //         withCredentials: true,
-  //         headers: { "Content-Type": "application/json" },
-  //         data: JSON.stringify({ timezone: clientTimezone }),
-  //       });
-  //     }
-  //   };
-
-  //   init();
-  // }, []);
 
   // Replace history entry on mount to prevent back button from going to
   // Google OAuth pages after login redirect
