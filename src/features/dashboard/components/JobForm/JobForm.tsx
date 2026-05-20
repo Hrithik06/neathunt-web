@@ -36,7 +36,7 @@ const JobForm = ({ onClose }: JobFormProps) => {
     resolver: zodResolver(createJobSchema),
     defaultValues: {
       status: JobStatus.APPLIED,
-      appliedDate: getTodayDate(),
+      appliedAt: getTodayDate(),
     },
   });
 
@@ -122,19 +122,19 @@ const JobForm = ({ onClose }: JobFormProps) => {
         </div>
 
         <div className="nh-field">
-          <label htmlFor="appliedDateId" className="nh-label">
+          <label htmlFor="appliedAtId" className="nh-label">
             Date Applied
             <span className="nh-label__required">*</span>
           </label>
           <input
-            id="appliedDateId"
+            id="appliedAtId"
             type="date"
-            className={`nh-input nh-input--date${errors.appliedDate ? " nh-input--error" : ""}`}
-            {...register("appliedDate")}
+            className={`nh-input nh-input--date${errors.appliedAt ? " nh-input--error" : ""}`}
+            {...register("appliedAt")}
           />
-          {errors.appliedDate && (
+          {errors.appliedAt && (
             <span className="nh-field__error">
-              ⚠ {errors.appliedDate.message}
+              ⚠ {errors.appliedAt.message}
             </span>
           )}
         </div>

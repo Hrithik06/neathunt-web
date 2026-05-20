@@ -25,7 +25,7 @@ export const createJobSchema = z.object({
   company: z.string().min(1),
   title: z.string().min(1),
   status: z.enum(JobStatus),
-  appliedDate: z.iso.date(),
+  appliedAt: z.iso.date(),
   notes: z
     .string()
     .transform((v) => (v === "" ? undefined : v)) //cuz RHF sends empty string for optional values
@@ -40,7 +40,7 @@ export const updateJobSchema = z.object({
   company: z.string().min(1).optional(),
   title: z.string().min(1).optional(),
   status: z.enum(JobStatus).optional(),
-  appliedDate: z.iso.date().optional(),
+  appliedAt: z.iso.date().optional(),
   notes: z
     .string()
     .transform((v) => (v === "" ? undefined : v))
