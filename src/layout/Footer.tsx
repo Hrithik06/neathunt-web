@@ -14,18 +14,44 @@ const Footer = () => {
       style={{ borderColor: "var(--footer-border)" }}
     >
       <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-        <div className="flex items-center gap-2">
+        {/*<div className="flex items-center gap-2">
           <Logo size={28} />
-          <span
-            className="font-black text-sm"
-            style={{ color: "var(--heading)" }}
-          >
-            Neat
-          </span>
-          <span className="font-black text-sm" style={{ color: BRAND.coral }}>
-            Hunt
-          </span>
+          <div>
+            <span
+              className="font-black text-sm"
+              style={{ color: "var(--heading)" }}
+            >
+              Neat
+            </span>
+            <span className="font-black text-sm" style={{ color: BRAND.coral }}>
+              Hunt
+            </span>
+          </div>
+        </div>*/}
+        <div className="flex items-center gap-2.5">
+          <Logo size={36} />
+          <div>
+            <span
+              className="font-black text-base tracking-tight"
+              style={{ color: "var(--heading)" }}
+            >
+              Neat
+            </span>
+            <span
+              className="font-black text-base tracking-tight"
+              style={{ color: BRAND.coral }}
+            >
+              Hunt
+            </span>
+            {/*<span
+              className="ml-2 text-xs font-bold px-2 py-0.5 rounded-full text-white"
+              style={{ background: BRAND.coral }}
+            >
+              BETA
+            </span>*/}
+          </div>
         </div>
+
         <p className="text-xs font-semibold" style={{ color: "var(--muted)" }}>
           Built with ❤️ for job seekers everywhere. You've got this. 🌟
         </p>

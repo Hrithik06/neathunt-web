@@ -16,6 +16,7 @@ export function showToast(text: string, variant: keyof typeof ICONS) {
       style={{
         background: "var(--page-bg)",
       }}
+      key={t.id}
     >
       <div
         className="flex items-center gap-2 px-4 py-3 rounded-md shadow-md"
