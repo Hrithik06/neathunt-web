@@ -4,10 +4,10 @@ import ThemeToggle from "../components/ui/ThemeToggle";
 import { useEffect, useState } from "react";
 // import { useTheme } from "@/context/ThemeContext";
 // import axios from "axios";
-
+import { useAuth } from "@/context/AuthContext";
 const NavBar = () => {
   // const { toggle } = useTheme();
-
+  const { loginWithGoogle } = useAuth();
   const [scrollY, setScrollY] = useState(0);
 
   // Reset counter animation on theme switch so it re-runs
@@ -16,11 +16,11 @@ const NavBar = () => {
   //   // setStatsInView(false);
   //   // setTimeout(() => setStatsInView(true), 120);
   // };
-  const handleGoogleLogin = () => {
-    const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:4000";
+  // const loginWithGoogle = () => {
+  //   const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:4000";
 
-    window.location.href = `${apiUrl}/api/auth/google`;
-  };
+  //   window.location.href = `${apiUrl}/api/auth/google`;
+  // };
   // const getMe = async () => {
   // const data = await axios
   //   .get(`${apiUrl}/api/auth/me`, {
@@ -105,7 +105,7 @@ const NavBar = () => {
               background: `linear-gradient(135deg,${BRAND.coral},#FF8E53)`,
               boxShadow: "0 4px 14px rgba(255,107,107,0.3)",
             }}
-            onClick={handleGoogleLogin}
+            onClick={loginWithGoogle}
           >
             <img src="/google-color.svg" alt="Google" className="w-4 h-4" />
             <span className="hidden md:block">Continue with Google</span>

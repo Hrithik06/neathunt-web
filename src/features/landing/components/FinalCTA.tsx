@@ -1,6 +1,9 @@
 import { BRAND } from "@/constants/brand";
+import { useAuth } from "@/context/AuthContext";
 
 const FinalCTA = () => {
+  const { loginWithGoogle } = useAuth();
+
   return (
     <section className="max-w-4xl mx-auto px-6 py-10 pb-20">
       <div
@@ -39,6 +42,7 @@ const FinalCTA = () => {
               boxShadow: "0 6px 24px rgba(255,107,107,0.45)",
               fontFamily: "inherit",
             }}
+            onClick={loginWithGoogle}
           >
             Create your free account →
           </button>

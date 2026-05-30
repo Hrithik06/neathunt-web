@@ -1,7 +1,9 @@
 import { BRAND } from "@/constants/brand";
+import { useAuth } from "@/context/AuthContext";
 import { useTheme } from "@/context/ThemeContext";
 const Hero = () => {
   const { isMidnight } = useTheme();
+  const { loginWithGoogle } = useAuth();
   return (
     <section className="relative max-w-6xl mx-auto px-6 pt-16 pb-10 text-center overflow-hidden">
       <div
@@ -53,6 +55,7 @@ const Hero = () => {
             boxShadow: "0 6px 20px rgba(255,107,107,0.35)",
             fontFamily: "inherit",
           }}
+          onClick={loginWithGoogle}
         >
           Start tracking for free 🚀
         </button>

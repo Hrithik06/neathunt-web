@@ -1,0 +1,61 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   JobRowActions.css — scoped to JobRowActions only
+   Uses CSS custom properties from index.css (:root / data-theme)
+───────────────────────────────────────────────────────────────────────────── */
+
+/* ── Wrap ── */
+.jra-wrap {
+    display: flex;
+    align-items: center;
+    /*gap: 4px;*/
+}
+
+/* ── Empty slot — same dimensions as a button, invisible ── */
+.jra-slot {
+    display: inline-flex;
+    width: 28px;
+    height: 28px;
+    flex-shrink: 0;
+}
+
+/* ── Base button / link ── */
+.jra-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    text-decoration: none;
+    transition:
+        background 0.15s,
+        transform 0.1s;
+    padding: 0;
+    font-family: inherit;
+}
+
+/* ── Hover backgrounds — each icon gets its own tint ── */
+.jra-btn--url:hover {
+    background: rgba(255, 201, 71, 0.15); /* gold tint */
+    transform: scale(1.1);
+}
+
+.jra-btn--notes:hover {
+    background: rgba(167, 139, 250, 0.15); /* lavender tint */
+    transform: scale(1.1);
+}
+
+.jra-btn--edit:hover {
+    background: rgba(255, 107, 107, 0.15); /* coral tint */
+    transform: scale(1.1);
+}
+
+/* ── Active (press) feedback ── */
+.jra-btn:active {
+    transform: scale(0.95);
+}

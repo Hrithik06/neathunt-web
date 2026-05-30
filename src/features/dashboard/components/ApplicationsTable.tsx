@@ -1,12 +1,11 @@
 import { useTheme } from "@/context/ThemeContext";
-import { STATUS_CFG, STATUS_LABELS } from "../data/statusConfig";
+import { STATUS_CFG } from "../data/statusConfig";
 import { BRAND } from "@/constants/brand";
 import Badge from "@/components/ui/Badge";
 import type { Job } from "../types";
-import { useEffect, useState } from "react";
-import { http } from "@/services/http";
+
 import { convertToDateMonth } from "../utils/getTodayDate";
-// inside ApplicationsTable.tsx
+import JobRowActions from "./JobRowActions";
 type Props = {
   filtered: Job[];
   filter: string;
@@ -21,22 +20,7 @@ const ApplicationsTable = ({
   search,
   setSearch,
 }: Props) => {
-  // const [filtered, setData] = useState([]);
   const { isMidnight } = useTheme();
-  // useEffect(() => {
-  //   async function checkAuth() {
-  //     try {
-  //       const response = await http.get(`/jobs`, {
-  //         withCredentials: true,
-  //       });
-
-  //       setData(response.data);
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   }
-  //   checkAuth();
-  // }, []);
 
   if (filtered.length === 0) <div>Loading....</div>;
   return (
@@ -112,7 +96,7 @@ const ApplicationsTable = ({
               // "Salary",
               "Date",
               "Status",
-              "Vibe",
+              "Actions",
             ].map((h) => (
               <th
                 key={h}
@@ -126,23 +110,23 @@ const ApplicationsTable = ({
         </thead>
         <tbody>
           {filtered.map((job) => {
-            const platformColors = {
-              LinkedIn: {
-                bg: isMidnight ? "#0A1929" : "#E8F0FE",
-                color: isMidnight ? "#60A5FA" : "#1565C0",
-              },
-              Naukri: {
-                bg: isMidnight ? "#1F0A0A" : "#FEE8E8",
-                color: isMidnight ? "#F87171" : "#C62828",
-              },
-              Hirist: {
-                bg: isMidnight ? "#091F0F" : "#F0FEF8",
-                color: isMidnight ? "#34D399" : "#1B5E20",
-              },
-            };
-            const pc =
-              platformColors[job.platform as keyof typeof platformColors] ??
-              platformColors.Hirist;
+            // const platformColors = {
+            //   LinkedIn: {
+            //     bg: isMidnight ? "#0A1929" : "#E8F0FE",
+            //     color: isMidnight ? "#60A5FA" : "#1565C0",
+            //   },
+            //   Naukri: {
+            //     bg: isMidnight ? "#1F0A0A" : "#FEE8E8",
+            //     color: isMidnight ? "#F87171" : "#C62828",
+            //   },
+            //   Hirist: {
+            //     bg: isMidnight ? "#091F0F" : "#F0FEF8",
+            //     color: isMidnight ? "#34D399" : "#1B5E20",
+            //   },
+            // };
+            // const pc =
+            //   platformColors[job.platform as keyof typeof platformColors] ??
+            //   platformColors.Hirist;
 
             return (
               <tr
@@ -151,20 +135,20 @@ const ApplicationsTable = ({
                 style={{ borderColor: "var(--card-border)" }}
               >
                 <td className="px-5 py-4">
-                  <div className="flex items-center gap-3">
-                    {/*<span
+                  {/*<div className="flex items-center gap-3">*/}
+                  {/*<span
                       className="w-9 h-9 rounded-xl flex items-center justify-center text-lg shrink-0"
                       style={{ background: "var(--logo-emoji-bg)" }}
                     >
                       {job.logo}
                     </span>*/}
-                    <span
-                      className="font-black text-sm"
-                      style={{ color: "var(--heading)" }}
-                    >
-                      {job.company}
-                    </span>
-                  </div>
+                  <span
+                    className="font-black text-sm"
+                    style={{ color: "var(--heading)" }}
+                  >
+                    {job.company}
+                  </span>
+                  {/*</div>*/}
                 </td>
                 <td
                   className="px-5 py-4 text-xs font-semibold"
@@ -195,7 +179,7 @@ const ApplicationsTable = ({
                 <td className="px-5 py-4">
                   <Badge status={job.status} isMidnight={isMidnight} />
                 </td>
-                <td
+                {/*<td
                   className="px-5 py-4 text-xs font-bold"
                   style={{
                     color: isMidnight
@@ -205,6 +189,16 @@ const ApplicationsTable = ({
                   }}
                 >
                   {STATUS_CFG[job.status as keyof typeof STATUS_CFG].msg}
+                </td>*/}
+                <td>
+                  <JobRowActions
+                    url={job.url}
+                    notes={job.notes}
+                    onNotesClick={() => console.log("onNotesClick")}
+                    onEditClick={() => console.log("onEditClick")}
+                    // onNotesClick={() => openDetailDrawer(job)}
+                    // onEditClick={() => openEditModal(job)}
+                  />
                 </td>
               </tr>
             );

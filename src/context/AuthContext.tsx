@@ -7,6 +7,7 @@ type AuthContextType = {
   isAuthenticated: boolean;
   isLoading: boolean;
   logout: () => Promise<void>;
+  loginWithGoogle: () => void;
 };
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -35,9 +36,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   const logout = async () => {
-    console.log("TEST");
     try {
-      console.log("Logout Try");
       const response = await http.get(`/auth/logout`, {
         withCredentials: true,
       });
@@ -50,8 +49,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  // move to auth.service.ts
+  const loginWithGoogle = () => {
+    const apiUrl = import.meta.env.VITE_API_URL;
+
+    window.location.href = `${apiUrl}/api/auth/google`;
+  };
   return (
-    <AuthContext.Provider value={{ isAuthenticated, isLoading, user, logout }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, isLoading, user, logout, loginWithGoogle }}
+    >
       {children}
     </AuthContext.Provider>
   );
