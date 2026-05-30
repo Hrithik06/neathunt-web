@@ -52,7 +52,7 @@ const JobPipeline = ({ counts, filter, setFilter }: Props) => {
               className="text-xs font-bold mt-0.5"
               style={{ color: isMidnight ? cfg.darkColor : cfg.color }}
             >
-              {s}
+              {cfg.label}
             </div>
           </button>
         ))}

@@ -29,8 +29,8 @@ const TrophyCard = ({ counts, responseRate }: Props) => {
         style={{ background: "rgba(255,201,71,0.15)" }}
       >
         <div className="text-xs font-black" style={{ color: BRAND.gold }}>
-          🎤 {counts.Interview || 0} interview
-          {(counts.Interview || 0) !== 1 ? "s" : ""} lined up!
+          🎤 {counts.INTERVIEW_SCHEDULED || 0} interview
+          {(counts.INTERVIEW_SCHEDULED || 0) !== 1 ? "s" : ""} lined up!
         </div>
       </div>
     </div>

@@ -35,15 +35,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   const logout = async () => {
+    console.log("TEST");
     try {
+      console.log("Logout Try");
       const response = await http.get(`/auth/logout`, {
         withCredentials: true,
       });
+      console.log(response);
       if (response.status) {
         setUser(null);
       }
     } catch (err) {
-      console.log(err);
+      console.error("Logout error:", err);
     }
   };
 

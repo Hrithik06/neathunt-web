@@ -5,10 +5,10 @@ export type Job = {
   company: string;
   title: string;
   status: string;
-  date: string;
-  platform: string;
-  salary: string;
-  logo: string;
+  appliedAt: string;
+  platform?: string;
+  salary?: string;
+  logo?: string;
 };
 
 export const JobStatus = {

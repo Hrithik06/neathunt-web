@@ -8,3 +8,13 @@ export function getTodayDate(): string {
   const formatted = `${year}-${month}-${day}`;
   return formatted;
 }
+export function convertToDateMonth(dateStr: string): string {
+  const event = new Date(dateStr);
+  return event.toLocaleString("en-US", {
+    // weekday: "short",
+    // year: "numeric",
+    month: "short",
+    day: "numeric",
+    timeZone: "UTC",
+  });
+}

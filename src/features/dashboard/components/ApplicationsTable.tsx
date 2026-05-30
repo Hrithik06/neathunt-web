@@ -1,8 +1,11 @@
 import { useTheme } from "@/context/ThemeContext";
-import { STATUS_CFG } from "../data/statusConfig";
+import { STATUS_CFG, STATUS_LABELS } from "../data/statusConfig";
 import { BRAND } from "@/constants/brand";
 import Badge from "@/components/ui/Badge";
 import type { Job } from "../types";
+import { useEffect, useState } from "react";
+import { http } from "@/services/http";
+import { convertToDateMonth } from "../utils/getTodayDate";
 // inside ApplicationsTable.tsx
 type Props = {
   filtered: Job[];
@@ -18,7 +21,24 @@ const ApplicationsTable = ({
   search,
   setSearch,
 }: Props) => {
+  // const [filtered, setData] = useState([]);
   const { isMidnight } = useTheme();
+  // useEffect(() => {
+  //   async function checkAuth() {
+  //     try {
+  //       const response = await http.get(`/jobs`, {
+  //         withCredentials: true,
+  //       });
+
+  //       setData(response.data);
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   }
+  //   checkAuth();
+  // }, []);
+
+  if (filtered.length === 0) <div>Loading....</div>;
   return (
     <div
       className="rounded-2xl border overflow-hidden fade-up-3 transition-colors duration-500"
@@ -74,7 +94,7 @@ const ApplicationsTable = ({
                     : "var(--pill-inactive-txt)",
                 }}
               >
-                {s === "All" ? "👔 All" : `${cfg.emoji} ${s}`}
+                {s === "All" ? "👔 All" : `${cfg.emoji} ${cfg.label}`}
               </button>
             );
           })}
@@ -88,8 +108,8 @@ const ApplicationsTable = ({
             {[
               "Company",
               "Title",
-              "Platform",
-              "Salary",
+              // "Platform",
+              // "Salary",
               "Date",
               "Status",
               "Vibe",
@@ -123,6 +143,7 @@ const ApplicationsTable = ({
             const pc =
               platformColors[job.platform as keyof typeof platformColors] ??
               platformColors.Hirist;
+
             return (
               <tr
                 key={job.id}
@@ -131,12 +152,12 @@ const ApplicationsTable = ({
               >
                 <td className="px-5 py-4">
                   <div className="flex items-center gap-3">
-                    <span
+                    {/*<span
                       className="w-9 h-9 rounded-xl flex items-center justify-center text-lg shrink-0"
                       style={{ background: "var(--logo-emoji-bg)" }}
                     >
                       {job.logo}
-                    </span>
+                    </span>*/}
                     <span
                       className="font-black text-sm"
                       style={{ color: "var(--heading)" }}
@@ -151,25 +172,25 @@ const ApplicationsTable = ({
                 >
                   {job.title}
                 </td>
-                <td className="px-5 py-4">
+                {/*<td className="px-5 py-4">
                   <span
                     className="text-xs font-bold px-2.5 py-1 rounded-full"
                     style={{ background: pc.bg, color: pc.color }}
                   >
                     {job.platform}
                   </span>
-                </td>
-                <td
+                </td>*/}
+                {/*<td
                   className="px-5 py-4 text-sm font-black"
                   style={{ color: "var(--heading)" }}
                 >
                   {job.salary}
-                </td>
+                </td>*/}
                 <td
                   className="px-5 py-4 text-xs font-semibold"
                   style={{ color: "var(--muted)" }}
                 >
-                  {job.date}
+                  {convertToDateMonth(job.appliedAt)}
                 </td>
                 <td className="px-5 py-4">
                   <Badge status={job.status} isMidnight={isMidnight} />

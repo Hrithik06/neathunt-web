@@ -8,35 +8,53 @@ import { JOBS } from "@/features/dashboard/data/jobs";
 import DasboardSidebar from "@/features/dashboard/components/DashboardSidebar";
 import LogApplicationModal from "@/features/dashboard/components/JobForm/LogApplicationModal";
 import { useNavigate } from "react-router";
+import { http } from "@/services/http";
 
 // ── Main ─────────────────────────────────────────────────────────
 export default function DashboardPage() {
   const [filter, setFilter] = useState("All");
+  const [jobData, setJobData] = useState<null | []>([]);
   const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false); // ← lifted here
   const navigate = useNavigate();
-
-  const counts = JOBS.reduce<Record<string, number>>(
+  // if (!jobData) return <div>Loading....</div>;
+  const counts = jobData?.reduce<Record<string, number>>(
     (a, j) => ({ ...a, [j.status]: (a[j.status] || 0) + 1 }),
     {},
   );
 
   const responseRate = Math.round(
-    (JOBS.filter((j) => j.status !== "Applied").length / JOBS.length) * 100,
+    (jobData.filter((j) => j.status !== "APPLIED").length / jobData.length) *
+      100,
   );
 
-  const filtered = JOBS.filter(
+  const filtered = jobData.filter(
     (j) =>
       (filter === "All" || j.status === filter) &&
       (j.company.toLowerCase().includes(search.toLowerCase()) ||
         j.title.toLowerCase().includes(search.toLowerCase())),
   );
-
   // Replace history entry on mount to prevent back button from going to
   // Google OAuth pages after login redirect
   useEffect(() => {
     navigate("/dashboard", { replace: true });
   }, []);
+
+  useEffect(() => {
+    async function getAllJobs() {
+      try {
+        const response = await http.get(`/jobs`, {
+          withCredentials: true,
+        });
+        setJobData(response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    getAllJobs();
+  }, [isModalOpen]);
+
+  if (filtered.length === 0) <div>Loading....</div>;
   return (
     <div
       className="flex min-h-screen transition-colors duration-500"

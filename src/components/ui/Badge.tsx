@@ -9,6 +9,8 @@ const Badge = ({
   isMidnight: boolean;
 }) => {
   const s = STATUS_CFG[status as keyof typeof STATUS_CFG];
+  // const statusLabel = STATUS_LABELS[status as keyof typeof STATUS_LABELS];
+  // console.log(s1);
   return (
     <span
       className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold"
@@ -17,7 +19,7 @@ const Badge = ({
         background: isMidnight ? s.darkBg : s.bg,
       }}
     >
-      {s.emoji} {status}
+      {s.emoji} {s.label}
     </span>
   );
 };
