@@ -4,8 +4,10 @@ import { BRAND } from "@/constants/brand";
 import Badge from "@/components/ui/Badge";
 import type { Job } from "../types";
 
-import { convertToDateMonth } from "../utils/getTodayDate";
+import { convertToDateMonth } from "../utils/dateUtils";
 import JobRowActions from "./JobRowActions";
+import NotesModal from "./NotesModal";
+import { useState } from "react";
 type Props = {
   filtered: Job[];
   filter: string;
@@ -23,7 +25,12 @@ const ApplicationsTable = ({
   handleEdit,
 }: Props) => {
   const { isMidnight } = useTheme();
-
+  const [isNotesModalOpen, setIsNotesModalOpen] = useState(false); // ← lifted here
+  const [selectedNoteJob, setSelectedNoteJob] = useState<null | Job>(null);
+  const onNotesClick = (job: Job) => {
+    setSelectedNoteJob(job);
+    setIsNotesModalOpen(true);
+  };
   if (filtered.length === 0) <div>Loading....</div>;
   return (
     <div
@@ -203,10 +210,8 @@ const ApplicationsTable = ({
                   <JobRowActions
                     url={job.url}
                     notes={job.notes}
-                    onNotesClick={() => console.log("onNotesClick")}
+                    onNotesClick={() => onNotesClick(job)}
                     onEditClick={() => handleEdit(job)}
-                    // onNotesClick={() => openDetailDrawer(job)}
-                    // onEditClick={() => openEditModal(job)}
                   />
                 </td>
               </tr>
@@ -227,6 +232,13 @@ const ApplicationsTable = ({
           )}
         </tbody>
       </table>
+      {selectedNoteJob && (
+        <NotesModal
+          isOpen={isNotesModalOpen}
+          onClose={() => setIsNotesModalOpen(false)}
+          job={selectedNoteJob}
+        />
+      )}
     </div>
   );
 };

@@ -4,22 +4,21 @@ import JobPipeline from "@/features/dashboard/components/JobPipeline";
 import StatCards from "@/features/dashboard/components/StatCards";
 import TrophyCard from "@/features/dashboard/components/TrophyCard";
 import ApplicationsTable from "@/features/dashboard/components/ApplicationsTable";
-import { JOBS } from "@/features/dashboard/data/jobs";
 import DasboardSidebar from "@/features/dashboard/components/DashboardSidebar";
 import LogApplicationModal from "@/features/dashboard/components/JobForm/LogApplicationModal";
 import { useNavigate } from "react-router";
 import { http } from "@/services/http";
 import type { Job } from "@/features/dashboard/types";
+import EmptyApplicationsState from "@/features/dashboard/components/EmptyApplicationsState";
 
 // ── Main ─────────────────────────────────────────────────────────
 export default function DashboardPage() {
   const [filter, setFilter] = useState("All");
-  const [jobData, setJobData] = useState<Job[]>(JOBS);
+  const [jobData, setJobData] = useState<Job[]>([]);
   const [search, setSearch] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false); // ← lifted here
+  const [isJobModalOpen, setIsJobModalOpen] = useState(false); // ← lifted here
   const [selectedJob, setSelectedJob] = useState<Job | null>(null); // ← lifted here
   const navigate = useNavigate();
-  // if (!jobData) return <div>Loading....</div>;
   const counts =
     jobData?.reduce<Record<string, number>>(
       (a, j) => ({ ...a, [j.status]: (a[j.status] || 0) + 1 }),
@@ -31,13 +30,14 @@ export default function DashboardPage() {
       100,
   );
 
-  const filtered =
-    jobData.filter(
-      (j) =>
-        (filter === "All" || j.status === filter) &&
-        (j.company.toLowerCase().includes(search.toLowerCase()) ||
-          j.title.toLowerCase().includes(search.toLowerCase())),
-    ) || [];
+  const filtered = jobData.length
+    ? jobData.filter(
+        (j) =>
+          (filter === "All" || j.status === filter) &&
+          (j.company.toLowerCase().includes(search.toLowerCase()) ||
+            j.title.toLowerCase().includes(search.toLowerCase())),
+      )
+    : [];
   // Replace history entry on mount to prevent back button from going to
   // Google OAuth pages after login redirect
   useEffect(() => {
@@ -58,14 +58,13 @@ export default function DashboardPage() {
     getAllJobs();
   }, []);
 
-  if (filtered.length === 0) <div>Loading....</div>;
   function handleEdit(job: Job) {
     setSelectedJob(job);
-    setIsModalOpen(true);
+    setIsJobModalOpen(true);
   }
   function handleCreate() {
     setSelectedJob(null);
-    setIsModalOpen(true);
+    setIsJobModalOpen(true);
   }
   // function handleDelete(jobId: string) {}
 
@@ -110,20 +109,24 @@ export default function DashboardPage() {
         </div>
 
         {/* Applications Table */}
-        <ApplicationsTable
-          filtered={filtered}
-          filter={filter}
-          setFilter={setFilter}
-          search={search}
-          setSearch={setSearch}
-          handleEdit={handleEdit}
-        />
+        {jobData.length === 0 ? (
+          <EmptyApplicationsState onOpenModal={() => setIsJobModalOpen(true)} />
+        ) : (
+          <ApplicationsTable
+            filtered={filtered}
+            filter={filter}
+            setFilter={setFilter}
+            search={search}
+            setSearch={setSearch}
+            handleEdit={handleEdit}
+          />
+        )}
       </main>
 
       {/* ── Modal — rendered at page root, above everything ──────── */}
       <LogApplicationModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isJobModalOpen}
+        onClose={() => setIsJobModalOpen(false)}
         selectedJob={selectedJob}
       />
     </div>

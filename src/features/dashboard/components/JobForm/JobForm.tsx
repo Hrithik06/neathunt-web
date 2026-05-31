@@ -7,9 +7,10 @@ import {
   type Job,
   type JobStatusType,
 } from "../../types";
-import "./JobForm.css";
+import "../modal.css";
+
 import { http } from "@/services/http";
-import { getTodayDate } from "../../utils/getTodayDate";
+import { getTodayDate } from "../../utils/dateUtils";
 import { useState } from "react";
 import { showToast } from "@/components/ui/showToast";
 import DatePickerField from "@/components/ui/DatePickerField";

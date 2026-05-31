@@ -18,3 +18,11 @@ export function convertToDateMonth(dateStr: string): string {
     timeZone: "UTC",
   });
 }
+
+export function formatAppliedDate(date: string) {
+  return new Date(date).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
