@@ -1,0 +1,39 @@
+.nh-date-popover {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 12px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+}
+
+.nh-date-trigger {
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+}
+
+.rdp-root {
+    --rdp-accent-color: var(--brand-coral);
+    color: var(--heading);
+}
+
+.rdp-selected .rdp-day_button {
+    background: var(--brand-coral);
+    color: white;
+    border: none;
+}
+
+.rdp-day:hover {
+    background: var(--logo-emoji-bg);
+    border-radius: 100%;
+}
+
+/*.rdp-chevron {
+    fill: var(--heading);
+}*/
+.nh-date-popover {
+    /*background: red;*/
+    /*padding: 20px;*/
+    z-index: 99999;
+}

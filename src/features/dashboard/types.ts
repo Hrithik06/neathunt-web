@@ -1,16 +1,4 @@
 import { z } from "zod";
-
-export type Job = {
-  id: number;
-  company: string;
-  title: string;
-  status: string;
-  appliedAt: string;
-  platform?: string;
-  salary?: string;
-  logo?: string;
-};
-
 export const JobStatus = {
   APPLIED: "APPLIED",
   INTERVIEW_SCHEDULED: "INTERVIEW_SCHEDULED",
@@ -20,6 +8,18 @@ export const JobStatus = {
   ACCEPTED: "ACCEPTED",
   WITHDRAWN: "WITHDRAWN",
 } as const;
+// export type Job = {
+//   id: number;
+//   company: string;
+//   title: string;
+//   status: typeof JobStatus;
+//   appliedAt: string;
+//   notes?: string;
+//   url?: string;
+//   // platform?: string;
+//   // salary?: string;
+//   // logo?: string;
+// };
 
 export const createJobSchema = z.object({
   company: z.string().min(1),
@@ -50,3 +50,12 @@ export const updateJobSchema = z.object({
     .transform((v) => (v === "" ? undefined : v))
     .optional(), //cuz RHF sends empty string for optional values
 });
+export type JobStatusType = (typeof JobStatus)[keyof typeof JobStatus];
+
+export type CreateJobInput = z.infer<typeof createJobSchema>;
+
+export type UpdateJobInput = z.infer<typeof updateJobSchema>;
+
+export type Job = CreateJobInput & {
+  id: number;
+};

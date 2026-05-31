@@ -9,31 +9,35 @@ import DasboardSidebar from "@/features/dashboard/components/DashboardSidebar";
 import LogApplicationModal from "@/features/dashboard/components/JobForm/LogApplicationModal";
 import { useNavigate } from "react-router";
 import { http } from "@/services/http";
+import type { Job } from "@/features/dashboard/types";
 
 // ── Main ─────────────────────────────────────────────────────────
 export default function DashboardPage() {
   const [filter, setFilter] = useState("All");
-  const [jobData, setJobData] = useState<null | []>([]);
+  const [jobData, setJobData] = useState<Job[]>(JOBS);
   const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false); // ← lifted here
+  const [selectedJob, setSelectedJob] = useState<Job | null>(null); // ← lifted here
   const navigate = useNavigate();
   // if (!jobData) return <div>Loading....</div>;
-  const counts = jobData?.reduce<Record<string, number>>(
-    (a, j) => ({ ...a, [j.status]: (a[j.status] || 0) + 1 }),
-    {},
-  );
+  const counts =
+    jobData?.reduce<Record<string, number>>(
+      (a, j) => ({ ...a, [j.status]: (a[j.status] || 0) + 1 }),
+      {},
+    ) || {};
 
   const responseRate = Math.round(
     (jobData.filter((j) => j.status !== "APPLIED").length / jobData.length) *
       100,
   );
 
-  const filtered = jobData.filter(
-    (j) =>
-      (filter === "All" || j.status === filter) &&
-      (j.company.toLowerCase().includes(search.toLowerCase()) ||
-        j.title.toLowerCase().includes(search.toLowerCase())),
-  );
+  const filtered =
+    jobData.filter(
+      (j) =>
+        (filter === "All" || j.status === filter) &&
+        (j.company.toLowerCase().includes(search.toLowerCase()) ||
+          j.title.toLowerCase().includes(search.toLowerCase())),
+    ) || [];
   // Replace history entry on mount to prevent back button from going to
   // Google OAuth pages after login redirect
   useEffect(() => {
@@ -52,9 +56,19 @@ export default function DashboardPage() {
       }
     }
     getAllJobs();
-  }, [isModalOpen]);
+  }, []);
 
   if (filtered.length === 0) <div>Loading....</div>;
+  function handleEdit(job: Job) {
+    setSelectedJob(job);
+    setIsModalOpen(true);
+  }
+  function handleCreate() {
+    setSelectedJob(null);
+    setIsModalOpen(true);
+  }
+  // function handleDelete(jobId: string) {}
+
   return (
     <div
       className="flex min-h-screen transition-colors duration-500"
@@ -84,7 +98,7 @@ export default function DashboardPage() {
       {/* ── Main ─────────────────────────────────────────────────── */}
       <main className="flex-1 p-8 overflow-auto">
         {/* Header — receives open handler, no modal inside */}
-        <DashboardHeader onOpenModal={() => setIsModalOpen(true)} />
+        <DashboardHeader handleCreate={handleCreate} />
 
         {/* Stat Cards */}
         <StatCards counts={counts} responseRate={responseRate} />
@@ -102,6 +116,7 @@ export default function DashboardPage() {
           setFilter={setFilter}
           search={search}
           setSearch={setSearch}
+          handleEdit={handleEdit}
         />
       </main>
 
@@ -109,6 +124,7 @@ export default function DashboardPage() {
       <LogApplicationModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        selectedJob={selectedJob}
       />
     </div>
   );

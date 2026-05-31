@@ -3,10 +3,10 @@ import { BRAND } from "@/constants/brand";
 import { useGreeting } from "@/hooks/useGreeting";
 
 interface DashboardHeaderProps {
-  onOpenModal: () => void;
+  handleCreate: () => void;
 }
 
-const DashboardHeader = ({ onOpenModal }: DashboardHeaderProps) => {
+const DashboardHeader = ({ handleCreate }: DashboardHeaderProps) => {
   const { firstName, greeting, emoji, subText } = useGreeting();
 
   return (
@@ -34,7 +34,7 @@ const DashboardHeader = ({ onOpenModal }: DashboardHeaderProps) => {
             background: `linear-gradient(135deg,${BRAND.coral},#FF8E53)`,
             boxShadow: `0 4px 14px rgba(255,107,107,0.3)`,
           }}
-          onClick={onOpenModal}
+          onClick={handleCreate}
         >
           + Log Application
         </button>

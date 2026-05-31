@@ -1,13 +1,19 @@
 import { useEffect } from "react";
 import JobForm from "./JobForm";
 import "./JobForm.css";
+import type { Job } from "../../types";
 
 interface LogApplicationModalProps {
   isOpen: boolean;
   onClose: () => void;
+  selectedJob: Job | null;
 }
 
-const LogApplicationModal = ({ isOpen, onClose }: LogApplicationModalProps) => {
+const LogApplicationModal = ({
+  isOpen,
+  onClose,
+  selectedJob,
+}: LogApplicationModalProps) => {
   // Escape key handler
   useEffect(() => {
     if (!isOpen) return;
@@ -27,7 +33,6 @@ const LogApplicationModal = ({ isOpen, onClose }: LogApplicationModalProps) => {
   }, [isOpen]);
 
   if (!isOpen) return null;
-
   return (
     <div
       className="nh-overlay"
@@ -59,7 +64,13 @@ const LogApplicationModal = ({ isOpen, onClose }: LogApplicationModalProps) => {
         </div>
 
         {/* Form */}
-        <JobForm onClose={onClose} />
+        <JobForm
+          onClose={onClose}
+          selectedJob={selectedJob}
+          onDelete={() => {
+            console.log("Job Deleted");
+          }}
+        />
       </div>
     </div>
   );

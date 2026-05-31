@@ -12,6 +12,7 @@ type Props = {
   setFilter: (f: string) => void;
   search: string;
   setSearch: (s: string) => void;
+  handleEdit: (j: Job) => void;
 };
 const ApplicationsTable = ({
   filtered,
@@ -19,6 +20,7 @@ const ApplicationsTable = ({
   setFilter,
   search,
   setSearch,
+  handleEdit,
 }: Props) => {
   const { isMidnight } = useTheme();
 
@@ -135,20 +137,27 @@ const ApplicationsTable = ({
                 style={{ borderColor: "var(--card-border)" }}
               >
                 <td className="px-5 py-4">
-                  {/*<div className="flex items-center gap-3">*/}
-                  {/*<span
-                      className="w-9 h-9 rounded-xl flex items-center justify-center text-lg shrink-0"
-                      style={{ background: "var(--logo-emoji-bg)" }}
+                  <div className="flex items-center gap-3">
+                    <span
+                      className="w-9 h-9 rounded-xl flex items-center justify-center text-lg shrink-0 font-extrabold"
+                      style={{
+                        background: "var(--logo-emoji-bg)",
+                        color: isMidnight
+                          ? STATUS_CFG[job.status as keyof typeof STATUS_CFG]
+                              .darkColor
+                          : STATUS_CFG[job.status as keyof typeof STATUS_CFG]
+                              .color,
+                      }}
                     >
-                      {job.logo}
-                    </span>*/}
-                  <span
-                    className="font-black text-sm"
-                    style={{ color: "var(--heading)" }}
-                  >
-                    {job.company}
-                  </span>
-                  {/*</div>*/}
+                      {job.company[0].toUpperCase()}
+                    </span>
+                    <span
+                      className="font-black text-sm"
+                      style={{ color: "var(--heading)" }}
+                    >
+                      {job.company}
+                    </span>
+                  </div>
                 </td>
                 <td
                   className="px-5 py-4 text-xs font-semibold"
@@ -195,7 +204,7 @@ const ApplicationsTable = ({
                     url={job.url}
                     notes={job.notes}
                     onNotesClick={() => console.log("onNotesClick")}
-                    onEditClick={() => console.log("onEditClick")}
+                    onEditClick={() => handleEdit(job)}
                     // onNotesClick={() => openDetailDrawer(job)}
                     // onEditClick={() => openEditModal(job)}
                   />
