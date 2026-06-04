@@ -1,5 +1,4 @@
 import StatCard from "@/components/ui/StatCard";
-// import { JOBS } from "../data/jobs";
 type Props = {
   counts: Record<string, number>;
   responseRate: number;

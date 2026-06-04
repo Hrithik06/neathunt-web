@@ -11,11 +11,12 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const queryClient = new QueryClient();
+
 function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        {/*<ReactQueryDevtools initialIsOpen={false} />*/}
+        <ReactQueryDevtools />
         <AuthProvider>
           <Suspense fallback={<Loader />}>
             <Toaster position="bottom-right" reverseOrder={false} />
@@ -29,7 +30,7 @@ function App() {
               <Route path="auth-error" element={<AuthError />} />
             </Routes>
           </Suspense>
-        </AuthProvider>{" "}
+        </AuthProvider>
       </QueryClientProvider>
     </>
   );

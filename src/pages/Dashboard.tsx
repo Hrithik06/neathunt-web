@@ -17,7 +17,7 @@ async function getAllJobs() {
     const response = await http.get(`/jobs`, {
       withCredentials: true,
     });
-    return response;
+    return response?.data;
   } catch (err) {
     console.log(err);
   }
@@ -33,13 +33,12 @@ export default function DashboardPage() {
   const navigate = useNavigate();
   // Access the client
   // Queries
-  const { data: response, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["jobs"],
     queryFn: () => getAllJobs(),
   });
 
-  if (isLoading) <div>Loading....</div>;
-  const jobData: Job[] = response?.data || [];
+  const jobData: Job[] = data || [];
   const counts =
     jobData?.reduce<Record<string, number>>(
       (a, j) => ({ ...a, [j.status]: (a[j.status] || 0) + 1 }),
