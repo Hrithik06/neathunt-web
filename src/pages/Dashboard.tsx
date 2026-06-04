@@ -10,15 +10,36 @@ import { useNavigate } from "react-router";
 import { http } from "@/services/http";
 import type { Job } from "@/features/dashboard/types";
 import EmptyApplicationsState from "@/features/dashboard/components/EmptyApplicationsState";
+import { useQuery } from "@tanstack/react-query";
+
+async function getAllJobs() {
+  try {
+    const response = await http.get(`/jobs`, {
+      withCredentials: true,
+    });
+    return response;
+  } catch (err) {
+    console.log(err);
+  }
+}
 
 // ── Main ─────────────────────────────────────────────────────────
 export default function DashboardPage() {
   const [filter, setFilter] = useState("All");
-  const [jobData, setJobData] = useState<Job[]>([]);
+  // const [jobData, setJobData] = useState<Job[]>([]);
   const [search, setSearch] = useState("");
   const [isJobModalOpen, setIsJobModalOpen] = useState(false); // ← lifted here
   const [selectedJob, setSelectedJob] = useState<Job | null>(null); // ← lifted here
   const navigate = useNavigate();
+  // Access the client
+  // Queries
+  const { data: response, isLoading } = useQuery({
+    queryKey: ["jobs"],
+    queryFn: () => getAllJobs(),
+  });
+
+  if (isLoading) <div>Loading....</div>;
+  const jobData: Job[] = response?.data || [];
   const counts =
     jobData?.reduce<Record<string, number>>(
       (a, j) => ({ ...a, [j.status]: (a[j.status] || 0) + 1 }),
@@ -42,20 +63,6 @@ export default function DashboardPage() {
   // Google OAuth pages after login redirect
   useEffect(() => {
     navigate("/dashboard", { replace: true });
-  }, []);
-
-  useEffect(() => {
-    async function getAllJobs() {
-      try {
-        const response = await http.get(`/jobs`, {
-          withCredentials: true,
-        });
-        setJobData(response.data);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    getAllJobs();
   }, []);
 
   function handleEdit(job: Job) {
