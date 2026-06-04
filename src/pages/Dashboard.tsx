@@ -33,7 +33,7 @@ export default function DashboardPage() {
   const navigate = useNavigate();
   // Access the client
   // Queries
-  const { data, isLoading } = useQuery({
+  const { data } = useQuery({
     queryKey: ["jobs"],
     queryFn: () => getAllJobs(),
   });
