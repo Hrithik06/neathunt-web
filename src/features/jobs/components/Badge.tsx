@@ -1,4 +1,4 @@
-import { STATUS_CFG } from "@/features/dashboard/data/statusConfig";
+import { STATUS_CFG } from "@/features/jobs/data/statusConfig";
 
 // ── Badge — only needs isMidnight (display mode, not theme tokens) ─
 const Badge = ({

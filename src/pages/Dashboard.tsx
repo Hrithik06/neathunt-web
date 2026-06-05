@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import DashboardHeader from "@/features/dashboard/components/DashboardHeader";
-import JobPipeline from "@/features/dashboard/components/JobPipeline";
+import JobPipeline from "@/features/jobs/components/JobPipeline";
 import StatCards from "@/features/dashboard/components/StatCards";
 import TrophyCard from "@/features/dashboard/components/TrophyCard";
-import ApplicationsTable from "@/features/dashboard/components/ApplicationsTable";
+import ApplicationsTable from "@/features/jobs/components/ApplicationsTable";
 import DasboardSidebar from "@/features/dashboard/components/DashboardSidebar";
-import LogApplicationModal from "@/features/dashboard/components/JobForm/LogApplicationModal";
+import LogApplicationModal from "@/features/jobs/forms/LogApplicationModal";
 import { useNavigate } from "react-router";
 import { http } from "@/services/http";
-import type { Job } from "@/features/dashboard/types";
-import EmptyApplicationsState from "@/features/dashboard/components/EmptyApplicationsState";
+import type { Job } from "@/features/jobs/types";
+import EmptyApplicationsState from "@/features/jobs/components/EmptyApplicationsState";
 import { useQuery } from "@tanstack/react-query";
 
 async function getAllJobs() {

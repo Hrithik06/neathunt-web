@@ -6,11 +6,11 @@ import {
   JobStatus,
   type Job,
   type JobStatusType,
-} from "../../types";
+} from "../types";
 import "../modal.css";
 
 import { http } from "@/services/http";
-import { getTodayDate } from "../../utils/dateUtils";
+import { getTodayDate } from "../utils/dateUtils";
 import { useState } from "react";
 import { showToast } from "@/components/ui/showToast";
 import DatePickerField from "@/components/ui/DatePickerField";
