@@ -7,21 +7,9 @@ import ApplicationsTable from "@/features/jobs/components/ApplicationsTable";
 import DasboardSidebar from "@/features/dashboard/components/DashboardSidebar";
 import LogApplicationModal from "@/features/jobs/forms/LogApplicationModal";
 import { useNavigate } from "react-router";
-import { http } from "@/services/http";
 import type { Job } from "@/features/jobs/types";
-import EmptyApplicationsState from "@/features/jobs/components/EmptyApplicationsState";
-import { useQuery } from "@tanstack/react-query";
-
-async function getAllJobs() {
-  try {
-    const response = await http.get(`/jobs`, {
-      withCredentials: true,
-    });
-    return response?.data;
-  } catch (err) {
-    console.log(err);
-  }
-}
+import EmptyApplicationsState from "@/features/dashboard/components/EmptyApplicationsState";
+import { useJobs } from "@/features/jobs/hooks/useJobs";
 
 // ── Main ─────────────────────────────────────────────────────────
 export default function DashboardPage() {
@@ -31,12 +19,8 @@ export default function DashboardPage() {
   const [isJobModalOpen, setIsJobModalOpen] = useState(false); // ← lifted here
   const [selectedJob, setSelectedJob] = useState<Job | null>(null); // ← lifted here
   const navigate = useNavigate();
-  // Access the client
-  // Queries
-  const { data } = useQuery({
-    queryKey: ["jobs"],
-    queryFn: () => getAllJobs(),
-  });
+
+  const { data } = useJobs();
 
   const jobData: Job[] = data || [];
   const counts =
@@ -45,10 +29,13 @@ export default function DashboardPage() {
       {},
     ) || {};
 
-  const responseRate = Math.round(
-    (jobData.filter((j) => j.status !== "APPLIED").length / jobData.length) *
-      100,
-  );
+  const responseRate = jobData.length
+    ? Math.round(
+        (jobData.filter((j) => j.status !== "APPLIED").length /
+          jobData.length) *
+          100,
+      )
+    : 0;
 
   const filtered = jobData.length
     ? jobData.filter(

@@ -18,11 +18,11 @@ const TrophyCard = ({ counts, responseRate }: Props) => {
         <div className="text-white font-black text-sm leading-snug">
           {responseRate}% response rate!
         </div>
-        <div className="text-xs font-bold mt-2" style={{ color: BRAND.gold }}>
+        {/*<div className="text-xs font-bold mt-2" style={{ color: BRAND.gold }}>
           Industry avg is ~12%.
           <br />
           You're ahead. 🔥
-        </div>
+        </div>*/}
       </div>
       <div
         className="mt-4 rounded-xl px-3 py-2"
