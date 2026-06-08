@@ -42,7 +42,7 @@ const JobForm = ({ onClose, onDelete, selectedJob }: JobFormProps) => {
 
   const isEditMode = selectedJob !== null;
 
-  const { mutateAsync: createJobMutation, isSuccess } = useCreateJob();
+  const { mutateAsync: createJobMutation } = useCreateJob();
   const { mutateAsync: deleteJobMutation } = useDeleteJob();
   const { mutateAsync: updateJobMutation } = useUpdateJob();
 
@@ -84,13 +84,12 @@ const JobForm = ({ onClose, onDelete, selectedJob }: JobFormProps) => {
     try {
       setApiError(null);
       if (isEditMode) {
-        await updateJobMutation({ jobId: selectedJob.id, data });
+        updateJobMutation({ jobId: selectedJob.id, data });
       } else {
-        await createJobMutation(data);
+        createJobMutation(data);
       }
 
       onClose?.();
-      console.log(isSuccess);
       setTimeout(() => showToast(successMessage, "success"), 300);
     } catch (err: any) {
       setApiError(err.message);

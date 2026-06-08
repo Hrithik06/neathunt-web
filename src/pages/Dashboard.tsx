@@ -16,8 +16,8 @@ export default function DashboardPage() {
   const [filter, setFilter] = useState("All");
   // const [jobData, setJobData] = useState<Job[]>([]);
   const [search, setSearch] = useState("");
-  const [isJobModalOpen, setIsJobModalOpen] = useState(false); // ← lifted here
-  const [selectedJob, setSelectedJob] = useState<Job | null>(null); // ← lifted here
+  const [isJobModalOpen, setIsJobModalOpen] = useState(false);
+  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const navigate = useNavigate();
 
   const { data } = useJobs();
