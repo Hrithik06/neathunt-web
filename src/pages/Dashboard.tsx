@@ -8,8 +8,12 @@ import DasboardSidebar from "@/features/dashboard/components/DashboardSidebar";
 import LogApplicationModal from "@/features/jobs/forms/LogApplicationModal";
 import { useNavigate } from "react-router";
 import type { Job } from "@/features/jobs/types";
-import EmptyApplicationsState from "@/features/dashboard/components/EmptyApplicationsState";
+import EmptyApplicationsState from "@/features/jobs/components/EmptyApplicationsState";
 import { useJobs } from "@/features/jobs/hooks/useJobs";
+import ApplicationsTableSkeleton from "@/features/jobs/components/ApplicationsTableSkeleton";
+import JobPipelineSkeleton from "@/features/jobs/components/JobPipelineSkeleton";
+import TrophyCardSkeleton from "@/features/dashboard/components/TrophyCardSkeleton";
+import StatCardsSkeleton from "@/features/dashboard/components/StatCardsSkeleton";
 
 // ── Main ─────────────────────────────────────────────────────────
 export default function DashboardPage() {
@@ -20,7 +24,7 @@ export default function DashboardPage() {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const navigate = useNavigate();
 
-  const { data } = useJobs();
+  const { data, isLoading, isError, isSuccess } = useJobs();
 
   const jobData: Job[] = data || [];
   const counts =
@@ -93,16 +97,39 @@ export default function DashboardPage() {
         <DashboardHeader handleCreate={handleCreate} />
 
         {/* Stat Cards */}
+        <StatCardsSkeleton />
         <StatCards counts={counts} responseRate={responseRate} />
+
+        {/*{isLoading ? (
+          <StatCardsSkeleton />
+        ) : (
+          <StatCards counts={counts} responseRate={responseRate} />
+        )}*/}
 
         {/* Pipeline + Trophy */}
         <div className="flex gap-5 mb-6 flex-wrap fade-up-2">
-          <JobPipeline counts={counts} filter={filter} setFilter={setFilter} />
-          <TrophyCard counts={counts} responseRate={responseRate} />
+          {isLoading ? (
+            <>
+              <JobPipelineSkeleton />
+              <TrophyCardSkeleton />
+            </>
+          ) : (
+            <>
+              <JobPipeline
+                counts={counts}
+                filter={filter}
+                setFilter={setFilter}
+              />
+
+              <TrophyCard counts={counts} responseRate={responseRate} />
+            </>
+          )}
         </div>
 
         {/* Applications Table */}
-        {jobData.length === 0 ? (
+        {isLoading ? (
+          <ApplicationsTableSkeleton />
+        ) : jobData.length === 0 ? (
           <EmptyApplicationsState onOpenModal={() => setIsJobModalOpen(true)} />
         ) : (
           <ApplicationsTable

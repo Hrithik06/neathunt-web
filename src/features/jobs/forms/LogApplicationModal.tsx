@@ -67,9 +67,9 @@ const LogApplicationModal = ({
         <JobForm
           onClose={onClose}
           selectedJob={selectedJob}
-          onDelete={() => {
-            console.log("Job Deleted");
-          }}
+          // onDelete={() => {
+          //   console.log("Job Deleted");
+          // }}
         />
       </div>
     </div>
