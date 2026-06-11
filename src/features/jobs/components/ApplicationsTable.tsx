@@ -3,7 +3,7 @@ import NotesModal from "./NotesModal";
 import { useState } from "react";
 import ApplicationRow from "./ApplicationRow";
 import ApplicationsToolbar from "./ApplicationsToolbar";
-type Props = {
+type ApplicationsTableProps = {
   filtered: Job[];
   filter: string;
   setFilter: (f: string) => void;
@@ -18,7 +18,7 @@ const ApplicationsTable = ({
   search,
   setSearch,
   handleEdit,
-}: Props) => {
+}: ApplicationsTableProps) => {
   const [isNotesModalOpen, setIsNotesModalOpen] = useState(false); // ← lifted here
   const [selectedNoteJob, setSelectedNoteJob] = useState<null | Job>(null);
   const onNotesClick = (job: Job) => {

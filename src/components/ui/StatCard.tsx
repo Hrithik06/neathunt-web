@@ -1,18 +1,14 @@
 import { BRAND } from "@/constants/brand";
 import AnimCount from "./AnimCount";
 
-// ── StatCard — reads CSS vars, no t prop ──────────────────────────
-const StatCard = ({
-  emoji,
-  label,
-  value,
-  isHero,
-}: {
+type StatCardProps = {
   emoji: string;
   label: string;
   value: number | string;
   isHero?: boolean;
-}) => (
+};
+// ── StatCard — reads CSS vars, no t prop ──────────────────────────
+const StatCard = ({ emoji, label, value, isHero }: StatCardProps) => (
   <div
     className={`relative flex-1 min-w-32 rounded-2xl p-5 overflow-hidden border ${isHero ? "border-transparent shadow-xl" : ""}`}
     style={{

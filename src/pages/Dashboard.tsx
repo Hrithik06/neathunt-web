@@ -24,7 +24,7 @@ export default function DashboardPage() {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const navigate = useNavigate();
 
-  const { data, isLoading, isError, isSuccess } = useJobs();
+  const { data, isLoading } = useJobs();
 
   const jobData: Job[] = data || [];
   const counts =

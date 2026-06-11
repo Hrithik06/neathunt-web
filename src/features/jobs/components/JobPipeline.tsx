@@ -1,11 +1,11 @@
 import { STATUS_CFG } from "../data/statusConfig";
 import PipelineStageCard from "./PipelineStageCard";
-type Props = {
+type JobPipelineProps = {
   counts: Record<string, number>;
   filter: string;
   setFilter: (f: string) => void;
 };
-const JobPipeline = ({ counts, filter, setFilter }: Props) => {
+const JobPipeline = ({ counts, filter, setFilter }: JobPipelineProps) => {
   //   const [filter, setFilter] = useState("All");
 
   return (
