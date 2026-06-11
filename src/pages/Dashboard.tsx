@@ -97,14 +97,12 @@ export default function DashboardPage() {
         <DashboardHeader handleCreate={handleCreate} />
 
         {/* Stat Cards */}
-        <StatCardsSkeleton />
-        <StatCards counts={counts} responseRate={responseRate} />
 
-        {/*{isLoading ? (
+        {isLoading ? (
           <StatCardsSkeleton />
         ) : (
           <StatCards counts={counts} responseRate={responseRate} />
-        )}*/}
+        )}
 
         {/* Pipeline + Trophy */}
         <div className="flex gap-5 mb-6 flex-wrap fade-up-2">
