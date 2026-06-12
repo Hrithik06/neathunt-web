@@ -6,8 +6,6 @@ type JobPipelineProps = {
   setFilter: (f: string) => void;
 };
 const JobPipeline = ({ counts, filter, setFilter }: JobPipelineProps) => {
-  //   const [filter, setFilter] = useState("All");
-
   return (
     <div
       className="flex-1 min-w-72 rounded-2xl p-6 border transition-colors duration-500"

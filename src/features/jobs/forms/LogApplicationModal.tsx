@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import JobForm from "./JobForm";
 import "../modal.css";
 import type { Job } from "../types";
+import { Astroid, X } from "lucide-react";
 
 interface LogApplicationModalProps {
   isOpen: boolean;
@@ -47,6 +48,9 @@ const LogApplicationModal = ({
         <div className="nh-modal__header">
           <div>
             <p className="nh-modal__eyebrow">✦ NeatHunt</p>
+            <p className="nh-modal__eyebrow">
+              <Astroid fill="var(--brand-coral)" size={8} /> NeatHunt
+            </p>
             <h2 className="nh-modal__title" id="log-app-modal-title">
               Log <span>Application</span>
             </h2>
@@ -59,7 +63,7 @@ const LogApplicationModal = ({
             onClick={onClose}
             aria-label="Close modal"
           >
-            ✕
+            <X />
           </button>
         </div>
 

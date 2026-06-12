@@ -112,7 +112,6 @@ const DasboardSidebar = ({ counts }: DasboardSidebarProps) => {
       <button
         className="text-white/60 hover:text-white text-lg flex gap-1 items-center justify-center mt-3 cursor-pointer"
         onClick={logout}
-        // onClick={() => console.log("HEllo")}
       >
         <img src="/power.svg" alt="Logout" className="w-6 h-6" />
         <span>Logout</span>
