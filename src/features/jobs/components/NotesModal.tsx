@@ -1,19 +1,16 @@
 import { useEffect } from "react";
-import JobForm from "./JobForm";
+import type { Job } from "../types";
 import "../modal.css";
-import type { Job } from "../../types";
-
-interface LogApplicationModalProps {
+import { STATUS_CFG } from "../data/statusConfig";
+import { formatAppliedDate } from "../utils/dateUtils";
+import { X } from "lucide-react";
+type NotesModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  selectedJob: Job | null;
-}
+  job: Job;
+};
 
-const LogApplicationModal = ({
-  isOpen,
-  onClose,
-  selectedJob,
-}: LogApplicationModalProps) => {
+const NotesModal = ({ isOpen, onClose, job }: NotesModalProps) => {
   // Escape key handler
   useEffect(() => {
     if (!isOpen) return;
@@ -33,47 +30,46 @@ const LogApplicationModal = ({
   }, [isOpen]);
 
   if (!isOpen) return null;
+
   return (
     <div
       className="nh-overlay"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
-      aria-labelledby="log-app-modal-title"
+      aria-labelledby="notes-modal-title"
     >
       {/* Stop clicks inside the panel from closing the modal */}
       <div className="nh-modal" onClick={(e) => e.stopPropagation()}>
-        {/* Header */}
         <div className="nh-modal__header">
           <div>
-            <p className="nh-modal__eyebrow">✦ NeatHunt</p>
-            <h2 className="nh-modal__title" id="log-app-modal-title">
-              Log <span>Application</span>
-            </h2>
-            <p className="nh-modal__subtitle">
-              Track a new job you've applied to
+            <p className="nh-modal__eyebrow">📝 Notes</p>
+
+            <p className="nh-notes__job" id="notes-modal-title">
+              {job.company} · {job.title}
+            </p>
+
+            <p className="nh-notes__meta">
+              {formatAppliedDate(job.appliedAt)} •{" "}
+              {STATUS_CFG[job.status].label}
             </p>
           </div>
+
           <button
             className="nh-modal__close"
             onClick={onClose}
             aria-label="Close modal"
           >
-            ✕
+            <X />
           </button>
         </div>
 
-        {/* Form */}
-        <JobForm
-          onClose={onClose}
-          selectedJob={selectedJob}
-          onDelete={() => {
-            console.log("Job Deleted");
-          }}
-        />
+        <div className="nh-divider" />
+
+        <div className="nh-notes">{job.notes}</div>
       </div>
     </div>
   );
 };
 
-export default LogApplicationModal;
+export default NotesModal;

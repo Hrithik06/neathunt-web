@@ -1,34 +1,45 @@
 import { useEffect, useState } from "react";
 import DashboardHeader from "@/features/dashboard/components/DashboardHeader";
-import JobPipeline from "@/features/dashboard/components/JobPipeline";
+import JobPipeline from "@/features/jobs/components/JobPipeline";
 import StatCards from "@/features/dashboard/components/StatCards";
 import TrophyCard from "@/features/dashboard/components/TrophyCard";
-import ApplicationsTable from "@/features/dashboard/components/ApplicationsTable";
+import ApplicationsTable from "@/features/jobs/components/ApplicationsTable";
 import DasboardSidebar from "@/features/dashboard/components/DashboardSidebar";
-import LogApplicationModal from "@/features/dashboard/components/JobForm/LogApplicationModal";
+import LogApplicationModal from "@/features/jobs/forms/LogApplicationModal";
 import { useNavigate } from "react-router";
-import { http } from "@/services/http";
-import type { Job } from "@/features/dashboard/types";
-import EmptyApplicationsState from "@/features/dashboard/components/EmptyApplicationsState";
+import type { Job } from "@/features/jobs/types";
+import EmptyApplicationsState from "@/features/jobs/components/EmptyApplicationsState";
+import { useJobs } from "@/features/jobs/hooks/useJobs";
+import ApplicationsTableSkeleton from "@/features/jobs/components/ApplicationsTableSkeleton";
+import JobPipelineSkeleton from "@/features/jobs/components/JobPipelineSkeleton";
+import TrophyCardSkeleton from "@/features/dashboard/components/TrophyCardSkeleton";
+import StatCardsSkeleton from "@/features/dashboard/components/StatCardsSkeleton";
 
 // ── Main ─────────────────────────────────────────────────────────
 export default function DashboardPage() {
   const [filter, setFilter] = useState("All");
-  const [jobData, setJobData] = useState<Job[]>([]);
+  // const [jobData, setJobData] = useState<Job[]>([]);
   const [search, setSearch] = useState("");
-  const [isJobModalOpen, setIsJobModalOpen] = useState(false); // ← lifted here
-  const [selectedJob, setSelectedJob] = useState<Job | null>(null); // ← lifted here
+  const [isJobModalOpen, setIsJobModalOpen] = useState(false);
+  const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const navigate = useNavigate();
+
+  const { data, isLoading } = useJobs();
+
+  const jobData: Job[] = data || [];
   const counts =
     jobData?.reduce<Record<string, number>>(
       (a, j) => ({ ...a, [j.status]: (a[j.status] || 0) + 1 }),
       {},
     ) || {};
 
-  const responseRate = Math.round(
-    (jobData.filter((j) => j.status !== "APPLIED").length / jobData.length) *
-      100,
-  );
+  const responseRate = jobData.length
+    ? Math.round(
+        (jobData.filter((j) => j.status !== "APPLIED").length /
+          jobData.length) *
+          100,
+      )
+    : 0;
 
   const filtered = jobData.length
     ? jobData.filter(
@@ -42,20 +53,6 @@ export default function DashboardPage() {
   // Google OAuth pages after login redirect
   useEffect(() => {
     navigate("/dashboard", { replace: true });
-  }, []);
-
-  useEffect(() => {
-    async function getAllJobs() {
-      try {
-        const response = await http.get(`/jobs`, {
-          withCredentials: true,
-        });
-        setJobData(response.data);
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    getAllJobs();
   }, []);
 
   function handleEdit(job: Job) {
@@ -80,10 +77,10 @@ export default function DashboardPage() {
         @keyframes fadeUp  { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
         @keyframes ticker  { 0%{opacity:0;transform:translateY(8px)} 15%,85%{opacity:1;transform:translateY(0)} 100%{opacity:0;transform:translateY(-8px)} }
         @keyframes glow    { 0%,100%{box-shadow:0 0 8px 2px rgba(255,201,71,0.2)} 50%{box-shadow:0 0 18px 4px rgba(255,201,71,0.4)} }
-        .fade-up   { animation: fadeUp 0.5s ease both; }
-        .fade-up-1 { animation: fadeUp 0.5s ease 0.1s both; }
-        .fade-up-2 { animation: fadeUp 0.5s ease 0.2s both; }
-        .fade-up-3 { animation: fadeUp 0.5s ease 0.3s both; }
+        // .fade-up   { animation: fadeUp 0.5s ease both; }
+        // .fade-up-1 { animation: fadeUp 0.5s ease 0.1s both; }
+        // .fade-up-2 { animation: fadeUp 0.5s ease 0.2s both; }
+        // .fade-up-3 { animation: fadeUp 0.5s ease 0.3s both; }
         .ticker-text { animation: ticker 4s ease-in-out forwards; }
         .offer-glow  { animation: glow 2.5s ease-in-out infinite; }
         .cta-btn:hover { transform: translateY(-2px); }
@@ -100,16 +97,37 @@ export default function DashboardPage() {
         <DashboardHeader handleCreate={handleCreate} />
 
         {/* Stat Cards */}
-        <StatCards counts={counts} responseRate={responseRate} />
+
+        {isLoading ? (
+          <StatCardsSkeleton />
+        ) : (
+          <StatCards counts={counts} responseRate={responseRate} />
+        )}
 
         {/* Pipeline + Trophy */}
         <div className="flex gap-5 mb-6 flex-wrap fade-up-2">
-          <JobPipeline counts={counts} filter={filter} setFilter={setFilter} />
-          <TrophyCard counts={counts} responseRate={responseRate} />
+          {isLoading ? (
+            <>
+              <JobPipelineSkeleton />
+              <TrophyCardSkeleton />
+            </>
+          ) : (
+            <>
+              <JobPipeline
+                counts={counts}
+                filter={filter}
+                setFilter={setFilter}
+              />
+
+              <TrophyCard counts={counts} responseRate={responseRate} />
+            </>
+          )}
         </div>
 
         {/* Applications Table */}
-        {jobData.length === 0 ? (
+        {isLoading ? (
+          <ApplicationsTableSkeleton />
+        ) : jobData.length === 0 ? (
           <EmptyApplicationsState onOpenModal={() => setIsJobModalOpen(true)} />
         ) : (
           <ApplicationsTable

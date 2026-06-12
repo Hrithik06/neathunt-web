@@ -6,14 +6,16 @@ import {
   JobStatus,
   type Job,
   type JobStatusType,
-} from "../../types";
+} from "../types";
 import "../modal.css";
 
-import { http } from "@/services/http";
-import { getTodayDate } from "../../utils/dateUtils";
+import { getTodayDate } from "../utils/dateUtils";
 import { useState } from "react";
 import { showToast } from "@/components/ui/showToast";
 import DatePickerField from "@/components/ui/DatePickerField";
+import { useCreateJob } from "../hooks/useCreateJob";
+import { useDeleteJob } from "../hooks/useDeleteJob";
+import { useUpdateJob } from "../hooks/useUpdateJob";
 
 type FormFields = z.infer<typeof createJobSchema>;
 
@@ -29,16 +31,23 @@ const STATUS_OPTIONS: { value: JobStatusType; label: string }[] = [
 
 interface JobFormProps {
   onClose?: () => void;
-  onDelete?: () => void; // called after successful delete so parent can refetch
+  // onDelete?: () => void; // called after successful delete so parent can refetch
   selectedJob: Job | null;
 }
 
-const JobForm = ({ onClose, onDelete, selectedJob }: JobFormProps) => {
+const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
   const [apiError, setApiError] = useState<string | null>(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const isEditMode = selectedJob !== null;
+
+  // const { mutateAsync: createJobMutation } = useCreateJob();
+  // const { mutateAsync: deleteJobMutation } = useDeleteJob();
+  // const { mutateAsync: updateJobMutation } = useUpdateJob();
+  const createJob = useCreateJob();
+  const deleteJob = useDeleteJob();
+  const updateJob = useUpdateJob();
 
   // ── Default values ────────────────────────────────────────────────────────
   let defaultValues: Partial<FormFields> = {
@@ -77,14 +86,18 @@ const JobForm = ({ onClose, onDelete, selectedJob }: JobFormProps) => {
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
       setApiError(null);
-      await http.request({
-        method: isEditMode ? "PATCH" : "POST",
-        url: isEditMode ? `/jobs/${selectedJob.id}` : "/jobs",
-        data,
-        withCredentials: true,
-      });
+      if (isEditMode) {
+        // await updateJobMutation({ jobId: selectedJob.id, data });
+        await updateJob.mutateAsync({ jobId: selectedJob.id, data });
+      } else {
+        // await createJobMutation(data);
+        await createJob.mutateAsync(data);
+      }
+
       onClose?.();
-      setTimeout(() => showToast(successMessage, "success"), 300);
+      // setTimeout(() =>
+      showToast(successMessage, "success");
+      // , 300);
     } catch (err: any) {
       setApiError(err.message);
     }
@@ -96,16 +109,13 @@ const JobForm = ({ onClose, onDelete, selectedJob }: JobFormProps) => {
     try {
       setIsDeleting(true);
       setApiError(null);
-      await http.request({
-        method: "DELETE",
-        url: `/jobs/${selectedJob.id}`,
-        withCredentials: true,
-      });
+
+      // await deleteJobMutation(selectedJob.id);
+      await deleteJob.mutateAsync(selectedJob.id);
       onClose?.();
-      setTimeout(() => {
-        showToast("Application deleted", "success");
-        onDelete?.();
-      }, 300);
+      // setTimeout(() =>
+      showToast("Application deleted", "success");
+      // , 300);
     } catch (err: any) {
       setApiError(err.message);
       setIsDeleting(false);
@@ -126,6 +136,7 @@ const JobForm = ({ onClose, onDelete, selectedJob }: JobFormProps) => {
             type="text"
             placeholder="e.g. Frontend Engineer"
             className={`nh-input${errors.title ? " nh-input--error" : ""}`}
+            autoComplete="organization-title"
             {...register("title")}
           />
           {errors.title && (
@@ -142,6 +153,7 @@ const JobForm = ({ onClose, onDelete, selectedJob }: JobFormProps) => {
             type="text"
             placeholder="e.g. Stripe"
             className={`nh-input${errors.company ? " nh-input--error" : ""}`}
+            autoComplete="organization"
             {...register("company")}
           />
           {errors.company && (
@@ -175,14 +187,18 @@ const JobForm = ({ onClose, onDelete, selectedJob }: JobFormProps) => {
         </div>
 
         <div className="nh-field">
-          <label htmlFor="appliedAtId" className="nh-label">
+          <div className="nh-label" id="appliedAt-label">
             Date Applied <span className="nh-label__required">*</span>
-          </label>
+          </div>
           <Controller
             name="appliedAt"
             control={control}
             render={({ field }) => (
-              <DatePickerField value={field.value} onChange={field.onChange} />
+              <DatePickerField
+                value={field.value}
+                onChange={field.onChange}
+                labelId="appliedAt-label"
+              />
             )}
           />
           {/*<input

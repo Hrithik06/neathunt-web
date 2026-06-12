@@ -3,18 +3,27 @@ import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
 import { format, parseISO } from "date-fns";
 import "./DatePickerField.css";
-type Props = {
+type DatePickerFieldProps = {
   value?: string;
   onChange: (value: string) => void;
+  labelId?: string;
 };
 
-export default function DatePickerField({ value, onChange }: Props) {
+export default function DatePickerField({
+  value,
+  onChange,
+  labelId,
+}: DatePickerFieldProps) {
   const selected = value ? parseISO(value) : undefined;
 
   return (
     <Popover.Root>
       <Popover.Trigger asChild>
-        <button type="button" className="nh-input nh-date-trigger">
+        <button
+          type="button"
+          className="nh-input nh-date-trigger"
+          aria-labelledby={labelId}
+        >
           {selected ? format(selected, "dd MMM yyyy") : "Select date"}
         </button>
       </Popover.Trigger>

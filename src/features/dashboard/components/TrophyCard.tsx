@@ -1,9 +1,9 @@
 import { BRAND } from "@/constants/brand";
-type Props = {
+type TrophyCardProps = {
   counts: Record<string, number>;
   responseRate: number;
 };
-const TrophyCard = ({ counts, responseRate }: Props) => {
+const TrophyCard = ({ counts, responseRate }: TrophyCardProps) => {
   return (
     <div
       className="w-48 shrink-0 rounded-2xl p-5 flex flex-col justify-between relative overflow-hidden offer-glow"
@@ -18,11 +18,11 @@ const TrophyCard = ({ counts, responseRate }: Props) => {
         <div className="text-white font-black text-sm leading-snug">
           {responseRate}% response rate!
         </div>
-        <div className="text-xs font-bold mt-2" style={{ color: BRAND.gold }}>
+        {/*<div className="text-xs font-bold mt-2" style={{ color: BRAND.gold }}>
           Industry avg is ~12%.
           <br />
           You're ahead. 🔥
-        </div>
+        </div>*/}
       </div>
       <div
         className="mt-4 rounded-xl px-3 py-2"

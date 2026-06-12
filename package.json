@@ -14,7 +14,7 @@
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-popover": "^1.1.15",
     "@tailwindcss/vite": "^4.3.0",
-    "@tanstack/react-query": "^5.100.10",
+    "@tanstack/react-query": "^5.100.14",
     "axios": "^1.16.0",
     "date-fns": "^4.4.0",
     "lucide-react": "^1.14.0",
@@ -30,6 +30,8 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@tanstack/eslint-plugin-query": "^5.100.14",
+    "@tanstack/react-query-devtools": "^5.100.14",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",

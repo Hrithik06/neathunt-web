@@ -1,15 +1,11 @@
 import { BRAND } from "@/constants/brand";
 import { useCountUp } from "@/features/landing/hooks/useCountUp";
-
-const StatItem = ({
-  value,
-  label,
-  inView,
-}: {
+type StatItemProps = {
   value: string;
   label: string;
   inView: boolean;
-}) => {
+};
+const StatItem = ({ value, label, inView }: StatItemProps) => {
   const displayed = useCountUp(value, 1400, inView);
   return (
     <div className="text-center px-6">

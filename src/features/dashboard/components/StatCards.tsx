@@ -1,10 +1,9 @@
 import StatCard from "@/components/ui/StatCard";
-// import { JOBS } from "../data/jobs";
-type Props = {
+type StatCardsProps = {
   counts: Record<string, number>;
   responseRate: number;
 };
-const StatCards = ({ counts, responseRate }: Props) => {
+const StatCards = ({ counts, responseRate }: StatCardsProps) => {
   const totalInterviews =
     (counts.INTERVIEW_COMPLETED ?? 0) + (counts.INTERVIEW_SCHEDULED ?? 0);
 

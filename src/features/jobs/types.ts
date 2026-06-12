@@ -57,5 +57,7 @@ export type CreateJobInput = z.infer<typeof createJobSchema>;
 export type UpdateJobInput = z.infer<typeof updateJobSchema>;
 
 export type Job = CreateJobInput & {
-  id: number;
+  id: string;
+  source: string;
+  updatedAt: string;
 };

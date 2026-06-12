@@ -7,7 +7,7 @@ const THEME_META: Record<ThemeName, { icon: string; label: string }> = {
   midnight: { icon: "☀️", label: "Sunrise" },
 };
 
-export function useTheme() {
+export function useThemeOld() {
   const [themeName, setThemeName] = useState<ThemeName>(
     () => (localStorage.getItem("theme") as ThemeName) || "sunrise",
   );
