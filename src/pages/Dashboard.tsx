@@ -1,3 +1,4 @@
+import "./Dashboard.css";
 import { useEffect, useState } from "react";
 import DashboardHeader from "@/features/dashboard/components/DashboardHeader";
 import JobPipeline from "@/features/jobs/components/JobPipeline";
@@ -41,14 +42,13 @@ export default function DashboardPage() {
       )
     : 0;
 
-  const filtered = jobData.length
-    ? jobData.filter(
-        (j) =>
-          (filter === "All" || j.status === filter) &&
-          (j.company.toLowerCase().includes(search.toLowerCase()) ||
-            j.title.toLowerCase().includes(search.toLowerCase())),
-      )
-    : [];
+  const filtered = jobData.filter(
+    (j) =>
+      (filter === "All" || j.status === filter) &&
+      (j.company.toLowerCase().includes(search.toLowerCase()) ||
+        j.title.toLowerCase().includes(search.toLowerCase())),
+  );
+
   // Replace history entry on mount to prevent back button from going to
   // Google OAuth pages after login redirect
   useEffect(() => {
@@ -73,21 +73,6 @@ export default function DashboardPage() {
         fontFamily: "'Nunito', 'DM Sans', sans-serif",
       }}
     >
-      <style>{`
-        @keyframes fadeUp  { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
-        @keyframes ticker  { 0%{opacity:0;transform:translateY(8px)} 15%,85%{opacity:1;transform:translateY(0)} 100%{opacity:0;transform:translateY(-8px)} }
-        @keyframes glow    { 0%,100%{box-shadow:0 0 8px 2px rgba(255,201,71,0.2)} 50%{box-shadow:0 0 18px 4px rgba(255,201,71,0.4)} }
-        // .fade-up   { animation: fadeUp 0.5s ease both; }
-        // .fade-up-1 { animation: fadeUp 0.5s ease 0.1s both; }
-        // .fade-up-2 { animation: fadeUp 0.5s ease 0.2s both; }
-        // .fade-up-3 { animation: fadeUp 0.5s ease 0.3s both; }
-        .ticker-text { animation: ticker 4s ease-in-out forwards; }
-        .offer-glow  { animation: glow 2.5s ease-in-out infinite; }
-        .cta-btn:hover { transform: translateY(-2px); }
-        .nav-item:hover { background: rgba(255,201,71,0.1); }
-        .app-row:hover td { background: var(--row-hover-bg, rgba(255,201,71,0.04)); }
-      `}</style>
-
       {/* ── Sidebar ──────────────────────────────────────────────── */}
       <DasboardSidebar counts={counts} />
 
