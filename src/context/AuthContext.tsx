@@ -1,6 +1,8 @@
-import { http } from "@/services/http";
+import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
+import { useLogout } from "@/features/auth/hooks/useLogout";
+
 import type { User } from "@/types/user";
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext } from "react";
 
 type AuthContextType = {
   user: User | null;
@@ -14,39 +16,11 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: user, isLoading } = useCurrentUser();
+
   const isAuthenticated = !!user;
-  useEffect(() => {
-    // On mount, check token validity with server
-    async function checkAuth() {
-      try {
-        const response = await http.get(`/user/me`, {
-          withCredentials: true,
-        });
 
-        setUser(response.data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    checkAuth();
-  }, []);
-
-  const logout = async () => {
-    try {
-      const response = await http.get(`/auth/logout`, {
-        withCredentials: true,
-      });
-      if (response.status) {
-        setUser(null);
-      }
-    } catch (err) {
-      console.error("Logout error:", err);
-    }
-  };
+  const { mutateAsync: logout } = useLogout();
 
   // move to auth.service.ts
   const loginWithGoogle = () => {
