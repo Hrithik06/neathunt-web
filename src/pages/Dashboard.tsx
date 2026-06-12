@@ -77,10 +77,10 @@ export default function DashboardPage() {
         @keyframes fadeUp  { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
         @keyframes ticker  { 0%{opacity:0;transform:translateY(8px)} 15%,85%{opacity:1;transform:translateY(0)} 100%{opacity:0;transform:translateY(-8px)} }
         @keyframes glow    { 0%,100%{box-shadow:0 0 8px 2px rgba(255,201,71,0.2)} 50%{box-shadow:0 0 18px 4px rgba(255,201,71,0.4)} }
-        .fade-up   { animation: fadeUp 0.5s ease both; }
-        .fade-up-1 { animation: fadeUp 0.5s ease 0.1s both; }
-        .fade-up-2 { animation: fadeUp 0.5s ease 0.2s both; }
-        .fade-up-3 { animation: fadeUp 0.5s ease 0.3s both; }
+        // .fade-up   { animation: fadeUp 0.5s ease both; }
+        // .fade-up-1 { animation: fadeUp 0.5s ease 0.1s both; }
+        // .fade-up-2 { animation: fadeUp 0.5s ease 0.2s both; }
+        // .fade-up-3 { animation: fadeUp 0.5s ease 0.3s both; }
         .ticker-text { animation: ticker 4s ease-in-out forwards; }
         .offer-glow  { animation: glow 2.5s ease-in-out infinite; }
         .cta-btn:hover { transform: translateY(-2px); }

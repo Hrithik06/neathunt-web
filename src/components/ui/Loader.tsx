@@ -1,7 +1,9 @@
 import { BRAND } from "@/constants/brand";
 import { useTheme } from "@/context/ThemeContext";
-
-const Loader = () => {
+type LoaderProps = {
+  message?: string;
+};
+const Loader = ({ message }: LoaderProps) => {
   const { isMidnight } = useTheme();
   return (
     <div className="h-screen flex flex-col items-center justify-center gap-3 transition-opacity duration-300">
@@ -10,7 +12,7 @@ const Loader = () => {
         <span style={{ color: BRAND.coral }}>Hunt</span>
       </div>
       <div className={`text-sm ${isMidnight && "text-white"}`}>
-        Loading your dashboard...
+        {message || "Loading your dashboard..."}
       </div>
     </div>
   );

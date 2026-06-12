@@ -6,7 +6,8 @@ const AuthLayout = () => {
   const { isAuthenticated, isLoading } = useAuth();
   const location = useLocation();
 
-  if (isLoading) return <Loader />;
+  if (isLoading) return <Loader message="Authenticating..." />;
+  // if (isLoading) return <div>AUTH</div>;
 
   if (!isAuthenticated) {
     return <Navigate to="/" replace state={{ from: location }} />;

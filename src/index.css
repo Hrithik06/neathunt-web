@@ -13,6 +13,8 @@
 /* ── Sunrise (default / light) ───────────────────────────────────── */
 :root,
 [data-theme="sunrise"] {
+    /* ── Initial loader-specific ───────────────────────────────────────── */
+    --app-loader-text: #1e2d5f;
     /* Page */
     --page-bg: #fffbf2;
     --nav-scroll-bg: rgba(255, 251, 242, 0.92);
@@ -66,6 +68,7 @@
     --pill-inactive-txt: #a8a29e;
     --logo-emoji-bg: #f5f0e8;
 
+    /* ── Toast-specific ───────────────────────────────────────── */
     --success-bg: #dcfce7;
     --success-text: #166534;
     --success-border: #bbf7d0;
@@ -85,6 +88,8 @@
 
 /* ── Midnight (dark) ─────────────────────────────────────────────── */
 [data-theme="midnight"] {
+    --app-loader-text: #f1f5f9;
+
     --page-bg: #0a0f1e;
     --nav-scroll-bg: rgba(10, 15, 30, 0.92);
     --nav-border: #1e2d5f;
@@ -130,6 +135,7 @@
     --pill-inactive-txt: #64748b;
     --logo-emoji-bg: rgba(255, 255, 255, 0.05);
 
+    /* ── Toast-specific ───────────────────────────────────────── */
     --success-bg: rgba(22, 163, 74, 0.2);
     --success-text: #86efac;
     --success-border: rgba(22, 163, 74, 0.4);
@@ -149,7 +155,7 @@
 #app-loader {
     position: fixed;
     inset: 0;
-    background: var(--bg, #0f172a);
+    /*background: var(--bg, #0f172a);*/
     display: flex;
     align-items: center;
     justify-content: center;
@@ -169,7 +175,7 @@
     font-weight: 900;
     font-size: 18px;
     letter-spacing: 1px;
-    color: white;
+    color: var(--app-loader-text);
     opacity: 0.9;
     animation: fade 1.5s infinite ease-in-out;
 }

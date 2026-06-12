@@ -22,7 +22,7 @@ export default function PipelineStageCard({
     <button
       key={s}
       onClick={() => setFilter(filter === s ? "All" : s)}
-      className="flex-1 min-w-16 rounded-2xl py-4 px-3 text-center relative overflow-hidden cursor-pointer border-2 transition-all duration-200 bg-transparent"
+      className="flex-1 min-w-18 rounded-2xl py-4 px-3 text-center relative overflow-hidden cursor-pointer border-2 transition-all duration-200 bg-transparent"
       style={{
         background: isMidnight ? cfg.darkBg : cfg.bg,
         borderColor:

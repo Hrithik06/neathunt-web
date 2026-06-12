@@ -18,7 +18,8 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools />
         <AuthProvider>
-          <Suspense fallback={<Loader />}>
+          <Suspense fallback={<Loader message="Loading dashboard..." />}>
+            {/*<Suspense fallback={<div>Suspense</div>}>*/}
             <Toaster position="bottom-right" reverseOrder={false} />
             <Routes>
               <Route index element={<LandingPage />} />

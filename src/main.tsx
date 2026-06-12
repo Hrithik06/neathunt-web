@@ -19,10 +19,9 @@ createRoot(root!).render(
 
 // remove loader AFTER render starts
 const loader = document.getElementById("app-loader");
-
 if (loader) {
   loader.style.opacity = "0";
   loader.style.transition = "opacity 0.4s ease";
-
-  setTimeout(() => loader.remove(), 400);
+  loader.remove();
+  // setTimeout(() => loader.remove(), 400);
 }

@@ -2,7 +2,13 @@ import Shimmer from "@/components/ui/Shimmer";
 
 function PipelineStageCardSkeleton() {
   return (
-    <div className="flex-1 min-w-16 rounded-2xl py-4 px-3 flex flex-col gap-2 items-center border-2 border-gray-800">
+    <div
+      className="flex-1 min-w-16 rounded-2xl py-4 px-3 flex flex-col gap-2 items-center border-2"
+      style={{
+        background: "var(--card-bg)",
+        borderColor: "var(--card-border)",
+      }}
+    >
       <Shimmer className="w-6 h-6 rounded-full" />
       <Shimmer className="w-2/10 h-5" />
       <Shimmer className="w-4/10 h-4" />
