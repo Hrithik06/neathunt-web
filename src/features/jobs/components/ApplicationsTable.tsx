@@ -28,7 +28,7 @@ const ApplicationsTable = ({
   if (filtered.length === 0) <div>Loading....</div>;
   return (
     <div
-      className="rounded-2xl border overflow-hidden fade-up-3 transition-colors duration-500"
+      className="rounded-2xl border overflow-auto  fade-up-3 transition-colors duration-500"
       style={{
         background: "var(--card-bg)",
         borderColor: "var(--card-border)",

@@ -8,7 +8,7 @@ const Footer = () => {
       className="border-t py-8 px-6 transition-colors duration-500"
       style={{ borderColor: "var(--footer-border)" }}
     >
-      <div className="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between md:items-center gap-4">
         <div className="flex items-center gap-2.5">
           <Logo size={36} />
           <div>
@@ -36,7 +36,7 @@ const Footer = () => {
         <p className="text-xs font-semibold" style={{ color: "var(--muted)" }}>
           Built with ❤️ for job seekers everywhere. You've got this. 🌟
         </p>
-        <div className="flex items-center gap-5">
+        <div className="flex md:items-center gap-5 flex-col md:flex-row">
           {["Privacy", "Terms", "Contact"].map((link) => (
             <a
               key={link}
