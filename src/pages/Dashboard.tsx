@@ -15,6 +15,7 @@ import ApplicationsTableSkeleton from "@/features/jobs/components/ApplicationsTa
 import JobPipelineSkeleton from "@/features/jobs/components/JobPipelineSkeleton";
 import TrophyCardSkeleton from "@/features/dashboard/components/TrophyCardSkeleton";
 import StatCardsSkeleton from "@/features/dashboard/components/StatCardsSkeleton";
+import { showToast } from "@/components/ui/showToast";
 
 // ── Main ─────────────────────────────────────────────────────────
 export default function DashboardPage() {
@@ -25,7 +26,7 @@ export default function DashboardPage() {
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const navigate = useNavigate();
 
-  const { data, isLoading } = useJobs();
+  const { data, isLoading, isError, error } = useJobs();
 
   const jobData: Job[] = data || [];
   const counts =
@@ -64,7 +65,12 @@ export default function DashboardPage() {
     setIsJobModalOpen(true);
   }
   // function handleDelete(jobId: string) {}
-
+  useEffect(() => {
+    if (isError) {
+      console.log(error);
+      showToast(error.message || "Failed to load jobs", "error");
+    }
+  }, [isError, error]);
   return (
     <div
       className="flex min-h-screen transition-colors duration-500"

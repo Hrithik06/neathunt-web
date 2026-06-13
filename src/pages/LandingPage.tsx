@@ -30,8 +30,8 @@ export default function LandingPage() {
     }
   }, [isAuthenticated, isLoading, location, navigate]);
 
-  if (isLoading) return null;
-  if (isAuthenticated) return null;
+  // if (isLoading) return null;
+  // if (isAuthenticated) return null;
   return (
     <div
       className="min-h-screen overflow-x-hidden transition-colors duration-500"

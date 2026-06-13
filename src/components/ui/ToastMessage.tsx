@@ -30,7 +30,8 @@ export default function ToastMessage({ text, variant }: ToastProps) {
       role="alert"
     >
       <div className="flex items-center gap-2.5 font-medium">
-        <Icon className="size-[18px]" />
+        {/*<Icon className="size-[18px]" />*/}
+        <Icon size={18} />
         <p>{text}</p>
       </div>
     </div>
