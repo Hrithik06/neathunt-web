@@ -1,3 +1,4 @@
+import type { ApiError } from "@/types/error";
 import axios from "axios";
 
 export const http = axios.create({
@@ -27,6 +28,7 @@ http.interceptors.response.use(
       // optional: handle specific cases
       if (status === 401) {
         message = "Session expired. Please login again.";
+        // window.location.href = "/";
       } else if (status === 500) {
         message = "Server error. Try again later.";
       }
@@ -37,7 +39,7 @@ http.interceptors.response.use(
     }
 
     // 🔥 THIS IS THE KEY CHANGE
-    return Promise.reject({
+    return Promise.reject<ApiError>({
       message,
       status,
     });

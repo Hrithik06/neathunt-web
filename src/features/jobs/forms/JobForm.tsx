@@ -100,6 +100,8 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
       // , 300);
     } catch (err: any) {
       setApiError(err.message);
+      console.log(createJob.error?.message);
+      console.log(createJob.isError);
     }
   };
 
