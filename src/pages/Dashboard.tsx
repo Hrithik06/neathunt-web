@@ -19,6 +19,7 @@ import { showToast } from "@/components/ui/showToast";
 import { Menu } from "lucide-react";
 import MobileSidebar from "@/features/dashboard/components/MobileSidebar";
 import { useIsMobile } from "@/features/dashboard/hooks/useIsMobile";
+import MobileApplicationsGrid from "@/features/jobs/components/MobileApplicationsGrid";
 
 // ── Main ─────────────────────────────────────────────────────────
 export default function DashboardPage() {
@@ -78,7 +79,7 @@ export default function DashboardPage() {
   }, [isError, error]);
   return (
     <div
-      className="flex min-h-screen transition-colors duration-500"
+      className="flex h-screen transition-colors duration-500"
       style={{
         background: "var(--page-bg)",
         fontFamily: "'Nunito', 'DM Sans', sans-serif",
@@ -97,60 +98,72 @@ export default function DashboardPage() {
       ) : (
         <button
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className="absolute mt-10 ml-4"
+          className="absolute mt-8 ml-3 z-99999"
         >
           <Menu color="var(--muted)" />
         </button>
       )}
 
       {/* ── Main ─────────────────────────────────────────────────── */}
-      <main className="flex-1 p-8 overflow-auto">
+      <main className="flex-1 overflow-auto">
         {/* Header — receives open handler, no modal inside */}
         <DashboardHeader handleCreate={handleCreate} />
+        <div className="p-8">
+          {/* Stat Cards */}
 
-        {/* Stat Cards */}
-
-        {isLoading ? (
-          <StatCardsSkeleton />
-        ) : (
-          <StatCards counts={counts} responseRate={responseRate} />
-        )}
-
-        {/* Pipeline + Trophy */}
-        <div className="flex gap-5 mb-6 flex-wrap fade-up-2">
           {isLoading ? (
-            <>
-              <JobPipelineSkeleton />
-              <TrophyCardSkeleton />
-            </>
+            <StatCardsSkeleton />
           ) : (
-            <>
-              <JobPipeline
-                counts={counts}
-                filter={filter}
-                setFilter={setFilter}
-              />
+            <StatCards counts={counts} responseRate={responseRate} />
+          )}
 
-              <TrophyCard counts={counts} responseRate={responseRate} />
-            </>
+          {/* Pipeline + Trophy */}
+          <div className="flex gap-5 mb-6 flex-wrap fade-up-2">
+            {isLoading ? (
+              <>
+                <JobPipelineSkeleton />
+                <TrophyCardSkeleton />
+              </>
+            ) : (
+              <>
+                <JobPipeline
+                  counts={counts}
+                  filter={filter}
+                  setFilter={setFilter}
+                />
+
+                <TrophyCard counts={counts} responseRate={responseRate} />
+              </>
+            )}
+          </div>
+
+          {/* Applications Table */}
+          {isLoading ? (
+            <ApplicationsTableSkeleton />
+          ) : jobData.length === 0 ? (
+            <EmptyApplicationsState
+              onOpenModal={() => setIsJobModalOpen(true)}
+            />
+          ) : isMobile ? (
+            <MobileApplicationsGrid
+              filtered={filtered}
+              filter={filter}
+              setFilter={setFilter}
+              search={search}
+              setSearch={setSearch}
+              handleEdit={handleEdit}
+            />
+          ) : (
+            <ApplicationsTable
+              filtered={filtered}
+              filter={filter}
+              setFilter={setFilter}
+              search={search}
+              setSearch={setSearch}
+              handleEdit={handleEdit}
+            />
           )}
         </div>
-
-        {/* Applications Table */}
-        {isLoading ? (
-          <ApplicationsTableSkeleton />
-        ) : jobData.length === 0 ? (
-          <EmptyApplicationsState onOpenModal={() => setIsJobModalOpen(true)} />
-        ) : (
-          <ApplicationsTable
-            filtered={filtered}
-            filter={filter}
-            setFilter={setFilter}
-            search={search}
-            setSearch={setSearch}
-            handleEdit={handleEdit}
-          />
-        )}
       </main>
 
       {/* ── Modal — rendered at page root, above everything ──────── */}

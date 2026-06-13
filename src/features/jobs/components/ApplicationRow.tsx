@@ -16,7 +16,9 @@ export default function ApplicationRow({
   onNotesClick,
 }: ApplicationRowProps) {
   const { isMidnight } = useTheme();
-
+  const statusColor = isMidnight
+    ? STATUS_CFG[job.status as keyof typeof STATUS_CFG].darkColor
+    : STATUS_CFG[job.status as keyof typeof STATUS_CFG].color;
   return (
     <tr
       key={job.id}
@@ -29,15 +31,13 @@ export default function ApplicationRow({
             className="w-9 h-9 rounded-xl flex items-center justify-center text-lg shrink-0 font-extrabold"
             style={{
               background: "var(--logo-emoji-bg)",
-              color: isMidnight
-                ? STATUS_CFG[job.status as keyof typeof STATUS_CFG].darkColor
-                : STATUS_CFG[job.status as keyof typeof STATUS_CFG].color,
+              color: statusColor,
             }}
           >
             {job.company[0].toUpperCase()}
           </span>
           <span
-            className="font-black text-sm"
+            className="font-black text-sm wrap-break-word"
             style={{ color: "var(--heading)" }}
           >
             {job.company}
@@ -45,7 +45,7 @@ export default function ApplicationRow({
         </div>
       </td>
       <td
-        className="px-5 py-4 text-xs font-semibold"
+        className="px-5 py-4 text-xs font-semibold wrap-break-word"
         style={{ color: "var(--muted)" }}
       >
         {job.title}

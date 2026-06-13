@@ -14,13 +14,16 @@ export default function Greeting({
   return (
     <>
       <h1
-        className="text-2xl font-black tracking-tight"
+        className="text-xl lg:text-2xl font-black tracking-tight"
         style={{ color: headingColor }}
       >
         {greeting} {emoji}, {firstName}
       </h1>
 
-      <p className="text-sm font-semibold mt-1" style={{ color: subTextColor }}>
+      <p
+        className="text-xs lg:text-sm font-semibold mt-1"
+        style={{ color: subTextColor }}
+      >
         {subText}
       </p>
     </>

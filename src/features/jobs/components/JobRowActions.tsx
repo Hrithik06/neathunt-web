@@ -1,3 +1,4 @@
+import { useIsMobile } from "@/features/dashboard/hooks/useIsMobile";
 import "./JobRowActions.css";
 
 interface JobRowActionsProps {
@@ -15,7 +16,6 @@ const JobRowActions = ({
 }: JobRowActionsProps) => {
   return (
     <div className="jra-wrap">
-
       {/* ── Slot 1: URL — always occupies space, invisible if no url ── */}
       {url ? (
         <a
@@ -24,6 +24,7 @@ const JobRowActions = ({
           rel="noopener noreferrer"
           className="jra-btn jra-btn--url"
           title="Open job posting"
+          onClick={(e) => e.stopPropagation()}
         >
           🔗
         </a>
@@ -37,7 +38,10 @@ const JobRowActions = ({
           type="button"
           className="jra-btn jra-btn--notes"
           title="View notes"
-          onClick={onNotesClick}
+          onClick={(e) => {
+            e.stopPropagation();
+            onNotesClick();
+          }}
         >
           📝
         </button>
@@ -50,11 +54,13 @@ const JobRowActions = ({
         type="button"
         className="jra-btn jra-btn--edit"
         title="Edit application"
-        onClick={onEditClick}
+        onClick={(e) => {
+          e.stopPropagation();
+          onEditClick();
+        }}
       >
         ✏️
       </button>
-
     </div>
   );
 };

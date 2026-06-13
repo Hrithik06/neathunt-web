@@ -98,7 +98,7 @@ const MobileSidebar = ({ counts, isOpen, onClose }: MobileSidebarProps) => {
           className="flex gap-4 items-center p-5 border-b sm:hidden"
           style={{ borderColor: "var(--card-border)" }}
         >
-          <span className="text-white">Theme Toggle</span>
+          <span style={{ color: "var(--muted)" }}>Theme</span>
           <ThemeToggle />
         </div>
 

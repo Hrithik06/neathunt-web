@@ -8,8 +8,15 @@ interface DashboardHeaderProps {
 
 const DashboardHeader = ({ handleCreate }: DashboardHeaderProps) => {
   return (
-    <div className="flex justify-end sm:justify-between items-start mb-7 fade-up ml-4">
-      <div className="hidden sm:block lg:ml-0">
+    <div
+      className="
+        sticky top-0 z-30 flex justify-end sm:justify-between items-start px-6 pt-4 pb-5 shadow-sm"
+      style={{
+        background: "var(--page-bg)",
+        borderBottom: "1px solid var(--card-border)",
+      }}
+    >
+      <div className="hidden pl-6 sm:block lg:pl-0">
         <Greeting />
       </div>
 
