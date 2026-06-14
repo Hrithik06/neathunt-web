@@ -1,3 +1,55 @@
+// import { BRAND } from "@/constants/brand";
+// import AnimCount from "./AnimCount";
+
+// type StatCardProps = {
+//   emoji: string;
+//   label: string;
+//   value: number | string;
+//   isHero?: boolean;
+// };
+// // ── StatCard — reads CSS vars, no t prop ──────────────────────────
+// const StatCard = ({ emoji, label, value, isHero }: StatCardProps) => (
+//   <div
+//     className={`relative flex-1 min-w-32 rounded-2xl p-5 overflow-hidden border ${isHero ? "border-transparent shadow-xl" : ""}`}
+//     style={{
+//       background: isHero ? "var(--hero-card-bg)" : "var(--card-bg)",
+//       borderColor: isHero ? "transparent" : "var(--card-border)",
+//     }}
+//   >
+//     {isHero && (
+//       <>
+//         <div
+//           className="absolute -top-8 -right-8 w-24 h-24 rounded-full opacity-10"
+//           style={{ background: BRAND.gold }}
+//         />
+//         <div
+//           className="absolute -bottom-6 -left-4 w-16 h-16 rounded-full opacity-10"
+//           style={{ background: BRAND.coral }}
+//         />
+//       </>
+//     )}
+//     <div className="text-2xl mb-2">{emoji}</div>
+//     <div
+//       className="text-3xl font-black leading-none"
+//       style={{ color: isHero ? "var(--hero-text)" : "var(--heading)" }}
+//     >
+//       <AnimCount
+//         target={
+//           typeof value === "number" ? value : parseInt(String(value)) || 0
+//         }
+//       />
+//       {typeof value === "string" && value.includes("%") ? "%" : ""}
+//     </div>
+//     <div
+//       className="text-xs font-bold mt-2"
+//       style={{ color: isHero ? "var(--hero-sub)" : "var(--muted)" }}
+//     >
+//       {label}
+//     </div>
+//   </div>
+// );
+// export default StatCard;
+
 import { BRAND } from "@/constants/brand";
 import AnimCount from "./AnimCount";
 
@@ -7,45 +59,104 @@ type StatCardProps = {
   value: number | string;
   isHero?: boolean;
 };
-// ── StatCard — reads CSS vars, no t prop ──────────────────────────
-const StatCard = ({ emoji, label, value, isHero }: StatCardProps) => (
-  <div
-    className={`relative flex-1 min-w-32 rounded-2xl p-5 overflow-hidden border ${isHero ? "border-transparent shadow-xl" : ""}`}
-    style={{
-      background: isHero ? "var(--hero-card-bg)" : "var(--card-bg)",
-      borderColor: isHero ? "transparent" : "var(--card-border)",
-    }}
-  >
-    {isHero && (
-      <>
-        <div
-          className="absolute -top-8 -right-8 w-24 h-24 rounded-full opacity-10"
-          style={{ background: BRAND.gold }}
-        />
-        <div
-          className="absolute -bottom-6 -left-4 w-16 h-16 rounded-full opacity-10"
-          style={{ background: BRAND.coral }}
-        />
-      </>
-    )}
-    <div className="text-2xl mb-2">{emoji}</div>
+
+const StatCard = ({ emoji, label, value, isHero }: StatCardProps) => {
+  return (
     <div
-      className="text-3xl font-black leading-none"
-      style={{ color: isHero ? "var(--hero-text)" : "var(--heading)" }}
+      className={`
+        relative
+        flex-1
+        min-w-32
+        rounded-2xl
+
+        px-3 py-3
+        sm:p-5
+
+        overflow-hidden
+        border
+
+        ${isHero ? "border-transparent shadow-xl" : ""}
+      `}
+      style={{
+        background: isHero ? "var(--hero-card-bg)" : "var(--card-bg)",
+
+        borderColor: isHero ? "transparent" : "var(--card-border)",
+      }}
     >
-      <AnimCount
-        target={
-          typeof value === "number" ? value : parseInt(String(value)) || 0
-        }
-      />
-      {typeof value === "string" && value.includes("%") ? "%" : ""}
+      {isHero && (
+        <>
+          <div
+            className="
+              absolute
+              -top-8
+              -right-8
+              w-24
+              h-24
+              rounded-full
+              opacity-10
+            "
+            style={{
+              background: BRAND.gold,
+            }}
+          />
+
+          <div
+            className="
+              absolute
+              -bottom-6
+              -left-4
+              w-16
+              h-16
+              rounded-full
+              opacity-10
+            "
+            style={{
+              background: BRAND.coral,
+            }}
+          />
+        </>
+      )}
+
+      {/* Desktop emoji */}
+      <div className="hidden sm:block text-2xl mb-2">{emoji}</div>
+
+      {/* Value + Mobile emoji */}
+      <div className="flex items-center gap-2 sm:block">
+        {/* Mobile emoji */}
+        <div className="sm:hidden text-lg">{emoji}</div>
+
+        <div
+          className="text-3xl font-black leading-none"
+          style={{
+            color: isHero ? "var(--hero-text)" : "var(--heading)",
+          }}
+        >
+          <AnimCount
+            target={
+              typeof value === "number" ? value : parseInt(String(value)) || 0
+            }
+          />
+
+          {typeof value === "string" && value.includes("%") && "%"}
+        </div>
+      </div>
+
+      <div
+        className="
+          text-xs
+          font-bold
+
+          mt-1
+          sm:mt-2
+        "
+        style={{
+          color: isHero ? "var(--hero-sub)" : "var(--muted)",
+        }}
+      >
+        {label}
+      </div>
     </div>
-    <div
-      className="text-xs font-bold mt-2"
-      style={{ color: isHero ? "var(--hero-sub)" : "var(--muted)" }}
-    >
-      {label}
-    </div>
-  </div>
-);
+  );
+};
+
 export default StatCard;

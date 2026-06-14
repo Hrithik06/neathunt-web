@@ -30,7 +30,7 @@ export default function ApplicationsToolbar({
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="🔍 Search…"
-          className="rounded-xl px-3 py-2 text-xs font-semibold outline-none w-40 transition-colors duration-500 border"
+          className="flex-1 rounded-xl px-3 py-2 text-xs font-semibold outline-none w-40 transition-colors duration-500 border"
           style={{
             background: "var(--input-bg)",
             color: "var(--heading)",

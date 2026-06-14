@@ -3,14 +3,16 @@
    Uses CSS custom properties from index.css (:root / data-theme)
 ───────────────────────────────────────────────────────────────────────────── */
 
-/* ── Wrap ── */
+/* ── Wrap ─────────────────────────────────────────────────── */
+
 .jra-wrap {
     display: flex;
     align-items: center;
-    /*gap: 4px;*/
+    gap: 4px;
+    color: var(--heading);
 }
 
-/* ── Empty slot — same dimensions as a button, invisible ── */
+/* ── Empty slot — same dimensions as a button, invisible (desktop only) ── */
 .jra-slot {
     display: inline-flex;
     width: 28px;
@@ -20,25 +22,82 @@
 
 /* ── Base button / link ── */
 .jra-btn {
-    display: inline-flex;
+    display: flex;
+
     align-items: center;
     justify-content: center;
-    width: 28px;
-    height: 28px;
-    border-radius: 8px;
+
+    gap: 0.45rem;
+
     border: none;
+
     background: transparent;
+
     cursor: pointer;
-    font-size: 14px;
-    line-height: 1;
+
+    font-family: inherit;
+
     text-decoration: none;
+
     transition:
         background 0.15s,
         transform 0.1s;
-    padding: 0;
-    font-family: inherit;
+}
+/* ── Desktop ──────────────────────────────────────────────── */
+
+@media (min-width: 769px) {
+    .jra-btn {
+        width: 28px;
+
+        height: 28px;
+
+        border-radius: 8px;
+
+        font-size: 14px;
+
+        line-height: 1;
+
+        padding: 0;
+    }
+
+    .jra-label {
+        display: none;
+    }
 }
 
+/* ── Mobile ───────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+    .jra-wrap {
+        flex-direction: row;
+
+        flex-wrap: wrap;
+
+        gap: 8px;
+    }
+
+    .jra-slot {
+        display: none;
+    }
+
+    .jra-btn {
+        width: auto;
+
+        height: auto;
+
+        padding: 0.25rem 0.85rem;
+
+        border-radius: 9999px;
+
+        background: rgba(255, 255, 255, 0.04);
+
+        font-size: 0.9rem;
+    }
+
+    .jra-label {
+        display: inline;
+    }
+}
 /* ── Hover backgrounds — each icon gets its own tint ── */
 .jra-btn--url:hover {
     background: rgba(255, 201, 71, 0.15); /* gold tint */

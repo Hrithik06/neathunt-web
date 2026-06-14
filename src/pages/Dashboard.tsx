@@ -18,8 +18,8 @@ import StatCardsSkeleton from "@/features/dashboard/components/StatCardsSkeleton
 import { showToast } from "@/components/ui/showToast";
 import { Menu } from "lucide-react";
 import MobileSidebar from "@/features/dashboard/components/MobileSidebar";
-import { useIsMobile } from "@/features/dashboard/hooks/useIsMobile";
 import MobileApplicationsGrid from "@/features/jobs/components/MobileApplicationsGrid";
+import { useResponsive } from "@/context/ResponsiveContext";
 
 // ── Main ─────────────────────────────────────────────────────────
 export default function DashboardPage() {
@@ -29,7 +29,8 @@ export default function DashboardPage() {
   const [isJobModalOpen, setIsJobModalOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
-  const isMobile = useIsMobile();
+  const { isMobile } = useResponsive();
+
   const navigate = useNavigate();
 
   const { data, isLoading, isError, error } = useJobs();

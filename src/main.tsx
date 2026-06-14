@@ -5,15 +5,18 @@ import App from "./App";
 import "./index.css";
 import { BrowserRouter } from "react-router";
 import { ThemeProvider } from "./context/ThemeContext";
+import { ResponsiveProvider } from "./context/ResponsiveContext";
 const root = document.getElementById("root")!;
 
 createRoot(root!).render(
   <StrictMode>
-    <ThemeProvider>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ThemeProvider>
+    <BrowserRouter>
+      <ThemeProvider>
+        <ResponsiveProvider>
+          <App />
+        </ResponsiveProvider>
+      </ThemeProvider>
+    </BrowserRouter>
   </StrictMode>,
 );
 
