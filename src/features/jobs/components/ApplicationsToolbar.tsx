@@ -1,6 +1,9 @@
-import { BRAND } from "@/constants/brand";
-import { STATUS_CFG } from "../data/statusConfig";
 import { useTheme } from "@/context/ThemeContext";
+import { useResponsive } from "@/context/ResponsiveContext";
+import { useState } from "react";
+import StatusFilterPills from "./StatusFilterPills";
+import FilterSheetModal from "./FilterSheetModal";
+import { ListFilter } from "lucide-react";
 
 type ApplicationsToolbarProps = {
   filter: string;
@@ -14,11 +17,11 @@ export default function ApplicationsToolbar({
   search,
   setSearch,
 }: ApplicationsToolbarProps) {
-  const { isMidnight } = useTheme();
-
+  const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
+  const { isMobile } = useResponsive();
   return (
     <div
-      className="flex justify-between items-center flex-wrap gap-3 px-6 py-4 border-b"
+      className="flex flex-col sm:flex-row justify-between sm:items-center flex-wrap gap-3 px-6 py-4 border-b"
       style={{ borderColor: "var(--card-border)" }}
     >
       <div className="font-black text-sm" style={{ color: "var(--heading)" }}>
@@ -39,37 +42,23 @@ export default function ApplicationsToolbar({
           }}
         />
 
-        {["All", ...Object.keys(STATUS_CFG)].map((s) => {
-          const cfg = STATUS_CFG[s as keyof typeof STATUS_CFG];
-          const isActive = filter === s;
-          return (
-            <button
-              key={s}
-              onClick={() => setFilter(s)}
-              className="rounded-full px-3 py-1.5 text-xs font-bold cursor-pointer border-0 transition-all duration-200"
-              style={{
-                fontFamily: "inherit",
-                background: isActive
-                  ? s === "All"
-                    ? BRAND.gold
-                    : isMidnight
-                      ? cfg.darkBg
-                      : cfg.bg
-                  : "var(--pill-inactive-bg)",
-                color: isActive
-                  ? s === "All"
-                    ? "#1E2D5F"
-                    : isMidnight
-                      ? cfg.darkColor
-                      : cfg.color
-                  : "var(--pill-inactive-txt)",
-              }}
-            >
-              {s === "All" ? "👔 All" : `${cfg.emoji} ${cfg.label}`}
-            </button>
-          );
-        })}
+        {isMobile ? (
+          <button
+            onClick={() => setIsFilterSheetOpen(true)}
+            style={{ color: "var(--heading)" }}
+          >
+            <ListFilter size={20} color="var(--heading)" />
+          </button>
+        ) : (
+          <StatusFilterPills filter={filter} setFilter={setFilter} />
+        )}
       </div>
+      <FilterSheetModal
+        isOpen={isFilterSheetOpen}
+        filter={filter}
+        setFilter={setFilter}
+        onClose={() => setIsFilterSheetOpen(false)}
+      />
     </div>
   );
 }

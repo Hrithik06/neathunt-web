@@ -3,7 +3,7 @@ import Shimmer from "@/components/ui/Shimmer";
 const TrophyCardSkeleton = () => {
   return (
     <div
-      className="w-48 shrink-0 rounded-2xl p-3 flex flex-col justify-around"
+      className="w-48 shrink-0 rounded-2xl p-3 hidden sm:flex flex-col gap-4 justify-around"
       style={{ background: "linear-gradient(135deg,#1E2D5F,#2D3F7A)" }}
     >
       <div className="flex flex-col gap-3">
