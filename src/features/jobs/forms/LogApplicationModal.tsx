@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import JobForm from "./JobForm";
-import "../modal.css";
+import "../styles/modal.css";
 import type { Job } from "../types";
 import { Astroid, X } from "lucide-react";
 
@@ -47,7 +47,7 @@ const LogApplicationModal = ({
         {/* Header */}
         <div className="nh-modal__header">
           <div>
-            <p className="nh-modal__eyebrow">✦ NeatHunt</p>
+            {/*<p className="nh-modal__eyebrow">✦ NeatHunt</p>*/}
             <p className="nh-modal__eyebrow">
               <Astroid fill="var(--brand-coral)" size={8} /> NeatHunt
             </p>

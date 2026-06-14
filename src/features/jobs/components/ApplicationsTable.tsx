@@ -1,6 +1,5 @@
 import type { Job } from "../types";
-import NotesModal from "./NotesModal";
-import { useState } from "react";
+
 import ApplicationRow from "./ApplicationRow";
 import ApplicationsToolbar from "./ApplicationsToolbar";
 type ApplicationsTableProps = {
@@ -19,12 +18,6 @@ const ApplicationsTable = ({
   setSearch,
   handleEdit,
 }: ApplicationsTableProps) => {
-  const [isNotesModalOpen, setIsNotesModalOpen] = useState(false); // ← lifted here
-  const [selectedNoteJob, setSelectedNoteJob] = useState<null | Job>(null);
-  const onNotesClick = (job: Job) => {
-    setSelectedNoteJob(job);
-    setIsNotesModalOpen(true);
-  };
   if (filtered.length === 0) <div>Loading....</div>;
   return (
     <div
@@ -86,12 +79,7 @@ const ApplicationsTable = ({
             //   platformColors.Hirist;
 
             return (
-              <ApplicationRow
-                job={job}
-                key={job.id}
-                onNotesClick={onNotesClick}
-                handleEdit={handleEdit}
-              />
+              <ApplicationRow job={job} key={job.id} handleEdit={handleEdit} />
             );
           })}
           {filtered.length === 0 && (
@@ -109,13 +97,6 @@ const ApplicationsTable = ({
           )}
         </tbody>
       </table>
-      {selectedNoteJob && (
-        <NotesModal
-          isOpen={isNotesModalOpen}
-          onClose={() => setIsNotesModalOpen(false)}
-          job={selectedNoteJob}
-        />
-      )}
     </div>
   );
 };

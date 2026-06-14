@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import type { Job } from "../types";
-import "../modal.css";
+import "../styles/modal.css";
 import { STATUS_CFG } from "../data/statusConfig";
 import { formatAppliedDate } from "../utils/dateUtils";
 import { X } from "lucide-react";

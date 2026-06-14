@@ -7,7 +7,7 @@ import {
   type Job,
   type JobStatusType,
 } from "../types";
-import "../modal.css";
+import "../styles/modal.css";
 
 import { getTodayDate } from "../utils/dateUtils";
 import { useState } from "react";

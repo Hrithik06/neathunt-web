@@ -9,10 +9,10 @@ type ApplicationsToolbarProps = {
   setSearch: (s: string) => void;
 };
 export default function ApplicationsToolbar({
-  search,
-  setSearch,
   filter,
   setFilter,
+  search,
+  setSearch,
 }: ApplicationsToolbarProps) {
   const { isMidnight } = useTheme();
 
@@ -38,6 +38,7 @@ export default function ApplicationsToolbar({
             fontFamily: "inherit",
           }}
         />
+
         {["All", ...Object.keys(STATUS_CFG)].map((s) => {
           const cfg = STATUS_CFG[s as keyof typeof STATUS_CFG];
           const isActive = filter === s;
