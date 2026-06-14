@@ -1,26 +1,29 @@
+import { lazy, useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import "./Dashboard.css";
-import { useEffect, useState } from "react";
+import { useResponsive } from "@/context/ResponsiveContext";
+import type { Job } from "@/features/jobs/types";
+import { useJobs } from "@/features/jobs/hooks/useJobs";
+import { showToast } from "@/components/ui/showToast";
+import { Menu } from "lucide-react";
+
 import DashboardHeader from "@/features/dashboard/components/DashboardHeader";
 import JobPipeline from "@/features/jobs/components/JobPipeline";
 import StatCards from "@/features/dashboard/components/StatCards";
 import TrophyCard from "@/features/dashboard/components/TrophyCard";
 import ApplicationsTable from "@/features/jobs/components/ApplicationsTable";
 import DesktopSidebar from "@/features/dashboard/components/DesktopSidebar";
-import LogApplicationModal from "@/features/jobs/forms/LogApplicationModal";
-import { useNavigate } from "react-router";
-import type { Job } from "@/features/jobs/types";
 import EmptyApplicationsState from "@/features/jobs/components/EmptyApplicationsState";
-import { useJobs } from "@/features/jobs/hooks/useJobs";
 import ApplicationsTableSkeleton from "@/features/jobs/components/ApplicationsTableSkeleton";
 import JobPipelineSkeleton from "@/features/jobs/components/JobPipelineSkeleton";
 import TrophyCardSkeleton from "@/features/dashboard/components/TrophyCardSkeleton";
 import StatCardsSkeleton from "@/features/dashboard/components/StatCardsSkeleton";
-import { showToast } from "@/components/ui/showToast";
-import { Menu } from "lucide-react";
 import MobileSidebar from "@/features/dashboard/components/MobileSidebar";
 import MobileApplicationsGrid from "@/features/jobs/components/MobileApplicationsGrid";
-import { useResponsive } from "@/context/ResponsiveContext";
 
+const LogApplicationModal = lazy(
+  () => import("@/features/jobs/forms/LogApplicationModal"),
+);
 // ── Main ─────────────────────────────────────────────────────────
 export default function DashboardPage() {
   const [filter, setFilter] = useState("All");

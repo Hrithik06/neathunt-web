@@ -57,7 +57,10 @@ const NotesModal = ({ isOpen, onClose, job }: NotesModalProps) => {
 
           <button
             className="nh-modal__close"
-            onClick={onClose}
+            onClick={(e) => {
+              e.stopPropagation();
+              onClose();
+            }}
             aria-label="Close modal"
           >
             <X />

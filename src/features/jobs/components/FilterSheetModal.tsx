@@ -1,11 +1,9 @@
 import { useEffect } from "react";
 import "../styles/modal.css";
-import { STATUS_FILTERS } from "../data/statusFilters";
-import { STATUS_CFG } from "../data/statusConfig";
-import { BRAND } from "@/constants/brand";
-import { useTheme } from "@/context/ThemeContext";
-import { Check, X } from "lucide-react";
+
 import StatusFilterPills from "./StatusFilterPills";
+import { X } from "lucide-react";
+import { STATUS_CFG } from "../data/statusConfig";
 type FilterSheetModalProps = {
   isOpen: boolean;
   onClose: () => void;
@@ -19,8 +17,6 @@ const FilterSheetModal = ({
   filter,
   setFilter,
 }: FilterSheetModalProps) => {
-  const { isMidnight } = useTheme();
-
   // Escape key handler
   useEffect(() => {
     if (!isOpen) return;
@@ -80,8 +76,6 @@ const FilterSheetModal = ({
           setFilter={setFilter}
           variant="sheet"
         />
-
-        {/*<div className="nh-notes">hi</div>*/}
       </div>
     </div>
   );

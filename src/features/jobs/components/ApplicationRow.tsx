@@ -4,22 +4,18 @@ import type { Job } from "../types";
 import { convertToDateMonth } from "../utils/dateUtils";
 import Badge from "./Badge";
 import JobRowActions from "./JobRowActions";
-import { useState } from "react";
-import NotesModal from "./NotesModal";
 
 type ApplicationRowProps = {
   job: Job;
-  handleEdit: (j: Job) => void;
+  onEditClick: () => void;
+  onNotesClick: () => void;
 };
 export default function ApplicationRow({
   job,
-  handleEdit,
+  onEditClick,
+  onNotesClick,
 }: ApplicationRowProps) {
   const { isMidnight } = useTheme();
-  const [isNotesModalOpen, setIsNotesModalOpen] = useState(false);
-  const openNotesModal = () => {
-    setIsNotesModalOpen(true);
-  };
   const statusColor = isMidnight
     ? STATUS_CFG[job.status as keyof typeof STATUS_CFG].darkColor
     : STATUS_CFG[job.status as keyof typeof STATUS_CFG].color;
@@ -93,16 +89,11 @@ export default function ApplicationRow({
           <JobRowActions
             url={job.url}
             notes={job.notes}
-            onNotesClick={openNotesModal}
-            onEditClick={() => handleEdit(job)}
+            onNotesClick={onNotesClick}
+            onEditClick={onEditClick}
           />
         </td>
       </tr>
-      <NotesModal
-        isOpen={isNotesModalOpen}
-        onClose={() => setIsNotesModalOpen(false)}
-        job={job}
-      />
     </>
   );
 }

@@ -70,7 +70,7 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isDirty },
     control,
   } = useForm<FormFields>({
     resolver: zodResolver(createJobSchema),
@@ -312,7 +312,7 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
             <button
               type="submit"
               className="nh-btn nh-btn--primary"
-              disabled={isSubmitting}
+              disabled={isSubmitting || !isDirty}
             >
               {isSubmitting ? "Saving…" : submitButtonTxt}
             </button>
