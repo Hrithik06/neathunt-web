@@ -7,7 +7,7 @@ import {
   type Job,
   type JobStatusType,
 } from "../types";
-import "../modal.css";
+import "../styles/modal.css";
 
 import { getTodayDate } from "../utils/dateUtils";
 import { useState } from "react";
@@ -70,7 +70,7 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isDirty },
     control,
   } = useForm<FormFields>({
     resolver: zodResolver(createJobSchema),
@@ -312,7 +312,7 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
             <button
               type="submit"
               className="nh-btn nh-btn--primary"
-              disabled={isSubmitting}
+              disabled={isSubmitting || !isDirty}
             >
               {isSubmitting ? "Saving…" : submitButtonTxt}
             </button>

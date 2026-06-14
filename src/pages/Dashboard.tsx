@@ -1,29 +1,39 @@
+import { lazy, useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import "./Dashboard.css";
-import { useEffect, useState } from "react";
+import { useResponsive } from "@/context/ResponsiveContext";
+import type { Job } from "@/features/jobs/types";
+import { useJobs } from "@/features/jobs/hooks/useJobs";
+import { showToast } from "@/components/ui/showToast";
+import { Menu } from "lucide-react";
+
 import DashboardHeader from "@/features/dashboard/components/DashboardHeader";
 import JobPipeline from "@/features/jobs/components/JobPipeline";
 import StatCards from "@/features/dashboard/components/StatCards";
 import TrophyCard from "@/features/dashboard/components/TrophyCard";
 import ApplicationsTable from "@/features/jobs/components/ApplicationsTable";
-import DasboardSidebar from "@/features/dashboard/components/DashboardSidebar";
-import LogApplicationModal from "@/features/jobs/forms/LogApplicationModal";
-import { useNavigate } from "react-router";
-import type { Job } from "@/features/jobs/types";
+import DesktopSidebar from "@/features/dashboard/components/DesktopSidebar";
 import EmptyApplicationsState from "@/features/jobs/components/EmptyApplicationsState";
-import { useJobs } from "@/features/jobs/hooks/useJobs";
 import ApplicationsTableSkeleton from "@/features/jobs/components/ApplicationsTableSkeleton";
 import JobPipelineSkeleton from "@/features/jobs/components/JobPipelineSkeleton";
 import TrophyCardSkeleton from "@/features/dashboard/components/TrophyCardSkeleton";
 import StatCardsSkeleton from "@/features/dashboard/components/StatCardsSkeleton";
-import { showToast } from "@/components/ui/showToast";
+import MobileSidebar from "@/features/dashboard/components/MobileSidebar";
+import MobileApplicationsGrid from "@/features/jobs/components/MobileApplicationsGrid";
 
+const LogApplicationModal = lazy(
+  () => import("@/features/jobs/forms/LogApplicationModal"),
+);
 // ── Main ─────────────────────────────────────────────────────────
 export default function DashboardPage() {
   const [filter, setFilter] = useState("All");
   // const [jobData, setJobData] = useState<Job[]>([]);
   const [search, setSearch] = useState("");
   const [isJobModalOpen, setIsJobModalOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
+  const { isMobile } = useResponsive();
+
   const navigate = useNavigate();
 
   const { data, isLoading, isError, error } = useJobs();
@@ -73,63 +83,91 @@ export default function DashboardPage() {
   }, [isError, error]);
   return (
     <div
-      className="flex min-h-screen transition-colors duration-500"
+      className="flex h-screen transition-colors duration-500"
       style={{
         background: "var(--page-bg)",
         fontFamily: "'Nunito', 'DM Sans', sans-serif",
       }}
     >
       {/* ── Sidebar ──────────────────────────────────────────────── */}
-      <DasboardSidebar counts={counts} />
+
+      {!isMobile ? (
+        <DesktopSidebar counts={counts} />
+      ) : isSidebarOpen ? (
+        <MobileSidebar
+          counts={counts}
+          isOpen={isSidebarOpen}
+          onClose={() => setIsSidebarOpen(false)}
+        />
+      ) : (
+        <button
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          className="absolute mt-8 ml-3 z-99999"
+        >
+          <Menu color="var(--muted)" />
+        </button>
+      )}
 
       {/* ── Main ─────────────────────────────────────────────────── */}
-      <main className="flex-1 p-8 overflow-auto">
+      <main className="flex-1 overflow-auto">
         {/* Header — receives open handler, no modal inside */}
         <DashboardHeader handleCreate={handleCreate} />
+        <div className="p-8">
+          {/* Stat Cards */}
 
-        {/* Stat Cards */}
-
-        {isLoading ? (
-          <StatCardsSkeleton />
-        ) : (
-          <StatCards counts={counts} responseRate={responseRate} />
-        )}
-
-        {/* Pipeline + Trophy */}
-        <div className="flex gap-5 mb-6 flex-wrap fade-up-2">
           {isLoading ? (
-            <>
-              <JobPipelineSkeleton />
-              <TrophyCardSkeleton />
-            </>
+            <StatCardsSkeleton />
           ) : (
-            <>
-              <JobPipeline
-                counts={counts}
-                filter={filter}
-                setFilter={setFilter}
-              />
+            <StatCards counts={counts} responseRate={responseRate} />
+          )}
 
-              <TrophyCard counts={counts} responseRate={responseRate} />
-            </>
+          {/* Pipeline + Trophy */}
+          <div className="flex gap-5 mb-6 flex-wrap fade-up-2">
+            {isLoading ? (
+              <>
+                <JobPipelineSkeleton />
+                <TrophyCardSkeleton />
+              </>
+            ) : (
+              <>
+                <JobPipeline
+                  counts={counts}
+                  filter={filter}
+                  setFilter={setFilter}
+                />
+
+                <TrophyCard counts={counts} responseRate={responseRate} />
+              </>
+            )}
+          </div>
+
+          {/* Applications Table */}
+          {isLoading ? (
+            <ApplicationsTableSkeleton />
+          ) : jobData.length === 0 ? (
+            <EmptyApplicationsState
+              onOpenModal={() => setIsJobModalOpen(true)}
+            />
+          ) : isMobile ? (
+            <MobileApplicationsGrid
+              filtered={filtered}
+              filter={filter}
+              setFilter={setFilter}
+              search={search}
+              setSearch={setSearch}
+              handleEdit={handleEdit}
+            />
+          ) : (
+            <ApplicationsTable
+              filtered={filtered}
+              filter={filter}
+              setFilter={setFilter}
+              search={search}
+              setSearch={setSearch}
+              handleEdit={handleEdit}
+            />
           )}
         </div>
-
-        {/* Applications Table */}
-        {isLoading ? (
-          <ApplicationsTableSkeleton />
-        ) : jobData.length === 0 ? (
-          <EmptyApplicationsState onOpenModal={() => setIsJobModalOpen(true)} />
-        ) : (
-          <ApplicationsTable
-            filtered={filtered}
-            filter={filter}
-            setFilter={setFilter}
-            search={search}
-            setSearch={setSearch}
-            handleEdit={handleEdit}
-          />
-        )}
       </main>
 
       {/* ── Modal — rendered at page root, above everything ──────── */}

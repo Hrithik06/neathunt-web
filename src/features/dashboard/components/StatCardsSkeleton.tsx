@@ -4,14 +4,14 @@ function CardSkeleton() {
   return (
     <div
       className={
-        "relative flex-1 gap-4 min-w-32 h-32 rounded-2xl p-5 overflow-hidden border flex flex-col"
+        "relative flex-1 gap-1 sm:gap-4 min-w-32 sm:h-32 rounded-2xl p-5 overflow-hidden border flex flex-col"
       }
       style={{
         background: "var(--card-bg)",
         borderColor: "var(--card-border)",
       }}
     >
-      <Shimmer className="w-5 h-4 rounded-full" />
+      <Shimmer className="w-5 h-4 rounded-full hidden sm:block" />
       <Shimmer className="w-2/10 h-4" />
       <Shimmer className="w-4/10 h-4" />
     </div>

@@ -6,7 +6,7 @@ type TrophyCardProps = {
 const TrophyCard = ({ counts, responseRate }: TrophyCardProps) => {
   return (
     <div
-      className="w-48 shrink-0 rounded-2xl p-5 flex flex-col justify-between relative overflow-hidden offer-glow"
+      className="w-full sm:w-48 shrink-0 rounded-2xl p-5 hidden sm:flex flex-col justify-between relative overflow-hidden offer-glow "
       style={{ background: "linear-gradient(135deg,#1E2D5F,#2D3F7A)" }}
     >
       <div

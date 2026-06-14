@@ -1,8 +1,6 @@
-import Logo from "@/components/ui/Logo";
 import { BRAND } from "@/constants/brand";
 import { useTheme } from "@/context/ThemeContext";
-import { useEffect, useState } from "react";
-import { AFFIRMATIONS } from "../data/affirmations";
+import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 
 const NAV = [
@@ -12,56 +10,16 @@ const NAV = [
   { icon: "📈", label: "Analytics" },
   { icon: "⚙️", label: "Settings" },
 ];
-type DasboardSidebarProps = {
+type SidebarNavProps = {
   counts: Record<string, number>;
 };
-const DasboardSidebar = ({ counts }: DasboardSidebarProps) => {
+export default function SidebarNav({ counts }: SidebarNavProps) {
   const { isMidnight } = useTheme();
-  const [affIdx, setAffIdx] = useState(0);
   const [activeNav, setActiveNav] = useState(0);
 
   const { logout } = useAuth();
-  useEffect(() => {
-    const timer = setInterval(
-      () => setAffIdx((i) => (i + 1) % AFFIRMATIONS.length),
-      4000,
-    );
-    return () => clearInterval(timer);
-  }, []);
   return (
-    <aside
-      className="w-56 flex flex-col py-6 shrink-0 sticky top-0 h-screen transition-colors duration-500"
-      style={{ background: "var(--sidebar-bg)" }}
-    >
-      {/* Brand */}
-      <div className="flex items-center gap-3 px-5 pb-7">
-        <Logo size={40} />
-        <div>
-          <div className="font-black text-sm tracking-tight">
-            <span className="text-white">Neat</span>
-            <span style={{ color: BRAND.coral }}>Hunt</span>
-          </div>
-          <div className="text-xs font-bold" style={{ color: BRAND.gold }}>
-            YOU'VE GOT THIS ✨
-          </div>
-        </div>
-      </div>
-      {/* Affirmation ticker */}
-      <div
-        className="mx-3 mb-5 rounded-xl px-3 py-3 border-l-4 min-h-12 overflow-hidden"
-        style={{
-          background: "rgba(255,201,71,0.08)",
-          borderColor: BRAND.gold,
-        }}
-      >
-        <p
-          key={affIdx}
-          className="ticker-text text-xs font-bold leading-relaxed"
-          style={{ color: BRAND.gold }}
-        >
-          {AFFIRMATIONS[affIdx]}
-        </p>
-      </div>
+    <>
       {/* Nav */}
       <nav className="flex-1">
         {NAV.map((item, i) => (
@@ -109,6 +67,7 @@ const DasboardSidebar = ({ counts }: DasboardSidebarProps) => {
           <span className="font-medium opacity-75">Keep planting seeds.</span>
         </div>
       </div>
+      {/* Logout */}
       <button
         className="text-white/60 hover:text-white text-lg flex gap-1 items-center justify-center mt-3 cursor-pointer"
         onClick={logout}
@@ -116,8 +75,6 @@ const DasboardSidebar = ({ counts }: DasboardSidebarProps) => {
         <img src="/power.svg" alt="Logout" className="w-6 h-6" />
         <span>Logout</span>
       </button>
-    </aside>
+    </>
   );
-};
-
-export default DasboardSidebar;
+}

@@ -1,6 +1,7 @@
+import { lazy, useState } from "react";
 import type { Job } from "../types";
-import NotesModal from "./NotesModal";
-import { useState } from "react";
+const NotesModal = lazy(() => import("./NotesModal"));
+
 import ApplicationRow from "./ApplicationRow";
 import ApplicationsToolbar from "./ApplicationsToolbar";
 type ApplicationsTableProps = {
@@ -19,16 +20,12 @@ const ApplicationsTable = ({
   setSearch,
   handleEdit,
 }: ApplicationsTableProps) => {
-  const [isNotesModalOpen, setIsNotesModalOpen] = useState(false); // ← lifted here
-  const [selectedNoteJob, setSelectedNoteJob] = useState<null | Job>(null);
-  const onNotesClick = (job: Job) => {
-    setSelectedNoteJob(job);
-    setIsNotesModalOpen(true);
-  };
   if (filtered.length === 0) <div>Loading....</div>;
+  const [notesJob, setNotesJob] = useState<Job | null>(null);
+
   return (
     <div
-      className="rounded-2xl border overflow-hidden fade-up-3 transition-colors duration-500"
+      className="rounded-2xl border overflow-auto  fade-up-3 transition-colors duration-500"
       style={{
         background: "var(--card-bg)",
         borderColor: "var(--card-border)",
@@ -89,8 +86,8 @@ const ApplicationsTable = ({
               <ApplicationRow
                 job={job}
                 key={job.id}
-                onNotesClick={onNotesClick}
-                handleEdit={handleEdit}
+                onEditClick={() => handleEdit(job)}
+                onNotesClick={() => setNotesJob(job)}
               />
             );
           })}
@@ -109,11 +106,11 @@ const ApplicationsTable = ({
           )}
         </tbody>
       </table>
-      {selectedNoteJob && (
+      {notesJob && (
         <NotesModal
-          isOpen={isNotesModalOpen}
-          onClose={() => setIsNotesModalOpen(false)}
-          job={selectedNoteJob}
+          isOpen={!!notesJob}
+          onClose={() => setNotesJob(null)}
+          job={notesJob}
         />
       )}
     </div>

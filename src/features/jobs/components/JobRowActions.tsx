@@ -1,3 +1,4 @@
+import { useResponsive } from "@/context/ResponsiveContext";
 import "./JobRowActions.css";
 
 interface JobRowActionsProps {
@@ -13,9 +14,10 @@ const JobRowActions = ({
   onNotesClick,
   onEditClick,
 }: JobRowActionsProps) => {
+  const { isMobile } = useResponsive();
+
   return (
     <div className="jra-wrap">
-
       {/* ── Slot 1: URL — always occupies space, invisible if no url ── */}
       {url ? (
         <a
@@ -23,9 +25,11 @@ const JobRowActions = ({
           target="_blank"
           rel="noopener noreferrer"
           className="jra-btn jra-btn--url"
-          title="Open job posting"
+          onClick={(e) => e.stopPropagation()}
         >
-          🔗
+          <span>🔗</span>
+
+          {isMobile && <span className="jra-label">Open</span>}
         </a>
       ) : (
         <span className="jra-slot" aria-hidden="true" />
@@ -37,24 +41,32 @@ const JobRowActions = ({
           type="button"
           className="jra-btn jra-btn--notes"
           title="View notes"
-          onClick={onNotesClick}
+          onClick={(e) => {
+            e.stopPropagation();
+            onNotesClick();
+          }}
         >
-          📝
+          <span>📝</span>
+          {isMobile && <span className="jra-label">Notes</span>}
         </button>
       ) : (
         <span className="jra-slot" aria-hidden="true" />
       )}
 
       {/* ── Slot 3: Edit — always rendered ── */}
+
       <button
         type="button"
         className="jra-btn jra-btn--edit"
         title="Edit application"
-        onClick={onEditClick}
+        onClick={(e) => {
+          e.stopPropagation();
+          onEditClick();
+        }}
       >
-        ✏️
+        <span>✏️</span>
+        {isMobile && <span className="jra-label">Edit</span>}
       </button>
-
     </div>
   );
 };

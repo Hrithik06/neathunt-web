@@ -1,33 +1,30 @@
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import { BRAND } from "@/constants/brand";
-import { useGreeting } from "@/hooks/useGreeting";
+import Greeting from "./Greeting";
 
 interface DashboardHeaderProps {
   handleCreate: () => void;
 }
 
 const DashboardHeader = ({ handleCreate }: DashboardHeaderProps) => {
-  const { firstName, greeting, emoji, subText } = useGreeting();
-
   return (
-    <div className="flex justify-between items-start mb-7 fade-up">
-      <div>
-        <h1
-          className="text-2xl font-black tracking-tight"
-          style={{ color: "var(--heading)" }}
-        >
-          {greeting} {emoji}, {firstName}
-        </h1>
-        <p
-          className="text-sm font-semibold mt-1"
-          style={{ color: "var(--muted)" }}
-        >
-          {subText}
-        </p>
+    <div
+      className="
+        sticky top-0 z-30 flex justify-end sm:justify-between items-start px-6 pt-4 pb-5 shadow-sm"
+      style={{
+        background: "var(--page-bg)",
+        borderBottom: "1px solid var(--card-border)",
+      }}
+    >
+      <div className="hidden pl-6 sm:block lg:pl-0">
+        <Greeting />
       </div>
 
       <div className="flex items-center gap-3">
-        <ThemeToggle />
+        <div className="hidden sm:block">
+          <ThemeToggle />
+        </div>
+
         <button
           className="cta-btn flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-black text-white border-0 cursor-pointer transition-all duration-200"
           style={{

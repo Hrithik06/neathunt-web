@@ -77,7 +77,7 @@ const NavBar = () => {
           </div>
         </div>
 
-        <div className="hidden md:flex items-center gap-7">
+        <div className="hidden sm:flex items-center gap-7">
           {["Features", "How it works", "FAQ"].map((l) => (
             <a
               key={l}

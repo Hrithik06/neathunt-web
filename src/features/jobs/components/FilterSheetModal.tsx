@@ -1,16 +1,22 @@
 import { useEffect } from "react";
-import type { Job } from "../types";
 import "../styles/modal.css";
-import { STATUS_CFG } from "../data/statusConfig";
-import { formatAppliedDate } from "../utils/dateUtils";
+
+import StatusFilterPills from "./StatusFilterPills";
 import { X } from "lucide-react";
-type NotesModalProps = {
+import { STATUS_CFG } from "../data/statusConfig";
+type FilterSheetModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  job: Job;
+  filter: string;
+  setFilter: (f: string) => void;
 };
 
-const NotesModal = ({ isOpen, onClose, job }: NotesModalProps) => {
+const FilterSheetModal = ({
+  isOpen,
+  onClose,
+  filter,
+  setFilter,
+}: FilterSheetModalProps) => {
   // Escape key handler
   useEffect(() => {
     if (!isOpen) return;
@@ -37,30 +43,27 @@ const NotesModal = ({ isOpen, onClose, job }: NotesModalProps) => {
       onClick={onClose}
       role="dialog"
       aria-modal="true"
-      aria-labelledby="notes-modal-title"
+      aria-labelledby="filter-modal-title"
     >
       {/* Stop clicks inside the panel from closing the modal */}
-      <div className="nh-modal" onClick={(e) => e.stopPropagation()}>
+      <div className="nh-sheet" onClick={(e) => e.stopPropagation()}>
         <div className="nh-modal__header">
           <div>
-            <p className="nh-modal__eyebrow">📝 Notes</p>
-
-            <p className="nh-notes__job" id="notes-modal-title">
-              {job.company} · {job.title}
-            </p>
-
-            <p className="nh-notes__meta">
-              {formatAppliedDate(job.appliedAt)} •{" "}
-              {STATUS_CFG[job.status].label}
-            </p>
+            <p className="nh-modal__eyebrow">⚙️ Filters</p>
+            <h2 className="nh-modal__title" id="filter-modal-title">
+              Showing{" "}
+              <span>
+                {filter === "All"
+                  ? "All Applications"
+                  : STATUS_CFG[filter as keyof typeof STATUS_CFG].label}
+              </span>
+            </h2>
+            <p className="nh-modal__subtitle">Tap to change the filter</p>
           </div>
 
           <button
             className="nh-modal__close"
-            onClick={(e) => {
-              e.stopPropagation();
-              onClose();
-            }}
+            onClick={onClose}
             aria-label="Close modal"
           >
             <X />
@@ -68,11 +71,14 @@ const NotesModal = ({ isOpen, onClose, job }: NotesModalProps) => {
         </div>
 
         <div className="nh-divider" />
-
-        <div className="nh-notes">{job.notes}</div>
+        <StatusFilterPills
+          filter={filter}
+          setFilter={setFilter}
+          variant="sheet"
+        />
       </div>
     </div>
   );
 };
 
-export default NotesModal;
+export default FilterSheetModal;
