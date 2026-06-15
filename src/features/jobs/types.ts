@@ -16,9 +16,9 @@ export const JobStatus = {
 //   appliedAt: string;
 //   notes?: string;
 //   url?: string;
-//   // platform?: string;
-//   // salary?: string;
-//   // logo?: string;
+// platform?: string;
+// salary?: string;
+// logo?: string;
 // };
 
 export const createJobSchema = z.object({
@@ -31,7 +31,8 @@ export const createJobSchema = z.object({
     .transform((v) => (v === "" ? undefined : v)) //cuz RHF sends empty string for optional values
     .optional(), //cuz RHF sends empty string for optional values
   url: z
-    .union([z.literal(""), z.url()])
+    .url("Invalid URL expected https://...")
+    .or(z.literal(""))
     .transform((v) => (v === "" ? undefined : v))
     .optional(), //cuz RHF sends empty string for optional values
 });
@@ -43,12 +44,15 @@ export const updateJobSchema = z.object({
   appliedAt: z.iso.date().optional(),
   notes: z
     .string()
-    .transform((v) => (v === "" ? undefined : v))
-    .optional(), //cuz RHF sends empty string for optional values
+    .nullable()
+    // .transform((v) => (v === "" ? null : v)) //cuz RHF sends empty string for optional valuesand server doesnt accept empty strings, when remove the previous data we send null so server sets it to null
+    .optional(),
   url: z
-    .union([z.literal(""), z.url()])
-    .transform((v) => (v === "" ? undefined : v))
-    .optional(), //cuz RHF sends empty string for optional values
+    .url("Invalid URL expected https://...")
+    .nullable()
+    .or(z.literal(""))
+    // .transform((v) => (v === "" ? null : v)) //cuz RHF sends empty string for optional valuesand server doesnt accept empty strings, when remove the previous data we send null so server sets it to null
+    .optional(),
 });
 export type JobStatusType = (typeof JobStatus)[keyof typeof JobStatus];
 
@@ -61,3 +65,12 @@ export type Job = CreateJobInput & {
   source: string;
   updatedAt: string;
 };
+
+export const jobFormSchema = z.object({
+  company: z.string().min(1),
+  title: z.string().min(1),
+  status: z.enum(JobStatus),
+  appliedAt: z.iso.date(),
+  notes: z.string(),
+  url: z.url("Invalid URL expected https://...").or(z.literal("")),
+});

@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { AFFIRMATIONS } from "../data/affirmations";
 import SidebarNav from "./SidebarNav";
 import ThemeToggle from "@/components/ui/ThemeToggle";
-import { X } from "lucide-react";
+import { LogOut, X } from "lucide-react";
 import Greeting from "./Greeting";
+import { useAuth } from "@/context/AuthContext";
 
 type MobileSidebarProps = {
   counts: Record<string, number>;
@@ -14,6 +15,7 @@ type MobileSidebarProps = {
 };
 const MobileSidebar = ({ counts, isOpen, onClose }: MobileSidebarProps) => {
   const [affIdx, setAffIdx] = useState(0);
+  const { logout } = useAuth();
 
   useEffect(() => {
     const timer = setInterval(
@@ -46,6 +48,8 @@ const MobileSidebar = ({ counts, isOpen, onClose }: MobileSidebarProps) => {
         flex-col
         py-6
         h-screen
+        overflow-y-auto
+        pb-[max(3.5rem,env(safe-area-inset-bottom))]
       "
         style={{ background: "var(--sidebar-bg)" }}
       >
@@ -100,6 +104,13 @@ const MobileSidebar = ({ counts, isOpen, onClose }: MobileSidebarProps) => {
         >
           <span style={{ color: "var(--muted)" }}>Theme</span>
           <ThemeToggle />
+          <button
+            className="hidden md:flex gap-1 items-center justify-center text-white/60 hover:text-white text-lg  mt-3 cursor-pointer"
+            onClick={logout}
+          >
+            <LogOut className="text-red-400" />
+            <span>Logout</span>
+          </button>
         </div>
 
         <SidebarNav counts={counts} />

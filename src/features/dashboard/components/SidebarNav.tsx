@@ -2,6 +2,7 @@ import { BRAND } from "@/constants/brand";
 import { useTheme } from "@/context/ThemeContext";
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { LogOut } from "lucide-react";
 
 const NAV = [
   { icon: "🏠", label: "Dashboard" },
@@ -69,10 +70,10 @@ export default function SidebarNav({ counts }: SidebarNavProps) {
       </div>
       {/* Logout */}
       <button
-        className="text-white/60 hover:text-white text-lg flex gap-1 items-center justify-center mt-3 cursor-pointer"
+        className="hidden md:flex gap-1 items-center justify-center text-white/60 hover:text-white text-lg  mt-3 cursor-pointer"
         onClick={logout}
       >
-        <img src="/power.svg" alt="Logout" className="w-6 h-6" />
+        <LogOut className="text-red-400" />
         <span>Logout</span>
       </button>
     </>

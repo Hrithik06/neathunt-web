@@ -2,7 +2,7 @@ import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import type z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  createJobSchema,
+  jobFormSchema,
   JobStatus,
   type Job,
   type JobStatusType,
@@ -17,8 +17,6 @@ import { useCreateJob } from "../hooks/useCreateJob";
 import { useDeleteJob } from "../hooks/useDeleteJob";
 import { useUpdateJob } from "../hooks/useUpdateJob";
 
-type FormFields = z.infer<typeof createJobSchema>;
-
 const STATUS_OPTIONS: { value: JobStatusType; label: string }[] = [
   { value: JobStatus.APPLIED, label: "📬 Applied" },
   { value: JobStatus.INTERVIEW_SCHEDULED, label: "📅 Interview Scheduled" },
@@ -28,6 +26,8 @@ const STATUS_OPTIONS: { value: JobStatusType; label: string }[] = [
   { value: JobStatus.REJECTED, label: "🌱 Rejected" },
   { value: JobStatus.WITHDRAWN, label: "↩️ Withdrawn" },
 ];
+
+type JobFormValues = z.infer<typeof jobFormSchema>;
 
 interface JobFormProps {
   onClose?: () => void;
@@ -50,7 +50,7 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
   const updateJob = useUpdateJob();
 
   // ── Default values ────────────────────────────────────────────────────────
-  let defaultValues: Partial<FormFields> = {
+  let defaultValues: Partial<JobFormValues> = {
     status: JobStatus.APPLIED,
     appliedAt: getTodayDate(),
   };
@@ -72,8 +72,8 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
     handleSubmit,
     formState: { errors, isSubmitting, isDirty },
     control,
-  } = useForm<FormFields>({
-    resolver: zodResolver(createJobSchema),
+  } = useForm<JobFormValues>({
+    resolver: zodResolver(jobFormSchema),
     defaultValues,
   });
 
@@ -83,21 +83,32 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
     : "Application added";
   const submitButtonTxt = isEditMode ? "Save Changes 💾" : "Log Application 🚀";
 
-  const onSubmit: SubmitHandler<FormFields> = async (data) => {
+  const onSubmit: SubmitHandler<JobFormValues> = async (data) => {
     try {
       setApiError(null);
+
       if (isEditMode) {
-        // await updateJobMutation({ jobId: selectedJob.id, data });
-        await updateJob.mutateAsync({ jobId: selectedJob.id, data });
+        const updateApplication = {
+          ...data,
+          notes: data.notes === "" ? null : data.notes,
+          url: data.url === "" ? null : data.url,
+        };
+        updateJob.mutateAsync({
+          jobId: selectedJob.id,
+          data: updateApplication,
+        });
       } else {
-        // await createJobMutation(data);
-        await createJob.mutateAsync(data);
+        const newApplication = {
+          ...data,
+          notes: data.notes || undefined,
+          url: data.url || undefined,
+        };
+        createJob.mutateAsync(newApplication);
       }
 
       onClose?.();
-      // setTimeout(() =>
+
       showToast(successMessage, "success");
-      // , 300);
     } catch (err: any) {
       setApiError(err.message);
       console.log(createJob.error?.message);
@@ -115,9 +126,8 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
       // await deleteJobMutation(selectedJob.id);
       await deleteJob.mutateAsync(selectedJob.id);
       onClose?.();
-      // setTimeout(() =>
+
       showToast("Application deleted", "success");
-      // , 300);
     } catch (err: any) {
       setApiError(err.message);
       setIsDeleting(false);
