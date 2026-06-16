@@ -1,15 +1,5 @@
 // Per-status colors — data-driven, not theme tokens — stays in JS
 
-// export const STATUS_LABELS = {
-//   APPLIED: "Applied",
-//   INTERVIEW_SCHEDULED: "Interview Scheduled",
-//   INTERVIEW_COMPLETED: "Interview Completed",
-//   OFFER: "Offer",
-//   ACCEPTED: "Accepted",
-//   REJECTED: "Rejected",
-//   WITHDRAWN: "Withdrawn",
-// } as const;
-
 export const STATUS_CFG = {
   APPLIED: {
     label: "Applied",

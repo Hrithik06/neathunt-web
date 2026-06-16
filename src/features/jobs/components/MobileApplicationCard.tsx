@@ -4,6 +4,7 @@ import Badge from "./Badge";
 import { STATUS_CFG } from "../data/statusConfig";
 import JobRowActions from "./JobRowActions";
 import type { Job } from "../types";
+import { getPlatformBadge } from "../utils/getPlatformBadge";
 
 type ApplicationCardProps = {
   job: Job;
@@ -22,9 +23,10 @@ export function MobileApplicationCard({
 }: ApplicationCardProps) {
   const { isMidnight } = useTheme();
   const expanded = selectedId === job.id;
-  const statusColor = isMidnight
-    ? STATUS_CFG[job.status as keyof typeof STATUS_CFG].darkColor
-    : STATUS_CFG[job.status as keyof typeof STATUS_CFG].color;
+  const statusCfg = STATUS_CFG[job.status as keyof typeof STATUS_CFG];
+  const statusColor = isMidnight ? statusCfg.darkColor : statusCfg.color;
+
+  const platformCfg = getPlatformBadge(job.platform);
   return (
     <div
       className="border rounded-xl p-4 flex flex-col gap-3 min-w-0 cursor-pointer active:scale-[0.98] transition-transform"
@@ -56,21 +58,29 @@ export function MobileApplicationCard({
           {job.company}
         </span>
       </div>
-      <div
-        className="text-sm font-semibold wrap-break-word"
-        style={{ color: "var(--muted)", opacity: 0.8 }}
-      >
-        {job.title}
+      <div className="flex gap-4 items-center">
+        <span
+          className="text-sm font-semibold wrap-break-word"
+          style={{ color: "var(--muted)", opacity: 0.8 }}
+        >
+          {job.title}
+        </span>
+        <Badge badgeCfg={platformCfg} />
       </div>
-
+      {job.salary && (
+        <span
+          className="text-sm font-semibold"
+          style={{ color: "var(--muted)" }}
+        >
+          {job.currency ?? ""} {job.salary}
+        </span>
+      )}{" "}
       <div className="flex items-center gap-3">
-        <Badge status={job.status} isMidnight={isMidnight} />
-
+        <Badge badgeCfg={statusCfg} />
         <span className="text-sm " style={{ color: "var(--heading)" }}>
           📅 {convertToDateMonth(job.appliedAt)}
         </span>
       </div>
-
       <div className="mt-auto">
         {expanded ? (
           <JobRowActions

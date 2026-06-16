@@ -2,6 +2,7 @@ import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import type z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
+  Currency,
   jobFormSchema,
   JobStatus,
   type Job,
@@ -16,6 +17,8 @@ import DatePickerField from "@/components/ui/DatePickerField";
 import { useCreateJob } from "../hooks/useCreateJob";
 import { useDeleteJob } from "../hooks/useDeleteJob";
 import { useUpdateJob } from "../hooks/useUpdateJob";
+import { PLATFORM_CFG } from "../data/platformConfig";
+import PlatformField from "@/components/ui/PlatformField";
 
 const STATUS_OPTIONS: { value: JobStatusType; label: string }[] = [
   { value: JobStatus.APPLIED, label: "📬 Applied" },
@@ -26,7 +29,17 @@ const STATUS_OPTIONS: { value: JobStatusType; label: string }[] = [
   { value: JobStatus.REJECTED, label: "🌱 Rejected" },
   { value: JobStatus.WITHDRAWN, label: "↩️ Withdrawn" },
 ];
-
+const CURRENCY_OPTIONS = Object.values(Currency).map((currency) => ({
+  value: currency,
+  label: currency,
+}));
+// const PLATFORM_OPTIONS = Object.entries(PLATFORM_CFG).map(([, pfValue]) => ({
+//   value: pfValue.label,
+//   label: pfValue.label,
+// }));
+const PLATFORM_OPTIONS = Object.values(PLATFORM_CFG).map(
+  (pfValue) => pfValue.label,
+);
 type JobFormValues = z.infer<typeof jobFormSchema>;
 
 interface JobFormProps {
@@ -223,6 +236,74 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
             <span className="nh-field__error">
               ⚠ {errors.appliedAt.message}
             </span>
+          )}
+        </div>
+      </div>
+
+      {/* ── Row 2: Platform + Salary + Currency ── */}
+
+      <div className="nh-field--row">
+        <div className="nh-field">
+          <label htmlFor="platformId" className="nh-label">
+            Platform <span className="nh-label__required">*</span>
+          </label>
+          <Controller
+            name="platform"
+            control={control}
+            render={({ field }) => (
+              <PlatformField
+                value={field.value}
+                onChange={field.onChange}
+                options={PLATFORM_OPTIONS}
+              />
+            )}
+          />
+          {/*<div className="nh-select-wrap">
+            <select
+              id="platformId"
+              className={`nh-select${errors.platform ? " nh-select--error" : ""}`}
+              {...register("platform")}
+            >
+              {PLATFORM_OPTIONS.map(({ value, label }) => (
+                <option key={value} value={value}>
+                  {label}
+                </option>
+              ))}
+            </select>
+          </div>
+          {errors.platform && (
+            <span className="nh-field__error">⚠ {errors.platform.message}</span>
+          )}*/}
+        </div>
+
+        <div className="nh-field">
+          <label className="nh-label">Salary</label>
+
+          <div className="flex gap-2">
+            <div className="nh-select-wrap w-28">
+              <select className="nh-select" {...register("currency")}>
+                <option value="">---</option>
+
+                {CURRENCY_OPTIONS.map(({ value, label }) => (
+                  <option key={value} value={value}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <input
+              type="text"
+              placeholder="120-150K"
+              className="nh-input flex-1"
+              {...register("salary")}
+            />
+          </div>
+          {errors.salary && (
+            <span className="nh-field__error">⚠ {errors.salary.message}</span>
+          )}
+          {errors.currency && (
+            <span className="nh-field__error">⚠ {errors.currency.message}</span>
           )}
         </div>
       </div>

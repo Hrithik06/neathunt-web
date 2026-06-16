@@ -3,30 +3,36 @@ import { useState } from "react";
 import StatusFilterPills from "./StatusFilterPills";
 import FilterSheetModal from "./FilterSheetModal";
 import { ListFilter } from "lucide-react";
+import Toggle from "@/components/ui/Toggle";
 
 type ApplicationsToolbarProps = {
   filter: string;
   setFilter: (f: string) => void;
   search: string;
   setSearch: (s: string) => void;
+  isSalaryVisible: boolean;
+  setIsSalaryVisible: (checked: boolean) => void;
 };
+
 export default function ApplicationsToolbar({
   filter,
   setFilter,
   search,
   setSearch,
+  isSalaryVisible,
+  setIsSalaryVisible,
 }: ApplicationsToolbarProps) {
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
   const { isMobile } = useResponsive();
   return (
     <div
-      className="flex flex-col sm:flex-row justify-between sm:items-center flex-wrap gap-3 px-6 py-4 border-b"
+      className="flex flex-col sm:flex-row justify-between sm:items-center flex-wrap gap-3 px-6 py-4 border-b text-xs"
       style={{ borderColor: "var(--card-border)" }}
     >
       <div className="font-black text-sm" style={{ color: "var(--heading)" }}>
         📋 All Applications
       </div>
-      <div className="flex items-center gap-2 flex-wrap">
+      <div className="flex items-center gap-2 flex-wrap ">
         <input
           id="searchId"
           value={search}
@@ -49,7 +55,14 @@ export default function ApplicationsToolbar({
             <ListFilter size={20} color="var(--heading)" />
           </button>
         ) : (
-          <StatusFilterPills filter={filter} setFilter={setFilter} />
+          <>
+            <StatusFilterPills filter={filter} setFilter={setFilter} />
+            <Toggle
+              checked={isSalaryVisible}
+              onChange={setIsSalaryVisible}
+              label="Salary"
+            />
+          </>
         )}
       </div>
       <FilterSheetModal
