@@ -1,83 +1,70 @@
-import * as Popover from "@radix-ui/react-popover";
-import { useState } from "react";
+import CreatableSelect from "react-select/creatable";
+
+type Option = {
+  value: string;
+  label: string;
+};
 
 type PlatformFieldProps = {
   value: string;
   onChange: (value: string) => void;
-  options: string[];
+  options: Option[];
 };
 
 export default function PlatformField({
+  options,
   value,
   onChange,
-  options,
 }: PlatformFieldProps) {
-  const [open, setOpen] = useState(false);
-
-  const filtered = options.filter((o) =>
-    o.toLowerCase().includes(value.toLowerCase()),
-  );
-
   return (
-    <Popover.Root open={open} onOpenChange={setOpen}>
-      <Popover.Trigger asChild>
-        <input
-          className="nh-input"
-          placeholder="LinkedIn"
-          value={value}
-          onFocus={() => setOpen(true)}
-          onChange={(e) => {
-            onChange(e.target.value);
-            setOpen(true);
-          }}
-        />
-      </Popover.Trigger>
+    <div className="nh-select-wrap">
+      <CreatableSelect
+        unstyled
+        options={options}
+        value={
+          value
+            ? {
+                value,
+                label: value,
+              }
+            : null
+        }
+        onChange={(option) => {
+          onChange(option?.value ?? "");
+        }}
+        components={{
+          IndicatorSeparator: () => null,
+          DropdownIndicator: () => null,
+        }}
+        classNames={{
+          control: () => "nh-input",
 
-      <Popover.Portal>
-        <Popover.Content
-          sideOffset={6}
-          className="
-            w-[var(--radix-popover-trigger-width)]
-            rounded-xl
-            border
-            shadow-lg
-            overflow-hidden
-            z-50
-          "
-          style={{
-            background: "var(--card)",
-            borderColor: "var(--border)",
-          }}
-        >
-          {filtered.length > 0 ? (
-            filtered.map((platform) => (
-              <button
-                key={platform}
-                type="button"
-                className="
-                  w-full text-left px-3 py-2
-                  hover:bg-black/5
-                "
-                onClick={() => {
-                  onChange(platform);
-                  setOpen(false);
-                }}
-              >
-                {platform}
-              </button>
-            ))
-          ) : (
-            <div
-              className="px-3 py-2 text-sm"
-              style={{
-                color: "var(--muted)",
-              }}
-            >
-              Press Enter to create "{value}"
-            </div>
-          )}
-        </Popover.Content>
-      </Popover.Portal>
-    </Popover.Root>
+          menu: () => "nh-rs-menu",
+
+          option: ({ isFocused, isSelected }) =>
+            `
+          nh-rs-option
+          ${isFocused ? "nh-rs-option--focused" : ""}
+          ${isSelected ? "nh-rs-option--selected" : ""}
+          `,
+        }}
+      />
+    </div>
+    // <CreatableSelect<Option, false>
+    //   isClearable
+    //   options={options}
+    // value={
+    //   value
+    //     ? {
+    //         value,
+    //         label: value,
+    //       }
+    //     : null
+    // }
+    // onChange={(option) => {
+    //   onChange(option?.value ?? "");
+    // }}
+    //   // styles={customStyles}
+    // />
   );
 }

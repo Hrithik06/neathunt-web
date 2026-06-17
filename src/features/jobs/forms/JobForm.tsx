@@ -33,13 +33,14 @@ const CURRENCY_OPTIONS = Object.values(Currency).map((currency) => ({
   value: currency,
   label: currency,
 }));
-// const PLATFORM_OPTIONS = Object.entries(PLATFORM_CFG).map(([, pfValue]) => ({
-//   value: pfValue.label,
-//   label: pfValue.label,
-// }));
-const PLATFORM_OPTIONS = Object.values(PLATFORM_CFG).map(
-  (pfValue) => pfValue.label,
-);
+const PLATFORM_OPTIONS: {
+  value: string;
+  label: string;
+}[] = Object.entries(PLATFORM_CFG).map(([, pfValue]) => ({
+  value: pfValue.label,
+  label: pfValue.label,
+}));
+
 type JobFormValues = z.infer<typeof jobFormSchema>;
 
 interface JobFormProps {
@@ -66,20 +67,33 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
   let defaultValues: Partial<JobFormValues> = {
     status: JobStatus.APPLIED,
     appliedAt: getTodayDate(),
+    // platform: PLATFORM_OPTIONS[0].value,
   };
 
   if (selectedJob) {
-    const { company, title, status, appliedAt, url, notes } = selectedJob;
+    const {
+      company,
+      title,
+      status,
+      appliedAt,
+      url,
+      notes,
+      platform,
+      salary,
+      currency,
+    } = selectedJob;
     defaultValues = {
       company,
       title,
       status: status as JobStatusType,
       appliedAt: appliedAt.slice(0, 10),
+      platform: platform ?? PLATFORM_OPTIONS[0],
+      salary: salary ?? "",
+      currency: currency ?? CURRENCY_OPTIONS[0].value,
       url: url ?? "",
       notes: notes ?? "",
     };
   }
-
   const {
     register,
     handleSubmit,
@@ -97,26 +111,36 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
   const submitButtonTxt = isEditMode ? "Save Changes 💾" : "Log Application 🚀";
 
   const onSubmit: SubmitHandler<JobFormValues> = async (data) => {
+    console.log("sd");
     try {
       setApiError(null);
-
+      console.log(data);
       if (isEditMode) {
-        const updateApplication = {
+        const updatePayload = {
           ...data,
-          notes: data.notes === "" ? null : data.notes,
-          url: data.url === "" ? null : data.url,
+
+          notes: data.notes || null,
+          url: data.url || null,
+
+          salary: data.salary || null,
+          currency: data.salary ? data.currency : null,
         };
         updateJob.mutateAsync({
           jobId: selectedJob.id,
-          data: updateApplication,
+          data: updatePayload,
         });
       } else {
-        const newApplication = {
+        const createPayload = {
           ...data,
+
           notes: data.notes || undefined,
           url: data.url || undefined,
+
+          salary: data.salary || undefined,
+          currency: data.salary ? data.currency : undefined,
         };
-        createJob.mutateAsync(newApplication);
+
+        createJob.mutateAsync(createPayload);
       }
 
       onClose?.();
@@ -193,6 +217,7 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
           <label htmlFor="statusId" className="nh-label">
             Status <span className="nh-label__required">*</span>
           </label>
+
           <div className="nh-select-wrap">
             <select
               id="statusId"
@@ -242,14 +267,16 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
 
       {/* ── Row 2: Platform + Salary + Currency ── */}
 
-      <div className="nh-field--row">
+      <div className="nh-field--row-platform">
         <div className="nh-field">
           <label htmlFor="platformId" className="nh-label">
             Platform <span className="nh-label__required">*</span>
           </label>
+
           <Controller
             name="platform"
             control={control}
+            rules={{ required: true }}
             render={({ field }) => (
               <PlatformField
                 value={field.value}
@@ -258,22 +285,9 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
               />
             )}
           />
-          {/*<div className="nh-select-wrap">
-            <select
-              id="platformId"
-              className={`nh-select${errors.platform ? " nh-select--error" : ""}`}
-              {...register("platform")}
-            >
-              {PLATFORM_OPTIONS.map(({ value, label }) => (
-                <option key={value} value={value}>
-                  {label}
-                </option>
-              ))}
-            </select>
-          </div>
           {errors.platform && (
             <span className="nh-field__error">⚠ {errors.platform.message}</span>
-          )}*/}
+          )}
         </div>
 
         <div className="nh-field">
@@ -282,8 +296,6 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
           <div className="flex gap-2">
             <div className="nh-select-wrap w-28">
               <select className="nh-select" {...register("currency")}>
-                <option value="">---</option>
-
                 {CURRENCY_OPTIONS.map(({ value, label }) => (
                   <option key={value} value={value}>
                     {label}

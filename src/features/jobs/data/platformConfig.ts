@@ -9,50 +9,50 @@ export const PLATFORM_CFG = {
 
   NAUKRI: {
     label: "Naukri",
-    bg: "#F1EDFF",
-    darkBg: "#1A1528",
-    color: "#4A39C6",
-    darkColor: "#A78BFA",
+    bg: "#EEF4FF",
+    darkBg: "#0E1A2B",
+    color: "#275DF5", // logo blue
+    darkColor: "#7BA6FF",
   },
 
   WELLFOUND: {
     label: "Wellfound",
     bg: "#F5F5F5",
     darkBg: "#161616",
-    color: "#000000",
+    color: "#000000", // logo black
     darkColor: "#FFFFFF",
   },
 
   INSTAHYRE: {
     label: "Instahyre",
-    bg: "#E8FFF5",
-    darkBg: "#0B1F17",
-    color: "#00A86B",
-    darkColor: "#34D399",
+    bg: "#EEF2F7",
+    darkBg: "#222833",
+    color: "#D1D5DB", // logo light gray text
+    darkColor: "#E5E7EB",
   },
 
   FOUNDIT: {
     label: "Foundit",
-    bg: "#FFF2E8",
-    darkBg: "#23110A",
-    color: "#FF6B00",
-    darkColor: "#FDBA74",
+    bg: "#F5EEFF",
+    darkBg: "#1F1633",
+    color: "#6A0DCC", // logo purple
+    darkColor: "#C4B5FD",
   },
 
   HIRIST: {
     label: "Hirist",
-    bg: "#F0FEF8",
-    darkBg: "#091F0F",
-    color: "#00B14F",
-    darkColor: "#34D399",
+    bg: "#FFF2EB",
+    darkBg: "#2B1209",
+    color: "#FF5A1F", // logo orange
+    darkColor: "#FF9A73",
   },
 
   CUTSHORT: {
     label: "Cutshort",
-    bg: "#FFF0F0",
-    darkBg: "#1F1010",
-    color: "#EF5350",
-    darkColor: "#FCA5A5",
+    bg: "#EFEEFF",
+    darkBg: "#17142D",
+    color: "#564BD6", // logo purple
+    darkColor: "#A5B4FC",
   },
 
   COMPANY_WEBSITE: {

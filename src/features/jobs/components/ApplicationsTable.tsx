@@ -22,7 +22,15 @@ const ApplicationsTable = ({
 }: ApplicationsTableProps) => {
   if (filtered.length === 0) <div>Loading....</div>;
   const [notesJob, setNotesJob] = useState<Job | null>(null);
-  const [isSalaryVisible, setIsSalaryVisible] = useState(false);
+  const [isSalaryVisible, setIsSalaryVisible] = useState(
+    () => localStorage.getItem("isSalaryVisible") === "true",
+  );
+
+  // on toggle
+  const handleToggle = (val: boolean) => {
+    setIsSalaryVisible(val);
+    localStorage.setItem("isSalaryVisible", String(val));
+  };
   const columnHeaders = [
     "Company",
     "Title",
@@ -48,7 +56,7 @@ const ApplicationsTable = ({
         search={search}
         setSearch={setSearch}
         isSalaryVisible={isSalaryVisible}
-        setIsSalaryVisible={setIsSalaryVisible}
+        setIsSalaryVisible={handleToggle}
       />
 
       {/* Table */}

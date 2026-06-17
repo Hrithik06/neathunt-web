@@ -150,7 +150,17 @@
     grid-template-columns: 1fr 1fr;
     gap: 14px;
 }
+.nh-field--row-platform {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
 
+@media (max-width: 640px) {
+    .nh-field--row-platform {
+        grid-template-columns: 1fr;
+    }
+}
 /* ── Label ── */
 .nh-label {
     font-size: 12px;
@@ -463,4 +473,40 @@
     to {
         transform: translateY(0);
     }
+}
+
+.nh-rs-menu {
+    margin-top: 6px;
+
+    background: var(--card-bg);
+
+    border: 1.5px solid var(--card-border);
+
+    border-radius: 12px;
+
+    box-shadow: var(--card-shadow);
+
+    overflow: hidden;
+}
+
+.nh-rs-option {
+    padding: 11px 14px;
+
+    cursor: pointer;
+
+    color: var(--heading);
+
+    font-size: 14px;
+
+    font-weight: 600;
+}
+
+.nh-rs-option--focused {
+    background: var(--input-bg);
+}
+
+.nh-rs-option--selected {
+    color: var(--brand-coral);
+
+    font-weight: 800;
 }

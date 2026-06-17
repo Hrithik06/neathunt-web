@@ -18,13 +18,16 @@ export const Currency = {
   SGD: "SGD",
   JPY: "JPY",
 } as const;
+
+const nonEmptyString = z.string().trim().min(1);
 export const createJobSchema = z.object({
-  company: z.string().min(1),
-  title: z.string().min(1),
+  company: nonEmptyString,
+  title: nonEmptyString,
   status: z.enum(JobStatus),
   appliedAt: z.iso.date(),
   notes: z
     .string()
+    .trim()
     .transform((v) => (v === "" ? undefined : v)) //cuz RHF sends empty string for optional values
     .optional(), //cuz RHF sends empty string for optional values
   url: z
@@ -32,41 +35,36 @@ export const createJobSchema = z.object({
     .or(z.literal(""))
     .transform((v) => (v === "" ? undefined : v))
     .optional(), //cuz RHF sends empty string for optional values
-  platform: z
-    .string()
-    .trim()
-    .min(1)
+  platform: nonEmptyString
     .max(50)
     .transform((v) => v.toUpperCase().replace(/\s+/g, "_")),
-  salary: z.string().optional(),
+  salary: z.string().trim().optional(),
   currency: z.enum(Currency).optional(),
 });
 
 export const updateJobSchema = z.object({
-  company: z.string().min(1).optional(),
-  title: z.string().min(1).optional(),
+  company: nonEmptyString.optional(),
+  title: nonEmptyString.optional(),
   status: z.enum(JobStatus).optional(),
   appliedAt: z.iso.date().optional(),
   notes: z
     .string()
-    .nullable() //cuz when user removes previous value we want server to delete them, and HTTP doesnt send attributes with values "" or undefined
+    .trim()
+    .nullable() //cuz when user removes previous value we want server to delete them, and HTTP doesnt send attributes with values undefined
     // .transform((v) => (v === "" ? null : v)) //cuz RHF sends empty string for optional valuesand server doesnt accept empty strings, when remove the previous data we send null so server sets it to null
     .optional(),
   url: z
     .url("Invalid URL expected https://...")
-    .nullable() //cuz when user removes previous value we want server to delete them, and HTTP doesnt send attributes with values "" or undefined
+    .nullable() //cuz when user removes previous value we want server to delete them, and HTTP doesnt send attributes with values undefined
     .or(z.literal(""))
     // .transform((v) => (v === "" ? null : v)) //cuz RHF sends empty string for optional valuesand server doesnt accept empty strings, when remove the previous data we send null so server sets it to null
     .optional(),
 
-  platform: z
-    .string()
-    .trim()
-    .min(1)
+  platform: nonEmptyString
     .max(50)
     .transform((v) => v.toUpperCase().replace(/\s+/g, "_"))
     .optional(),
-  salary: z.string().nullable().optional(),
+  salary: z.string().trim().nullable().optional(),
   currency: z.enum(Currency).nullable().optional(),
 });
 export type JobStatusType = (typeof JobStatus)[keyof typeof JobStatus];
@@ -82,13 +80,13 @@ export type Job = CreateJobInput & {
 };
 
 export const jobFormSchema = z.object({
-  company: z.string().min(1),
-  title: z.string().min(1),
+  company: nonEmptyString,
+  title: nonEmptyString,
   status: z.enum(JobStatus),
   appliedAt: z.iso.date(),
-  notes: z.string(),
+  notes: z.string().trim(),
   url: z.url("Invalid URL expected https://...").or(z.literal("")),
-  platform: z.string().trim().min(1).max(50),
-  salary: z.string(),
+  platform: z.string("Select or enter platforn").trim().min(1).max(50),
+  salary: z.string().trim(),
   currency: z.enum(Currency),
 });

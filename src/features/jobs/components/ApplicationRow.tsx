@@ -24,6 +24,8 @@ export default function ApplicationRow({
   const statusColor = isMidnight ? statusCfg.darkColor : statusCfg.color;
 
   const platformCfg = getPlatformBadge(job.platform);
+
+  // console.log(platformCfg);
   return (
     <>
       <tr
