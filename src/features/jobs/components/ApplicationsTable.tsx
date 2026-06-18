@@ -22,6 +22,24 @@ const ApplicationsTable = ({
 }: ApplicationsTableProps) => {
   if (filtered.length === 0) <div>Loading....</div>;
   const [notesJob, setNotesJob] = useState<Job | null>(null);
+  const [isSalaryVisible, setIsSalaryVisible] = useState(
+    () => localStorage.getItem("isSalaryVisible") === "true",
+  );
+
+  // on toggle
+  const handleToggle = (val: boolean) => {
+    setIsSalaryVisible(val);
+    localStorage.setItem("isSalaryVisible", String(val));
+  };
+  const columnHeaders = [
+    "Company",
+    "Title",
+    "Platform",
+    isSalaryVisible ? "Salary" : null,
+    "Date",
+    "Status",
+    "Actions",
+  ].filter((c) => c);
 
   return (
     <div
@@ -37,21 +55,15 @@ const ApplicationsTable = ({
         setFilter={setFilter}
         search={search}
         setSearch={setSearch}
+        isSalaryVisible={isSalaryVisible}
+        setIsSalaryVisible={handleToggle}
       />
 
       {/* Table */}
       <table className="w-full border-collapse">
         <thead>
           <tr style={{ background: "var(--table-head-bg)" }}>
-            {[
-              "Company",
-              "Title",
-              // "Platform",
-              // "Salary",
-              "Date",
-              "Status",
-              "Actions",
-            ].map((h) => (
+            {columnHeaders.map((h) => (
               <th
                 key={h}
                 className="px-5 py-3 text-left text-xs font-black uppercase tracking-widest"
@@ -64,30 +76,13 @@ const ApplicationsTable = ({
         </thead>
         <tbody>
           {filtered.map((job) => {
-            // const platformColors = {
-            //   LinkedIn: {
-            //     bg: isMidnight ? "#0A1929" : "#E8F0FE",
-            //     color: isMidnight ? "#60A5FA" : "#1565C0",
-            //   },
-            //   Naukri: {
-            //     bg: isMidnight ? "#1F0A0A" : "#FEE8E8",
-            //     color: isMidnight ? "#F87171" : "#C62828",
-            //   },
-            //   Hirist: {
-            //     bg: isMidnight ? "#091F0F" : "#F0FEF8",
-            //     color: isMidnight ? "#34D399" : "#1B5E20",
-            //   },
-            // };
-            // const pc =
-            //   platformColors[job.platform as keyof typeof platformColors] ??
-            //   platformColors.Hirist;
-
             return (
               <ApplicationRow
                 job={job}
                 key={job.id}
                 onEditClick={() => handleEdit(job)}
                 onNotesClick={() => setNotesJob(job)}
+                isSalaryVisible={isSalaryVisible}
               />
             );
           })}

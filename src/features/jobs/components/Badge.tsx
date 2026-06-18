@@ -1,21 +1,30 @@
-import { STATUS_CFG } from "@/features/jobs/data/statusConfig";
+import { useTheme } from "@/context/ThemeContext";
+
 type BadgeProps = {
-  status: string;
-  isMidnight: boolean;
+  badgeCfg: {
+    label: string;
+    color: string;
+    darkColor: string;
+    bg: string;
+    darkBg: string;
+    emoji?: string;
+  };
 };
-// ── Badge — only needs isMidnight (display mode, not theme tokens) ─
-const Badge = ({ status, isMidnight }: BadgeProps) => {
-  const s = STATUS_CFG[status as keyof typeof STATUS_CFG];
+const Badge = ({ badgeCfg }: BadgeProps) => {
+  const { label, color, darkColor, bg, darkBg, emoji } = badgeCfg;
+
+  const { isMidnight } = useTheme();
 
   return (
     <span
       className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold"
       style={{
-        color: isMidnight ? s.darkColor : s.color,
-        background: isMidnight ? s.darkBg : s.bg,
+        color: isMidnight ? darkColor : color,
+        background: isMidnight ? darkBg : bg,
       }}
     >
-      {s.emoji} {s.label}
+      {emoji && <span>{emoji}</span>}
+      {label}
     </span>
   );
 };

@@ -4,21 +4,27 @@ import type { Job } from "../types";
 import { convertToDateMonth } from "../utils/dateUtils";
 import Badge from "./Badge";
 import JobRowActions from "./JobRowActions";
+import { getPlatformBadge } from "../utils/getPlatformBadge";
 
 type ApplicationRowProps = {
   job: Job;
   onEditClick: () => void;
   onNotesClick: () => void;
+  isSalaryVisible: boolean;
 };
+
 export default function ApplicationRow({
   job,
   onEditClick,
   onNotesClick,
+  isSalaryVisible,
 }: ApplicationRowProps) {
   const { isMidnight } = useTheme();
-  const statusColor = isMidnight
-    ? STATUS_CFG[job.status as keyof typeof STATUS_CFG].darkColor
-    : STATUS_CFG[job.status as keyof typeof STATUS_CFG].color;
+  const statusCfg = STATUS_CFG[job.status as keyof typeof STATUS_CFG];
+  const statusColor = isMidnight ? statusCfg.darkColor : statusCfg.color;
+
+  const platformCfg = getPlatformBadge(job.platform);
+
   return (
     <>
       <tr
@@ -47,24 +53,18 @@ export default function ApplicationRow({
         </td>
         <td
           className="px-5 py-4 text-xs font-semibold wrap-break-word"
-          style={{ color: "var(--muted)" }}
+          style={{ color: "var(--heading)", opacity: 0.6 }}
         >
           {job.title}
         </td>
-        {/*<td className="px-5 py-4">
-      <span
-        className="text-xs font-bold px-2.5 py-1 rounded-full"
-        style={{ background: pc.bg, color: pc.color }}
-      >
-        {job.platform}
-      </span>
-    </td>*/}
-        {/*<td
-      className="px-5 py-4 text-sm font-black"
-      style={{ color: "var(--heading)" }}
-    >
-      {job.salary}
-    </td>*/}
+        <td className="px-5 py-4">
+          <Badge badgeCfg={platformCfg} />
+        </td>
+        {isSalaryVisible && (
+          <td className="px-5 py-4 text-xs" style={{ color: "var(--muted)" }}>
+            {job.currency ?? ""} {job.salary}
+          </td>
+        )}
         <td
           className="px-5 py-4 text-xs font-semibold"
           style={{ color: "var(--muted)" }}
@@ -72,7 +72,7 @@ export default function ApplicationRow({
           {convertToDateMonth(job.appliedAt)}
         </td>
         <td className="px-5 py-4">
-          <Badge status={job.status} isMidnight={isMidnight} />
+          <Badge badgeCfg={statusCfg} />
         </td>
         {/*<td
       className="px-5 py-4 text-xs font-bold"

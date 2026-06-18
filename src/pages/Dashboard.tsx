@@ -77,7 +77,6 @@ export default function DashboardPage() {
   // function handleDelete(jobId: string) {}
   useEffect(() => {
     if (isError) {
-      console.log(error);
       showToast(error.message || "Failed to load jobs", "error");
     }
   }, [isError, error]);
