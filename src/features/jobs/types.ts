@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 export const JobStatus = {
   APPLIED: "APPLIED",
   INTERVIEW_SCHEDULED: "INTERVIEW_SCHEDULED",
@@ -8,6 +9,7 @@ export const JobStatus = {
   ACCEPTED: "ACCEPTED",
   WITHDRAWN: "WITHDRAWN",
 } as const;
+
 export const Currency = {
   INR: "INR",
   USD: "USD",
@@ -19,84 +21,7 @@ export const Currency = {
   JPY: "JPY",
 } as const;
 
-// const nonEmptyString = z.string().trim().min(1);
-
-// const optionalString = z
-//   .string()
-//   .trim()
-//   .transform((v) => v || undefined)
-//   .optional();
-// const nullableString = z.string().trim().nullable().optional();
-// export const createJobSchema = z.object({
-//   company: nonEmptyString,
-//   title: nonEmptyString,
-//   status: z.enum(JobStatus),
-//   appliedAt: z.iso.date(),
-//   notes: z
-//     .string()
-//     .trim()
-//     .transform((v) => (v === "" ? undefined : v)) //cuz RHF sends empty string for optional values
-//     .optional(), //cuz RHF sends empty string for optional values
-//   url: z
-//     .url("Invalid URL expected https://...")
-//     .or(z.literal(""))
-//     .transform((v) => (v === "" ? undefined : v))
-//     .optional(), //cuz RHF sends empty string for optional values
-//   platform: nonEmptyString
-//     .max(50)
-//     .transform((v) => v.toUpperCase().replace(/\s+/g, "_")),
-//   salary: z.string().trim().optional(),
-//   currency: z.enum(Currency).optional(),
-// });
-
-// export const updateJobSchema = z.object({
-//   company: nonEmptyString.optional(),
-//   title: nonEmptyString.optional(),
-//   status: z.enum(JobStatus).optional(),
-//   appliedAt: z.iso.date().optional(),
-//   notes: z
-//     .string()
-//     .trim()
-//     .nullable() //cuz when user removes previous value we want server to delete them, and HTTP doesnt send attributes with values undefined
-//     // .transform((v) => (v === "" ? null : v)) //cuz RHF sends empty string for optional valuesand server doesnt accept empty strings, when remove the previous data we send null so server sets it to null
-//     .optional(),
-//   url: z
-//     .url("Invalid URL expected https://...")
-//     .nullable() //cuz when user removes previous value we want server to delete them, and HTTP doesnt send attributes with values undefined
-//     .or(z.literal(""))
-//     // .transform((v) => (v === "" ? null : v)) //cuz RHF sends empty string for optional valuesand server doesnt accept empty strings, when remove the previous data we send null so server sets it to null
-//     .optional(),
-
-//   platform: nonEmptyString
-//     .max(50)
-//     .transform((v) => v.toUpperCase().replace(/\s+/g, "_"))
-//     .optional(),
-//   salary: z.string().trim().nullable().optional(),
-//   currency: z.enum(Currency).nullable().optional(),
-// });
 export type JobStatusType = (typeof JobStatus)[keyof typeof JobStatus];
-
-// export type CreateJobInput = z.infer<typeof createJobSchema>;
-
-// export type UpdateJobInput = z.infer<typeof updateJobSchema>;
-
-// export type Job = CreateJobInput & {
-//   id: string;
-//   source: string;
-//   updatedAt: string;
-// };
-
-// export const jobFormSchema = z.object({
-//   company: nonEmptyString,
-//   title: nonEmptyString,
-//   status: z.enum(JobStatus),
-//   appliedAt: z.iso.date(),
-//   notes: z.string().trim(),
-//   url: z.url("Invalid URL expected https://...").or(z.literal("")),
-//   platform: z.string("Select or enter platforn").trim().min(1).max(50),
-//   salary: z.string().trim(),
-//   currency: z.enum(Currency),
-// });
 
 /**
  * Required text input.
@@ -108,12 +33,24 @@ export type JobStatusType = (typeof JobStatus)[keyof typeof JobStatus];
  * ""
  * "     "
  */
-const nonEmptyString = z.string().trim().min(1);
 
+const nonEmptyString = (field: string) =>
+  z
+    .string({
+      error: `${field} is required`,
+    })
+    .trim()
+    .min(1, `${field} is required`);
 export const jobFormSchema = z.object({
-  company: nonEmptyString,
+  company: nonEmptyString("Company").max(
+    100,
+    "Company must be at most 100 characters",
+  ),
 
-  title: nonEmptyString,
+  title: nonEmptyString("Title").max(
+    150,
+    "Title must be at most 150 characters",
+  ),
 
   status: z.enum(JobStatus),
 
@@ -128,7 +65,7 @@ export const jobFormSchema = z.object({
    *
    * when empty.
    */
-  notes: z.string().trim(),
+  notes: z.string().trim().max(1000, "Notes must be at most 1000 characters"),
 
   /**
    * URL input.
@@ -136,17 +73,24 @@ export const jobFormSchema = z.object({
    * Empty string is allowed because RHF
    * always stores strings.
    */
-  url: z.url("Invalid URL expected https://...").or(z.literal("")),
+  url: z
+    .url("Invalid URL expected https://...")
+    .max(500, "URL must be at most 500 characters")
+    .or(z.literal("")),
 
   /**
    * User sees:
    *
+   * LinkedIn
    * Pyjama Jobs
    *
    * Actual normalization happens
    * before API call.
    */
-  platform: nonEmptyString.max(50),
+  platform: nonEmptyString("Platform").max(
+    50,
+    "Platform must be at most 50 characters",
+  ),
 
   /**
    * RHF stores:
@@ -155,7 +99,7 @@ export const jobFormSchema = z.object({
    *
    * when empty.
    */
-  salary: z.string().trim(),
+  salary: z.string().trim().max(50, "Salary must be at most 50 characters"),
 
   currency: z.enum(Currency),
 });
@@ -192,6 +136,7 @@ export type CreateJobInput = {
 
   currency?: keyof typeof Currency;
 };
+
 /**
  * API payload for:
  *
@@ -225,6 +170,7 @@ export type UpdateJobInput = {
 
   currency?: keyof typeof Currency | null;
 };
+
 export type Job = {
   id: string;
 

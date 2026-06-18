@@ -69,7 +69,6 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
   let defaultValues: Partial<JobFormValues> = {
     status: JobStatus.APPLIED,
     appliedAt: getTodayDate(),
-    // platform: PLATFORM_OPTIONS[0].value,
   };
 
   if (selectedJob) {
@@ -306,9 +305,9 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
       {/* ── Row 2: Platform + Salary + Currency ── */}
       <div className="nh-field--row-platform">
         <div className="nh-field">
-          <label htmlFor="platformId" className="nh-label">
+          <div className="nh-label" id="platform-label">
             Platform <span className="nh-label__required">*</span>
-          </label>
+          </div>
 
           <Controller
             name="platform"
@@ -328,11 +327,17 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
         </div>
 
         <div className="nh-field">
-          <label className="nh-label">Salary</label>
+          <label className="nh-label" htmlFor="salaryId">
+            Salary
+          </label>
 
           <div className="flex gap-2">
             <div className="nh-select-wrap w-28">
-              <select className="nh-select" {...register("currency")}>
+              <select
+                id="currency-select"
+                className="nh-select"
+                {...register("currency")}
+              >
                 {CURRENCY_OPTIONS.map(({ value, label }) => (
                   <option key={value} value={value}>
                     {label}
@@ -343,6 +348,7 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
 
             <input
               type="text"
+              id="salaryId"
               placeholder="120-150K"
               className="nh-input flex-1"
               {...register("salary")}
