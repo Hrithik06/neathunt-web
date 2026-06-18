@@ -6,30 +6,9 @@ import { useEffect, useState } from "react";
 // import axios from "axios";
 import { useAuth } from "@/context/AuthContext";
 const NavBar = () => {
-  // const { toggle } = useTheme();
   const { loginWithGoogle } = useAuth();
   const [scrollY, setScrollY] = useState(0);
 
-  // Reset counter animation on theme switch so it re-runs
-  // const handleToggle = () => {
-  //   toggle();
-  //   // setStatsInView(false);
-  //   // setTimeout(() => setStatsInView(true), 120);
-  // };
-  // const loginWithGoogle = () => {
-  //   const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:4000";
-
-  //   window.location.href = `${apiUrl}/api/auth/google`;
-  // };
-  // const getMe = async () => {
-  // const data = await axios
-  //   .get(`${apiUrl}/api/auth/me`, {
-  //     withCredentials: true,
-  //   })
-  //   .catch((err) => console.log(err));
-  //   console.log(data);
-  //   alert(data);
-  // };
   useEffect(() => {
     const onScroll = () => {
       requestAnimationFrame(() => {

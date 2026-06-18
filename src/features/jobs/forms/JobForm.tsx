@@ -185,8 +185,8 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
       onClose?.();
 
       showToast("Application deleted", "success");
-    } catch (error: unknown) {
-      const apiError = error as ApiError;
+    } catch (err: unknown) {
+      const apiError = err as ApiError;
 
       // setApiErrorMsg(err.message);
       setIsDeleting(false);
@@ -210,7 +210,6 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
       }
     }
   };
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="nh-form" noValidate>
       {/* ── Row 1: Title + Company ── */}

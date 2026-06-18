@@ -25,7 +25,6 @@ export default function ApplicationRow({
 
   const platformCfg = getPlatformBadge(job.platform);
 
-  // console.log(platformCfg);
   return (
     <>
       <tr
