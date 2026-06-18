@@ -8,11 +8,19 @@ import Toggle from "@/components/ui/Toggle";
 type ApplicationsToolbarProps = {
   filter: string;
   setFilter: (f: string) => void;
+
   search: string;
   setSearch: (s: string) => void;
-  isSalaryVisible: boolean;
-  setIsSalaryVisible: (checked: boolean) => void;
-};
+} & (
+  | {
+      isSalaryVisible: boolean;
+      setIsSalaryVisible: (checked: boolean) => void;
+    }
+  | {
+      isSalaryVisible?: never;
+      setIsSalaryVisible?: never;
+    }
+);
 
 export default function ApplicationsToolbar({
   filter,
@@ -24,6 +32,9 @@ export default function ApplicationsToolbar({
 }: ApplicationsToolbarProps) {
   const [isFilterSheetOpen, setIsFilterSheetOpen] = useState(false);
   const { isMobile } = useResponsive();
+  const displaySalaryToggle =
+    typeof isSalaryVisible === "boolean" &&
+    typeof setIsSalaryVisible === "function";
   return (
     <div
       className="flex flex-col sm:flex-row justify-between sm:items-center flex-wrap gap-3 px-6 py-4 border-b text-xs"
@@ -57,11 +68,14 @@ export default function ApplicationsToolbar({
         ) : (
           <>
             <StatusFilterPills filter={filter} setFilter={setFilter} />
-            <Toggle
-              checked={isSalaryVisible}
-              onChange={setIsSalaryVisible}
-              label="Salary"
-            />
+
+            {displaySalaryToggle && (
+              <Toggle
+                checked={isSalaryVisible}
+                onChange={setIsSalaryVisible}
+                label="Salary"
+              />
+            )}
           </>
         )}
       </div>
