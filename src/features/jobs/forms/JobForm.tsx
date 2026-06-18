@@ -1,12 +1,14 @@
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
-import type z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Currency,
   jobFormSchema,
   JobStatus,
+  type CreateJobInput,
   type Job,
+  type JobFormValues,
   type JobStatusType,
+  type UpdateJobInput,
 } from "../types";
 import "../styles/modal.css";
 
@@ -19,6 +21,8 @@ import { useDeleteJob } from "../hooks/useDeleteJob";
 import { useUpdateJob } from "../hooks/useUpdateJob";
 import { PLATFORM_CFG } from "../data/platformConfig";
 import PlatformField from "@/components/ui/PlatformField";
+import { normalizePlatform } from "../utils/normalizePlatform";
+import type { ApiError } from "@/types/error";
 
 const STATUS_OPTIONS: { value: JobStatusType; label: string }[] = [
   { value: JobStatus.APPLIED, label: "📬 Applied" },
@@ -41,8 +45,6 @@ const PLATFORM_OPTIONS: {
   label: pfValue.label,
 }));
 
-type JobFormValues = z.infer<typeof jobFormSchema>;
-
 interface JobFormProps {
   onClose?: () => void;
   // onDelete?: () => void; // called after successful delete so parent can refetch
@@ -50,7 +52,7 @@ interface JobFormProps {
 }
 
 const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
-  const [apiError, setApiError] = useState<string | null>(null);
+  // const [apiErrorMsg, setApiErrorMsg] = useState<string | null>(null);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -99,6 +101,7 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
     handleSubmit,
     formState: { errors, isSubmitting, isDirty },
     control,
+    setError,
   } = useForm<JobFormValues>({
     resolver: zodResolver(jobFormSchema),
     defaultValues,
@@ -111,64 +114,101 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
   const submitButtonTxt = isEditMode ? "Save Changes 💾" : "Log Application 🚀";
 
   const onSubmit: SubmitHandler<JobFormValues> = async (data) => {
-    console.log("sd");
     try {
-      setApiError(null);
-      console.log(data);
       if (isEditMode) {
-        const updatePayload = {
+        const updatePayload: UpdateJobInput = {
           ...data,
 
           notes: data.notes || null,
+
           url: data.url || null,
 
           salary: data.salary || null,
+
           currency: data.salary ? data.currency : null,
+
+          platform: normalizePlatform(data.platform),
         };
-        updateJob.mutateAsync({
+
+        await updateJob.mutateAsync({
           jobId: selectedJob.id,
           data: updatePayload,
         });
       } else {
-        const createPayload = {
+        const createPayload: CreateJobInput = {
           ...data,
 
           notes: data.notes || undefined,
+
           url: data.url || undefined,
 
           salary: data.salary || undefined,
+
           currency: data.salary ? data.currency : undefined,
+
+          platform: normalizePlatform(data.platform),
         };
 
-        createJob.mutateAsync(createPayload);
+        await createJob.mutateAsync(createPayload);
       }
 
-      onClose?.();
-
       showToast(successMessage, "success");
-    } catch (err: any) {
-      setApiError(err.message);
-      console.log(createJob.error?.message);
-      console.log(createJob.isError);
+      onClose?.();
+    } catch (error: unknown) {
+      const apiError = error as ApiError;
+      Object.entries(apiError.errors?.fieldErrors ?? {}).forEach(
+        ([field, messages]) => {
+          setError(field as keyof JobFormValues, {
+            type: "server",
+            message: messages[0],
+          });
+        },
+      );
+
+      // Generic errors like network / 500 / auth
+      if (!apiError.errors?.fieldErrors) {
+        setError("root.serverError", {
+          type: "server",
+          message: apiError.message,
+        });
+      }
     }
   };
-
   // ── Delete ────────────────────────────────────────────────────────────────
   const handleDelete = async () => {
     if (!selectedJob) return;
     try {
       setIsDeleting(true);
-      setApiError(null);
+      // setApiErrorMsg(null);
 
       // await deleteJobMutation(selectedJob.id);
       await deleteJob.mutateAsync(selectedJob.id);
       onClose?.();
 
       showToast("Application deleted", "success");
-    } catch (err: any) {
-      setApiError(err.message);
+    } catch (error: unknown) {
+      const apiError = error as ApiError;
+
+      // setApiErrorMsg(err.message);
       setIsDeleting(false);
       setConfirmDelete(false);
+
+      Object.entries(apiError.errors?.fieldErrors ?? {}).forEach(
+        ([field, messages]) => {
+          setError(field as keyof JobFormValues, {
+            type: "server",
+            message: messages[0],
+          });
+        },
+      );
+
+      // Generic errors like network / 500 / auth
+      if (!apiError.errors?.fieldErrors) {
+        setError("root.serverError", {
+          type: "server",
+          message: apiError.message,
+        });
+      }
     }
   };
 
@@ -210,7 +250,6 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
           )}
         </div>
       </div>
-
       {/* ── Row 2: Status + Date ── */}
       <div className="nh-field--row">
         <div className="nh-field">
@@ -264,9 +303,7 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
           )}
         </div>
       </div>
-
       {/* ── Row 2: Platform + Salary + Currency ── */}
-
       <div className="nh-field--row-platform">
         <div className="nh-field">
           <label htmlFor="platformId" className="nh-label">
@@ -319,7 +356,6 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
           )}
         </div>
       </div>
-
       {/* ── Job URL ── */}
       <div className="nh-field">
         <label htmlFor="urlId" className="nh-label">
@@ -336,7 +372,6 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
           <span className="nh-field__error">{errors.url.message}</span>
         )}
       </div>
-
       {/* ── Notes ── */}
       <div className="nh-field">
         <label htmlFor="notesId" className="nh-label">
@@ -352,9 +387,7 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
           <span className="nh-field__error">⚠ {errors.notes.message}</span>
         )}
       </div>
-
       <div className="nh-divider" />
-
       {/* ── Footer ── */}
       {confirmDelete ? (
         // ── Confirm state: replaces entire footer ──────────────────────────
@@ -422,8 +455,9 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
           </div>
         </div>
       )}
-
-      {apiError && <p className="nh-field__error">{apiError}</p>}
+      {errors.root?.serverError && (
+        <p className="nh-field__error">⚠ {errors.root.serverError.message}</p>
+      )}
     </form>
   );
 };

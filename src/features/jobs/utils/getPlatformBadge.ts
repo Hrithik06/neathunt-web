@@ -1,11 +1,11 @@
 import { PLATFORM_CFG } from "../data/platformConfig";
-import { normalizePlatform } from "./normalizePlatform";
+// import { normalizePlatform } from "./normalizePlatform";
 
 export function getPlatformBadge(platform: string) {
-  const key = normalizePlatform(platform);
+  // const key = normalizePlatform(platform);
 
   return (
-    PLATFORM_CFG[key as keyof typeof PLATFORM_CFG] ?? {
+    PLATFORM_CFG[platform as keyof typeof PLATFORM_CFG] ?? {
       label: platform
         .trim()
         .replace(/\s+/g, " ")

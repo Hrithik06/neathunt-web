@@ -11,37 +11,70 @@ export const http = axios.create({
   },
 });
 
+// http.interceptors.response.use(
+//   (response) => response,
+
+//   (error) => {
+//     let message = "Something went wrong. Try again later.";
+//     let status = 0;
+
+//     if (error.response) {
+//       status = error.response.status;
+
+//       // backend message (API)
+//       message =
+//         error.response.data?.message || error.response.data?.error || message;
+
+//       // optional: handle specific cases
+//       if (status === 401) {
+//         message = "Session expired. Please login again.";
+//         // window.location.href = "/";
+//       } else if (status === 500) {
+//         message = "Server error. Try again later.";
+//       }
+//     } else if (error.request) {
+//       message = "Network error. Check your connection.";
+//     } else {
+//       message = error.message;
+//     }
+
+//     // 🔥 THIS IS THE KEY CHANGE
+//     return Promise.reject<ApiError>({
+//       message,
+//       status,
+//     });
+//   },
+// );
 http.interceptors.response.use(
   (response) => response,
 
   (error) => {
-    let message = "Something went wrong. Try again later.";
-    let status = 0;
+    const apiError: ApiError = {
+      message: "Something went wrong. Try again later.",
+      status: error.response?.status ?? 0,
+
+      errors: error.response?.data?.errors,
+    };
 
     if (error.response) {
-      status = error.response.status;
+      apiError.message =
+        error.response.data?.message ??
+        error.response.data?.error ??
+        apiError.message;
 
-      // backend message (API)
-      message =
-        error.response.data?.message || error.response.data?.error || message;
+      if (apiError.status === 401) {
+        apiError.message = "Session expired. Please login again.";
+      }
 
-      // optional: handle specific cases
-      if (status === 401) {
-        message = "Session expired. Please login again.";
-        // window.location.href = "/";
-      } else if (status === 500) {
-        message = "Server error. Try again later.";
+      if (apiError.status === 500) {
+        apiError.message = "Server error. Try again later.";
       }
     } else if (error.request) {
-      message = "Network error. Check your connection.";
+      apiError.message = "Network error. Check your connection.";
     } else {
-      message = error.message;
+      apiError.message = error.message;
     }
 
-    // 🔥 THIS IS THE KEY CHANGE
-    return Promise.reject<ApiError>({
-      message,
-      status,
-    });
+    return Promise.reject(apiError);
   },
 );

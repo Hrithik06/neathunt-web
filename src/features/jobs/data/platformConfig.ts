@@ -25,9 +25,9 @@ export const PLATFORM_CFG = {
 
   INSTAHYRE: {
     label: "Instahyre",
-    bg: "#EEF2F7",
+    bg: "#A4A6B6",
     darkBg: "#222833",
-    color: "#D1D5DB", // logo light gray text
+    color: "white", // logo light gray text
     darkColor: "#E5E7EB",
   },
 
