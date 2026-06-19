@@ -1,6 +1,6 @@
 import Logo from "@/components/ui/Logo";
 import { BRAND } from "@/constants/brand";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { AFFIRMATIONS } from "../data/affirmations";
 import SidebarNav from "./SidebarNav";
 
@@ -9,7 +9,6 @@ type DasboardSidebarProps = {
 };
 const DasboardSidebar = ({ counts }: DasboardSidebarProps) => {
   const [affIdx, setAffIdx] = useState(0);
-
   useEffect(() => {
     const timer = setInterval(
       () => setAffIdx((i) => (i + 1) % AFFIRMATIONS.length),
@@ -57,4 +56,4 @@ const DasboardSidebar = ({ counts }: DasboardSidebarProps) => {
   );
 };
 
-export default DasboardSidebar;
+export default memo(DasboardSidebar);
