@@ -3,7 +3,6 @@ import { PLATFORM_CFG } from "../data/platformConfig";
 
 export function getPlatformBadge(platform: string) {
   // const key = normalizePlatform(platform);
-  console.log(platform);
   return (
     PLATFORM_CFG[platform as keyof typeof PLATFORM_CFG] ?? {
       label: platform
