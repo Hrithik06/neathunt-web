@@ -1,4 +1,4 @@
-import { lazy, useEffect, useState } from "react";
+import { lazy, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import "./Dashboard.css";
 import { useResponsive } from "@/context/ResponsiveContext";
@@ -38,12 +38,14 @@ export default function DashboardPage() {
 
   const { data, isLoading, isError, error } = useJobs();
 
-  const jobData: Job[] = data || [];
-  const counts =
-    jobData?.reduce<Record<string, number>>(
-      (a, j) => ({ ...a, [j.status]: (a[j.status] || 0) + 1 }),
-      {},
-    ) || {};
+  const jobData: Job[] = useMemo(() => data ?? [], [data]);
+
+  const counts = useMemo(() => {
+    return jobData.reduce<Record<string, number>>((acc, job) => {
+      acc[job.status] = (acc[job.status] || 0) + 1;
+      return acc;
+    }, {});
+  }, [jobData]);
 
   const responseRate = jobData.length
     ? Math.round(
@@ -53,12 +55,14 @@ export default function DashboardPage() {
       )
     : 0;
 
-  const filtered = jobData.filter(
-    (j) =>
-      (filter === "All" || j.status === filter) &&
-      (j.company.toLowerCase().includes(search.toLowerCase()) ||
-        j.title.toLowerCase().includes(search.toLowerCase())),
-  );
+  const filtered = useMemo(() => {
+    return jobData.filter(
+      (j) =>
+        (filter === "All" || j.status === filter) &&
+        (j.company.toLowerCase().includes(search.toLowerCase()) ||
+          j.title.toLowerCase().includes(search.toLowerCase())),
+    );
+  }, [search, filter, jobData]);
 
   // Replace history entry on mount to prevent back button from going to
   // Google OAuth pages after login redirect

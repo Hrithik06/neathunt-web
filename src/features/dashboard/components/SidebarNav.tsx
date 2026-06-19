@@ -1,6 +1,6 @@
 import { BRAND } from "@/constants/brand";
 import { useTheme } from "@/context/ThemeContext";
-import { useState } from "react";
+import { memo, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { LogOut } from "lucide-react";
 
@@ -14,7 +14,7 @@ const NAV = [
 type SidebarNavProps = {
   counts: Record<string, number>;
 };
-export default function SidebarNav({ counts }: SidebarNavProps) {
+function SidebarNav({ counts }: SidebarNavProps) {
   const { isMidnight } = useTheme();
   const [activeNav, setActiveNav] = useState(0);
 
@@ -79,3 +79,4 @@ export default function SidebarNav({ counts }: SidebarNavProps) {
     </>
   );
 }
+export default memo(SidebarNav);

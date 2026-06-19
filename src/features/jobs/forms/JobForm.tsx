@@ -222,7 +222,7 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
             id="titleId"
             type="text"
             placeholder="e.g. Frontend Engineer"
-            className={`nh-input${errors.title ? " nh-input--error" : ""}`}
+            className={`nh-input${errors.title ? "nh-input--error" : ""}`}
             autoComplete="organization-title"
             {...register("title")}
           />

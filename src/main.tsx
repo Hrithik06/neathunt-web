@@ -1,3 +1,4 @@
+import { scan } from "react-scan"; // must be imported before React and React DOM
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
@@ -7,7 +8,9 @@ import { BrowserRouter } from "react-router";
 import { ThemeProvider } from "./context/ThemeContext";
 import { ResponsiveProvider } from "./context/ResponsiveContext";
 const root = document.getElementById("root")!;
-
+scan({
+  enabled: true,
+});
 createRoot(root!).render(
   <StrictMode>
     <BrowserRouter>

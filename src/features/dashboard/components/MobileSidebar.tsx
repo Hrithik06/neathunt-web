@@ -1,6 +1,6 @@
 import Logo from "@/components/ui/Logo";
 import { BRAND } from "@/constants/brand";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { AFFIRMATIONS } from "../data/affirmations";
 import SidebarNav from "./SidebarNav";
 import ThemeToggle from "@/components/ui/ThemeToggle";
@@ -119,4 +119,4 @@ const MobileSidebar = ({ counts, isOpen, onClose }: MobileSidebarProps) => {
   );
 };
 
-export default MobileSidebar;
+export default memo(MobileSidebar);
