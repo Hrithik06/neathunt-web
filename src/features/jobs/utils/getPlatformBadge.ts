@@ -6,9 +6,9 @@ export function getPlatformBadge(platform: string) {
   return (
     PLATFORM_CFG[platform as keyof typeof PLATFORM_CFG] ?? {
       label: platform
-        .trim()
-        .replace(/\s+/g, " ")
-        .replace(/\b\w/g, (c) => c.toUpperCase()),
+        .trim() // "   interview     completed    "-> "interview     completed"
+        .replace(/\s+/g, " ") //Removing extra space "interview     completed" -> "interview completed"
+        .replace(/\b\w/g, (c) => c.toUpperCase()), // Title case "Interview Completed"
 
       color: "#6B7280",
       darkColor: "#D1D5DB",
