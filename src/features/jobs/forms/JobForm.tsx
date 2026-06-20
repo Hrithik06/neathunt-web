@@ -21,7 +21,7 @@ import { useDeleteJob } from "../hooks/useDeleteJob";
 import { useUpdateJob } from "../hooks/useUpdateJob";
 import { PLATFORM_CFG } from "../data/platformConfig";
 import PlatformField from "@/components/ui/PlatformField";
-import { normalizePlatform } from "../utils/normalizePlatform";
+import { toUpperSnakeCase } from "../utils/toUpperSnakeCase";
 import type { ApiError } from "@/types/error";
 
 const STATUS_OPTIONS: { value: JobStatusType; label: string }[] = [
@@ -126,7 +126,7 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
 
           currency: data.salary ? data.currency : null,
 
-          platform: normalizePlatform(data.platform),
+          platform: toUpperSnakeCase(data.platform),
         };
 
         await updateJob.mutateAsync({
@@ -145,7 +145,7 @@ const JobForm = ({ onClose, selectedJob }: JobFormProps) => {
 
           currency: data.salary ? data.currency : undefined,
 
-          platform: normalizePlatform(data.platform),
+          platform: toUpperSnakeCase(data.platform),
         };
 
         await createJob.mutateAsync(createPayload);
