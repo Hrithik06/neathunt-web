@@ -10,6 +10,7 @@ import { Toaster } from "react-hot-toast";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useResponsive } from "./context/ResponsiveContext";
+import Analytics from "./pages/Analytics";
 
 const queryClient = new QueryClient();
 
@@ -30,7 +31,8 @@ function App() {
               <Route index element={<LandingPage />} />
 
               <Route element={<AuthLayout />}>
-                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="dashboard" element={<Dashboard />} />
+                <Route path="analytics" element={<Analytics />} />
               </Route>
 
               <Route path="auth-error" element={<AuthError />} />

@@ -4,8 +4,11 @@ import getAllJobs from "../api/getAllJobs";
 export function useJobs() {
   return useQuery({
     queryKey: ["jobs"],
-    // staleTime: Infinity,
+    staleTime: 5 * 60 * 1000,
+    // refetchInterval: 5 * 1000,
     queryFn: getAllJobs,
-    gcTime: 10 * 1000,
+    refetchOnWindowFocus: false,
+
+    // gcTime: 10_000,
   });
 }
