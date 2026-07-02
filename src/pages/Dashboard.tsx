@@ -129,7 +129,7 @@ export default function DashboardPage() {
             {isLoading ? (
               <>
                 <JobPipelineSkeleton />
-                <TrophyCardSkeleton />
+                {/*<TrophyCardSkeleton />*/}
               </>
             ) : (
               <>
@@ -139,7 +139,7 @@ export default function DashboardPage() {
                   setFilter={setFilter}
                 />
 
-                <TrophyCard counts={counts} responseRate={responseRate} />
+                {/*<TrophyCard counts={counts} responseRate={responseRate} />*/}
               </>
             )}
           </div>
