@@ -10,13 +10,13 @@ import { Menu } from "lucide-react";
 import DashboardHeader from "@/features/dashboard/components/DashboardHeader";
 import JobPipeline from "@/features/jobs/components/JobPipeline";
 import StatCards from "@/features/dashboard/components/StatCards";
-import TrophyCard from "@/features/dashboard/components/TrophyCard";
+// import TrophyCard from "@/features/dashboard/components/TrophyCard";
 import ApplicationsTable from "@/features/jobs/components/ApplicationsTable";
 import DesktopSidebar from "@/features/dashboard/components/DesktopSidebar";
 import EmptyApplicationsState from "@/features/jobs/components/EmptyApplicationsState";
 import ApplicationsTableSkeleton from "@/features/jobs/components/ApplicationsTableSkeleton";
 import JobPipelineSkeleton from "@/features/jobs/components/JobPipelineSkeleton";
-import TrophyCardSkeleton from "@/features/dashboard/components/TrophyCardSkeleton";
+// import TrophyCardSkeleton from "@/features/dashboard/components/TrophyCardSkeleton";
 import StatCardsSkeleton from "@/features/dashboard/components/StatCardsSkeleton";
 import MobileSidebar from "@/features/dashboard/components/MobileSidebar";
 import MobileApplicationsGrid from "@/features/jobs/components/MobileApplicationsGrid";
@@ -129,7 +129,7 @@ export default function DashboardPage() {
             {isLoading ? (
               <>
                 <JobPipelineSkeleton />
-                <TrophyCardSkeleton />
+                {/*<TrophyCardSkeleton />*/}
               </>
             ) : (
               <>
@@ -139,7 +139,7 @@ export default function DashboardPage() {
                   setFilter={setFilter}
                 />
 
-                <TrophyCard counts={counts} responseRate={responseRate} />
+                {/*<TrophyCard counts={counts} responseRate={responseRate} />*/}
               </>
             )}
           </div>
