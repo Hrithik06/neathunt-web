@@ -3,13 +3,14 @@ import { useTheme } from "@/context/ThemeContext";
 import { memo, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { LogOut } from "lucide-react";
+import { Link } from "react-router";
 
 const NAV = [
-  { icon: "🏠", label: "Dashboard" },
-  { icon: "📋", label: "Applications" },
-  { icon: "🗓️", label: "Interviews" },
-  { icon: "📈", label: "Analytics" },
-  { icon: "⚙️", label: "Settings" },
+  { icon: "🏠", label: "Dashboard", to: "" },
+  { icon: "📋", label: "Applications", to: "" },
+  { icon: "🗓️", label: "Interviews", to: "" },
+  { icon: "📈", label: "Analytics", to: "/analytics" },
+  { icon: "⚙️", label: "Settings", to: "" },
 ];
 type SidebarNavProps = {
   counts: Record<string, number>;
@@ -24,27 +25,29 @@ function SidebarNav({ counts }: SidebarNavProps) {
       {/* Nav */}
       <nav className="flex-1">
         {NAV.map((item, i) => (
-          <button
-            key={item.label}
-            className="nav-item w-full flex items-center gap-3 px-5 py-3 transition-all duration-150 cursor-pointer border-0 bg-transparent border-l-4 text-left"
-            style={{
-              borderColor: activeNav === i ? BRAND.gold : "transparent",
-            }}
-            onClick={() => setActiveNav(i)}
-          >
-            <span className="text-base">{item.icon}</span>
-            <span
-              className={`text-sm ${activeNav === i ? "font-black" : "font-medium"}`}
+          <Link to={item.to} key={item.label}>
+            <button
+              key={item.label}
+              className="nav-item w-full flex items-center gap-3 px-5 py-3 transition-all duration-150 cursor-pointer border-0 bg-transparent border-l-4 text-left"
               style={{
-                color:
-                  activeNav === i
-                    ? "var(--sidebar-active)"
-                    : "var(--sidebar-text)",
+                borderColor: activeNav === i ? BRAND.gold : "transparent",
               }}
+              onClick={() => setActiveNav(i)}
             >
-              {item.label}
-            </span>
-          </button>
+              <span className="text-base">{item.icon}</span>
+              <span
+                className={`text-sm ${activeNav === i ? "font-black" : "font-medium"}`}
+                style={{
+                  color:
+                    activeNav === i
+                      ? "var(--sidebar-active)"
+                      : "var(--sidebar-text)",
+                }}
+              >
+                {item.label}
+              </span>
+            </button>
+          </Link>
         ))}
       </nav>
       {/* Growth card */}
