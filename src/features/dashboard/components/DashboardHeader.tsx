@@ -7,6 +7,11 @@ interface DashboardHeaderProps {
 }
 
 const DashboardHeader = ({ handleCreate }: DashboardHeaderProps) => {
+  const gmailUpgrade = () => {
+    const apiUrl = import.meta.env.VITE_API_URL;
+
+    window.location.href = `${apiUrl}/api/auth/google/upgrade`;
+  };
   return (
     <div
       className="
@@ -24,6 +29,10 @@ const DashboardHeader = ({ handleCreate }: DashboardHeaderProps) => {
         <div className="hidden sm:block">
           <ThemeToggle />
         </div>
+
+        <button onClick={gmailUpgrade} style={{ color: "var(--error-text)" }}>
+          Gmail Upgrade
+        </button>
 
         <button
           className="cta-btn flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-black text-white border-0 cursor-pointer transition-all duration-200"
